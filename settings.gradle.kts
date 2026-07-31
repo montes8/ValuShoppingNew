@@ -24,4 +24,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "ValuShoppingNew"
 include(":app")
- 
+include(":entity")
+include(":repository")
+include(":usecases")
