@@ -1,0 +1,22 @@
+[
+  {
+    "id": 6,
+    "title": "Cambio de perfil",
+    "icon": "ic_profile"
+  },
+  {
+    "id": 7,
+    "title": "Se parte de nosotros",
+    "icon": "ic_about"
+  },
+  {
+    "id": 4,
+    "title": "Sobre nosotros",
+    "icon": "ic_home"
+  },
+  {
+    "id": 5,
+    "title": "Soporte tecnico",
+    "icon": "ic_support"
+  }
+]

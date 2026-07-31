@@ -5,6 +5,113 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+    <color name="primary_pink">@color/pink_200</color>
+
     <color name="black">#FF000000</color>
+    <color name="gray_600">#212121</color>
+    <color name="gray_500">#424242</color>
+    <color name="gray_400">#626262</color>
+    <color name="gray_300">#9E9E9E</color>
+    <color name="gray_150">#EEEEEE</color>
+    <color name="gray_100">#FAFBFF</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blue">#0961f1</color>
+    <color name="sky_blue">#03A9F4</color>
+    <color name="purple">#9a43a0</color>
+
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
+    <color name="red_50">#FFCDD2</color>
+
+    <color name="pink_50">#FCE4EC</color>
+    <color name="pink_100">#FF80AB</color>
+    <color name="pink_150">#F48FB1</color>
+
+    <color name="pink_200">#FF4081</color>
+    <color name="pink_400">#F50057</color>
+    <color name="pink_600">#D81B60</color>
+    <color name="pink_700">#C2185B</color>
+
+    <color name="transparency_white">#CBFFFFFF</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="color_shimmer_start_gray">#D8DDF3</color>
+    <color name="color_shimmer_end_gray">#F0F3FA</color>
+
+    <!-- color style pink-->
+    <color name="color_principal_pink">#FF4081</color>
+    <color name="color_secondary_pink">#F48FB1</color>
+    <color name="color_principal_pink_bg">#FCE4EC</color>
+    <!-- color style red-->
+    <color name="color_principal_red">#F44336</color>
+    <color name="color_secondary_red">#EF9A9A</color>
+    <color name="color_principal_red_bg">#FFEBEE</color>
+    <!-- color style purple-->
+    <color name="color_principal_purple">#9C27B0</color>
+    <color name="color_secondary_purple">#CE93D8</color>
+    <color name="color_principal_purple_bg">#F3E5F5</color>
+    <!-- color style indigo-->
+    <color name="color_principal_indigo">#3F51B5</color>
+    <color name="color_secondary_indigo">#9FA8DA</color>
+    <color name="color_principal_indigo_bg">#E8EAF6</color>
+    <!-- color style blue-->
+    <color name="color_principal_blue">#2196F3</color>
+    <color name="color_secondary_blue">#90CAF9</color>
+    <color name="color_principal_blue_bg">#E3F2FD</color>
+    <!-- color style sky blue-->
+    <color name="color_principal_sky_blue">#03A9F4</color>
+    <color name="color_secondary_sky_blue">#81D4FA</color>
+    <color name="color_principal_sky_blue_bg">#E1F5FE</color>
+    <!-- color style sky cyan-->
+    <color name="color_principal_cyan">#00BCD4</color>
+    <color name="color_secondary_cyan">#80DEEA</color>
+    <color name="color_principal_cyan_bg">#E0F7FA</color>
+    <!-- color style sky teal-->
+    <color name="color_principal_teal">#009688</color>
+    <color name="color_secondary_teal">#80CBC4</color>
+    <color name="color_principal_teal_bg">#E0F2F1</color>
+    <!-- color style green-->
+    <color name="color_principal_green">#4CAF50</color>
+    <color name="color_secondary_green">#A5D6A7</color>
+    <color name="color_principal_green_bg">#E8F5E9</color>
+    <!-- color style light green-->
+    <color name="color_principal_light_green">#8BC34A</color>
+    <color name="color_secondary_light_green">#C5E1A5</color>
+    <color name="color_principal_light_green_bg">#F1F8E9</color>
+    <!-- color style sky lime-->
+    <color name="color_principal_lime">#CDDC39</color>
+    <color name="color_secondary_lime">#E6EE9C</color>
+    <color name="color_principal_lime_bg">#F9FBE7</color>
+    <!-- color style yellow-->
+    <color name="color_principal_yellow">#FFEB3D</color>
+    <color name="color_secondary_yellow">#FFF59D</color>
+    <color name="color_principal_yellow_bg">#FFFDE7</color>
+    <!-- color style amber-->
+    <color name="color_principal_amber">#FFC107</color>
+    <color name="color_secondary_amber">#FFE082</color>
+    <color name="color_principal_amber_bg">#FFF8E1</color>
+    <!-- color style orange-->
+    <color name="color_principal_orange">#FF9800</color>
+    <color name="color_secondary_orange">#FFCC80</color>
+    <color name="color_principal_orange_bg">#FFF3E0</color>
+    <!-- color style deep orange-->
+    <color name="color_principal_deep_orange">#FF5722</color>
+    <color name="color_secondary_deep_orange">#FFAB91</color>
+    <color name="color_principal_deep_orange_bg">#FBE9E7</color>
+    <!-- color style deep brown-->
+    <color name="color_principal_brown">#795548</color>
+    <color name="color_secondary_brown">#BCAAA4</color>
+    <color name="color_principal_brown_bg">#EFEBE9</color>
+    <!-- color style deep grey-->
+    <color name="color_principal_grey">#607D8D</color>
+    <color name="color_secondary_grey">#B0BEC5</color>
+    <color name="color_principal_grey_bg">#ECEFF1</color>
+    <!-- color style black-->
+    <color name="color_principal_black">#000000</color>
+    <color name="color_secondary_black">#E0E0E0</color>
+    <color name="color_principal_black_bg">#FAFAFA</color>
+
+
+
 </resources>

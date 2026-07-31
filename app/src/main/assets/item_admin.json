@@ -1,0 +1,29 @@
+[
+  {
+    "id": 2,
+    "title": "Configurar parametros",
+    "icon": "ic_param"
+  },
+  {
+    "id": 3,
+    "title": "Listado de productos",
+    "icon": "ic_product"
+  },
+  {
+    "id": 4,
+    "title": "Sobre nosotros",
+    "icon": "ic_home"
+  },
+
+  {
+    "id": 5,
+    "title": "Soporte tecnico",
+    "icon": "ic_support"
+  },
+
+  {
+    "id": 50,
+    "title": "Valu tareas",
+    "icon": "ic_about"
+  }
+]

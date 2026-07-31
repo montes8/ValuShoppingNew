@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+  <path
+      android:pathData="M32,0L32,0A32,32 0,0 1,64 32L64,32A32,32 0,0 1,32 64L32,64A32,32 0,0 1,0 32L0,32A32,32 0,0 1,32 0z"
+      android:fillColor="@color/color_principal_lime_bg"/>
+  <group>
+    <clip-path android:pathData="M32,0L32,0A32,32 0,0 1,64 32L64,32A32,32 0,0 1,32 64L32,64A32,32 0,0 1,0 32L0,32A32,32 0,0 1,32 0z M 0,0"/>
+  </group>
+  <path
+      android:pathData="M21.9902,42.0286V40.5477C21.9902,35.3234 24.2358,30.8881 27.3695,29.4111C28.1447,29.9707 30.5323,31.0899 32.0207,31.0899C34.3462,31.0899 34.8114,31.0471 37.1369,29.4111C40.207,30.9443 42.8598,35.3912 42.8598,40.5477V42.0286C42.8598,45.456 21.9902,45.456 21.9902,42.0286Z"
+      android:fillColor="@color/color_principal_lime"/>
+  <path
+      android:pathData="M32.1659,18.5122C29.163,18.5122 26.7285,21.007 26.7285,24.01C26.7285,27.013 29.1629,29.4474 32.1659,29.4474C35.1689,29.4474 37.6033,27.013 37.6033,24.01C37.6033,21.007 35.1688,18.5122 32.1659,18.5122Z"
+      android:fillColor="@color/color_principal_lime"/>
+</vector>
