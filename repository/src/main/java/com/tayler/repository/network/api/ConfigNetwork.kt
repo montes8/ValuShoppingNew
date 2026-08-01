@@ -1,5 +1,9 @@
 package com.tayler.repository.network.api
 
+import com.tayler.entity.CategoryModel
+import com.tayler.entity.HistoryModel
+import com.tayler.entity.TaskModel
+import com.tayler.entity.UserBlockingModel
 import com.tayler.repository.network.ServiceApi
 import com.tayler.repository.network.base.BaseNetwork
 import com.tayler.repository.network.model.request.HistoryRequest
@@ -16,33 +20,34 @@ class ConfigNetwork @Inject constructor(
     private val serviceApi: ServiceApi,
     private val base: BaseNetwork
 ) : IConfigNetwork {
-    override suspend fun loadBlocking(): List<UserBlockingResponse> {
+    override suspend fun loadBlocking(): List<UserBlockingModel> {
         return base.executeWithConnection(false) {
-            var model: List<UserBlockingResponse>? = null
+            var model: List<UserBlockingModel>? = null
             val response =  serviceApi.loadUserBlocking()
             if (response.validateData()) {
-                model = response.validateBody()
+                model = UserBlockingResponse.toList(response.validateBody())
             }
             model ?: ArrayList()
         }
     }
 
-    override suspend fun saveHistory(data: HistoryRequest): Boolean {
+
+    override suspend fun saveHistory(data: HistoryModel): Boolean {
         return base.executeWithConnection {
-            val response = serviceApi.saveHistory(data)
+            val response = serviceApi.saveHistory(HistoryRequest.toModel(data))
             response.validateData()
         }
     }
 
-    override suspend fun listTask(): List<TaskResponse> {
+    override suspend fun listTask(): List<TaskModel> {
         return base.executeWithConnection(false) {
-            var model: List<TaskResponse>? = null
+            var model: List<TaskModel>? = null
             val response =  serviceApi.loadTaskValu()
             if (response.validateData()) {
-                model = response.validateBody()
+                model = TaskResponse.toList(response.validateBody())
             }
             model ?: arrayListOf(
-                TaskResponse(
+                TaskModel(
                     uid = EMPTY_VALE,
                     course = "COMUNICACION",
                     issue= "contaminacion ambiental de mi localidad (comas)",
@@ -61,23 +66,23 @@ class ConfigNetwork @Inject constructor(
         }
     }
 
-    override suspend fun listCategories(): List<CategoryResponse> {
+    override suspend fun listCategories(): List<CategoryModel> {
         return base.executeWithConnection{
-            var model: List<CategoryResponse>? = null
+            var model: List<CategoryModel>? = null
             val response =  serviceApi.loadCategories()
             if (response.validateData()) {
-                model = response.validateBody()
+                model = CategoryResponse.toList(response.validateBody())
             }
             model ?: arrayListOf()
         }
     }
 
-    override suspend fun listCategoriesAll(): List<CategoryResponse> {
+    override suspend fun listCategoriesAll(): List<CategoryModel> {
         return base.executeWithConnection{
-            var model: List<CategoryResponse>? = null
+            var model: List<CategoryModel>? = null
             val response =  serviceApi.loadCategoriesAll()
             if (response.validateData()) {
-                model = response.validateBody()
+                model = CategoryResponse.toList(response.validateBody())
             }
             model ?: arrayListOf()
         }

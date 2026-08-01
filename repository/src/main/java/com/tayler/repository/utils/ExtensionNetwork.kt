@@ -5,6 +5,11 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.provider.Settings
+import com.google.gson.Gson
+import com.tayler.repository.network.exception.CompleteErrorModel
+import com.tayler.repository.network.exception.GenericException
+import com.tayler.repository.network.exception.UnAuthorizedException
+import okhttp3.ResponseBody
 import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -46,4 +51,13 @@ fun <T> Response<T>?.validateBody(): T {
     this?.body()?.let {
         return it
     } ?: throw NullPointerException()
+}
+
+fun ResponseBody?.toCompleteErrorModel(code: Int): Exception {
+    return this?.let {
+        return if (code == 407) throw UnAuthorizedException() else Gson().fromJson(
+            it.string(),
+            CompleteErrorModel::class.java
+        )?.getApiException() ?: GenericException()
+    } ?: GenericException()
 }

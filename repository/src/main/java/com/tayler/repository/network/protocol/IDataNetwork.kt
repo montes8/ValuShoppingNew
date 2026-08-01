@@ -1,5 +1,9 @@
 package com.tayler.repository.network.protocol
 
+import com.tayler.entity.ImageModel
+import com.tayler.entity.ImageMoreModel
+import com.tayler.entity.ProductImageModel
+import com.tayler.entity.ProductModel
 import java.io.File
 
 interface IDataNetwork {

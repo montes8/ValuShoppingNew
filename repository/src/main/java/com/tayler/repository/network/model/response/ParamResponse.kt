@@ -1,6 +1,7 @@
 package com.tayler.repository.network.model.response
 
 import com.google.gson.annotations.SerializedName
+import com.tayler.entity.ParamModel
 import com.tayler.repository.utils.COUNTRY_DEFAULT
 import com.tayler.repository.utils.DEFAULT_COUNT_PRODUCT
 import com.tayler.repository.utils.DEFAULT_NUMBER
@@ -9,7 +10,6 @@ import com.tayler.repository.utils.EMPTY_VALE
 import com.tayler.repository.utils.HOUR_END_DEFAULT
 import com.tayler.repository.utils.HOUR_START_DEFAULT
 import com.tayler.repository.utils.ID_MOVIE_DEFAULT
-import com.tayler.repository.utils.uiTayFormatTwelveHour
 
 data class ParamResponse(
     @SerializedName("uid")
@@ -51,9 +51,50 @@ data class ParamResponse(
     @SerializedName("idYoutube")
     var idYoutube: String? = "xH6qsMpA7NM"
 ) {
-    fun mapperDialogText(): String {
-        return "Nuestros horario de atencion es de " +
-                "${hourStart?.uiTayFormatTwelveHour()} a " +
-                "${hourEnd?.uiTayFormatTwelveHour()}, gracias por su comprensión."
+
+    companion object{
+        fun toModel(data : ParamResponse) = ParamModel(
+             uid = data.uid?:EMPTY_VALE,
+             title = data.title?:DEFAULT_TEXT_WELCOME,
+             description = data.description?:EMPTY_VALE,
+             idMovie = data.idMovie?:ID_MOVIE_DEFAULT,
+             enableCategory = data.enableCategory?:false,
+             phone = data.phone?:DEFAULT_NUMBER,
+             textWelcome = data.textWelcome?:DEFAULT_TEXT_WELCOME,
+             hourStart = data.hourStart?:HOUR_START_DEFAULT,
+             hourEnd = data.hourEnd?:HOUR_END_DEFAULT,
+             limitDistance = data.limitDistance?:"5",
+             countProduct = data.countProduct?:DEFAULT_COUNT_PRODUCT,
+             styleValu = data.styleValu?:"0",
+             bgService = data.bgService?:false,
+             bgToolbar = data.bgToolbar?:false,
+             countryCode = data.countryCode?:COUNTRY_DEFAULT,
+             blocking = data.blocking?:null,
+             idIcon = data.idIcon?:"Icon",
+             idFacebook = data.idFacebook?:"61590557890653",
+             idYoutube = data.idYoutube?:"xH6qsMpA7NM"
+        )
+
+        fun toModelRequest(data : ParamModel) = ParamResponse(
+            uid = data.uid?:EMPTY_VALE,
+            title = data.title?:DEFAULT_TEXT_WELCOME,
+            description = data.description?:EMPTY_VALE,
+            idMovie = data.idMovie?:ID_MOVIE_DEFAULT,
+            enableCategory = data.enableCategory?:false,
+            phone = data.phone?:DEFAULT_NUMBER,
+            textWelcome = data.textWelcome?:DEFAULT_TEXT_WELCOME,
+            hourStart = data.hourStart?:HOUR_START_DEFAULT,
+            hourEnd = data.hourEnd?:HOUR_END_DEFAULT,
+            limitDistance = data.limitDistance?:"5",
+            countProduct = data.countProduct?:DEFAULT_COUNT_PRODUCT,
+            styleValu = data.styleValu?:"0",
+            bgService = data.bgService?:false,
+            bgToolbar = data.bgToolbar?:false,
+            countryCode = data.countryCode?:COUNTRY_DEFAULT,
+            blocking = data.blocking?:null,
+            idIcon = data.idIcon?:"Icon",
+            idFacebook = data.idFacebook?:"61590557890653",
+            idYoutube = data.idYoutube?:"xH6qsMpA7NM"
+        )
     }
 }

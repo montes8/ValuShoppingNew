@@ -1,6 +1,6 @@
 package com.tayler.entity
 
-class UserModel(
+data class UserModel(
     var uid: String = "",
     var nameUser: String = "",
     var names: String = "",

@@ -1,6 +1,7 @@
 package com.tayler.repository.network.model.request
 
 import com.google.gson.annotations.SerializedName
+import com.tayler.entity.HistoryModel
 
 data class HistoryRequest(
     @SerializedName("type")
@@ -25,4 +26,21 @@ data class HistoryRequest(
     val ipAddress: String,
     @SerializedName("numberPhone")
     val numberPhone: String
-)
+){
+    companion object{
+        fun toModel(data : HistoryModel) = HistoryRequest(
+            type = data.type,
+            name = data.name,
+            latitude = data.latitude,
+            longitude = data.longitude,
+            address = data.address,
+            imei = data.imei,
+            identifier = data.identifier,
+            date = data.date,
+            hour = data.hour,
+            ipAddress = data.ipAddress,
+            numberPhone = data.numberPhone,
+
+        )
+    }
+}

@@ -1,7 +1,11 @@
 package com.tayler.repository.network.model.response
 
 import com.google.gson.annotations.SerializedName
+import com.tayler.entity.CategoryModel
+import com.tayler.entity.ProductModel
+import com.tayler.entity.UserBlockingModel
 import com.tayler.repository.utils.EMPTY_VALE
+import kotlin.String
 
 data class ProductResponse(
     @SerializedName("uid")
@@ -49,7 +53,7 @@ data class ProductResponse(
     @SerializedName("latitude")
     var latitude: String? = "0",
     @SerializedName("longitude")
-    var longitude: String? =  "0",
+    var longitude: String? = "0",
     @SerializedName("limitDistance")
     var limitDistance: String? = "5",
     @SerializedName("banner")
@@ -62,4 +66,75 @@ data class ProductResponse(
     var stateNew: Boolean? = true,
     @SerializedName("sellerClient")
     var sellerClient: String? = EMPTY_VALE,
-)
+) {
+    companion object{
+        fun toList(data : List<ProductResponse>) = data.map {item ->
+            toModel(item)
+        }
+
+        fun toModel(item : ProductResponse) =
+            ProductModel(
+                uid = item.uid ?: EMPTY_VALE,
+                name = item.name ?: EMPTY_VALE,
+                description = item.description ?: EMPTY_VALE,
+                type = item.type ?:"0",
+                category = item.category ?:"0",
+                price = item.price ?:EMPTY_VALE,
+                priceTwo = item.priceTwo ?:EMPTY_VALE,
+                state = item.state ?:false,
+                img = item.img ?:EMPTY_VALE,
+                url = item.url ?:EMPTY_VALE,
+                urlBanner = item.urlBanner ?:EMPTY_VALE,
+                gender = item.gender ?:"0",
+                phone = item.phone ?:EMPTY_VALE,
+                principal = item.principal ?:false,
+                admin = item.admin ?:false,
+                idUser = item.idUser ?:EMPTY_VALE,
+                sizeHeight = item.sizeHeight ?:"N",
+                countryCode = item.countryCode ?:EMPTY_VALE,
+                deliveryPoint = item.deliveryPoint ?:EMPTY_VALE,
+                district = item.district ?:EMPTY_VALE,
+                nameFile = item.nameFile ?:EMPTY_VALE,
+                latitude = item.latitude ?:"0",
+                longitude = item.longitude ?:"0",
+                limitDistance = item.limitDistance ?:"5",
+                banner = item.banner ?:false,
+                linkBanner = item.linkBanner ?:EMPTY_VALE,
+                click = item.click ?:true,
+                stateNew = item.stateNew ?:true,
+                sellerClient = item.sellerClient ?:EMPTY_VALE)
+
+
+        fun toModelRequest(item: ProductModel) =
+            ProductResponse(
+                uid = item.uid ?: EMPTY_VALE,
+                name = item.name ?: EMPTY_VALE,
+                description = item.description ?: EMPTY_VALE,
+                type = item.type ?:"0",
+                category = item.category ?:"0",
+                price = item.price ?:EMPTY_VALE,
+                priceTwo = item.priceTwo ?:EMPTY_VALE,
+                state = item.state ?:false,
+                img = item.img ?:EMPTY_VALE,
+                url = item.url ?:EMPTY_VALE,
+                urlBanner = item.urlBanner ?:EMPTY_VALE,
+                gender = item.gender ?:"0",
+                phone = item.phone ?:EMPTY_VALE,
+                principal = item.principal ?:false,
+                admin = item.admin ?:false,
+                idUser = item.idUser ?:EMPTY_VALE,
+                sizeHeight = item.sizeHeight ?:"N",
+                countryCode = item.countryCode ?:EMPTY_VALE,
+                deliveryPoint = item.deliveryPoint ?:EMPTY_VALE,
+                district = item.district ?:EMPTY_VALE,
+                nameFile = item.nameFile ?:EMPTY_VALE,
+                latitude = item.latitude ?:"0",
+                longitude = item.longitude ?:"0",
+                limitDistance = item.limitDistance ?:"5",
+                banner = item.banner ?:false,
+                linkBanner = item.linkBanner ?:EMPTY_VALE,
+                click = item.click ?:true,
+                stateNew = item.stateNew ?:true,
+                sellerClient = item.sellerClient ?:EMPTY_VALE)
+    }
+}
