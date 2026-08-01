@@ -4,6 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.tayler.repository.R
+import com.tayler.repository.network.ServiceApi
+import com.tayler.repository.preferences.manager.PreferencesManager
+import com.tayler.repository.utils.AUTHORIZATION
+import com.tayler.repository.utils.MY_CONTENT_TYPE
+import com.tayler.repository.utils.MY_TIME_ON
+import com.tayler.repository.utils.PLATFORM
+import com.tayler.repository.utils.PREFERENCE_TOKEN
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,10 +21,12 @@ import jakarta.inject.Inject
 import jakarta.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import com.tayler.repository.BuildConfig
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -47,12 +57,6 @@ object NetworkModule {
     @Provides
     fun provideBaseUrl() = BuildConfig.BASE_URL
 
-
-    @Singleton
-    @Provides
-    fun provideContext(application: ApplicationVale): Context {
-        return application.applicationContext
-    }
 
     @Singleton
     @Provides

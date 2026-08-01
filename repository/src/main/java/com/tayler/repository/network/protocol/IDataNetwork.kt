@@ -16,7 +16,5 @@ interface IDataNetwork {
     suspend fun deleteProductImage(idProduct: String): ImageMoreModel
     suspend fun saveImageMore(file: File?, nameFile: String): ImageModel
     suspend fun saveProductDBImages(request: ProductImageModel): ImageMoreModel
-
     suspend fun loadProductCategory(category : String): List<ProductModel>
-
 }

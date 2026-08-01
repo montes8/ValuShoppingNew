@@ -9,8 +9,6 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
-fun config(k: String): String = "\"${project.properties[k]}\""
-val baseUrl = "BASE_URL"
 
 val keystoreProps = Properties().apply {
     val keystoreFile = rootProject.file("keystore.properties")
@@ -44,24 +42,20 @@ configure<ApplicationExtension> {
 
     buildTypes {
         release {
-            buildConfigField("String", baseUrl, config("production.server.url"))
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            resValue("string", "encryption_key", config("preferences.encryption"))
             signingConfig = signingConfigs.getByName("config")
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = false
         }
         debug {
-            buildConfigField("String", baseUrl, config("qa.server.url"))
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            resValue("string", "encryption_key", config("preferences.encryption"))
             isDebuggable = true
         }
     }
@@ -103,8 +97,6 @@ dependencies {
     implementation(project(":entity"))
     implementation(project(":usecases"))
 
-
-    implementation("com.airbnb.android:lottie-compose:6.x.x") // Usa la versión más reciente
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Tests

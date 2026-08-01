@@ -1,7 +1,10 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     id("com.google.devtools.ksp")
+    alias(libs.plugins.composeCompiler)
 }
+fun config(k: String): String = "\"${project.properties[k]}\""
+val baseUrl = "BASE_URL"
 
 android {
     namespace = "com.tayler.repository"
@@ -14,9 +17,28 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    buildTypes {
+        release {
+            buildConfigField("String", baseUrl, config("production.server.url"))
+            resValue("string", "encryption_key", config("preferences.encryption"))
+
+        }
+        debug {
+            buildConfigField("String", baseUrl, config("qa.server.url"))
+            resValue("string", "encryption_key", config("preferences.encryption"))
+
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    buildFeatures {
+        compose = true
+        buildConfig = true
+        resValues = true
     }
 
 }
