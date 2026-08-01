@@ -1,12 +1,6 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -27,3 +21,5 @@ include(":app")
 include(":entity")
 include(":repository")
 include(":usecases")
+include(":uitaycompose")
+project(":uitaycompose").projectDir = File(settingsDir, "../TayComposeLibrary/uitaycompose")

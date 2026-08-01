@@ -1,0 +1,31 @@
+package com.tayler.repository.utils
+
+const val  MY_TIME_ON : Long = 30
+const val MY_CONTENT_TYPE = "text/json"
+const val DEFAULT_CODE        : Int    = -1
+const val AUTHORIZATION = "x-token"
+const val PREFERENCE_TOKEN = "PREFERENCE_TOKEN"
+const val PREFERENCE_UUID = "PREFERENCE_UUID"
+const val PREFERENCE_USER = "PREFERENCE_USER"
+const val PREFERENCE_STYLE = "PREFERENCE_STYLE"
+const val PREFERENCE_TEXT_WELCOME = "PREFERENCE_TEXT_WELCOME"
+const val PREFERENCE_ID_ICON = "PREFERENCE_ID_ICON"
+const val PREFERENCE_ID_OLD = "PREFERENCE_ID_OLD"
+const val PREFERENCE_BG_SERVICE = "PREFERENCE_BG_SERVICE"
+const val PLATFORM = "Android"
+const val ERROR_TITLE_GENERAL = "¡Ups ocurrió un error!"
+const val ERROR_TITLE_EXPIRE = "¡Sesión expirada"
+const val ERROR_TITLE_NETWORK = "¡Error de conexión de red !"
+const val ERROR_MESSAGE_GENERAL = "Se ha producido un error inesperado en el sistema o esta fuera del horario de atencion, intentalo de nuevo mas tarde y en el horario respectivo."
+const val ERROR_MESSAGE_NETWORK = "El sistema no pudo conectarse a la red, le recomendamos revisar su conexión de internet."
+const val ERROR_MESSAGE_EXPIRE = "Tu tiempo de conexión ha expirado. Por tu seguridad debes ingresar sesión nuevamente."
+const val ERROR_TITLE_OF_HOUR = "Fuera de horario de atención"
+const val EMPTY_VALE = ""
+const val COUNTRY_DEFAULT = "PE"
+const val DEFAULT_COUNT_PRODUCT = "10"
+const val ID_MOVIE_DEFAULT = "14C5wUiVuZgx9jT57WSU7NX6_4QF1LKj3"
+const val HOUR_START_DEFAULT = "09:00:00"
+const val HOUR_END_DEFAULT = "21:00:00"
+const val DEFAULT_TEXT_WELCOME = "VALU \nSHOOPING"
+const val DEFAULT_NUMBER = "935815994"
+

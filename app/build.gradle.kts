@@ -4,7 +4,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.composeCompiler)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 }
@@ -90,16 +90,22 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
+    implementation(libs.material)
     implementation("androidx.lifecycle:lifecycle-process:2.8.7")
     implementation("androidx.navigation:navigation-compose:2.8.5")
     implementation("com.google.android.play:app-update-ktx:2.1.0")
 
     // Dagger Hilt con KSP
     implementation("com.google.dagger:hilt-android:2.60.1")
-    implementation(libs.material)
     ksp("com.google.dagger:hilt-compiler:2.60.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(project(":uitaycompose"))
+    implementation(project(":entity"))
+    implementation(project(":usecases"))
+
+
+    implementation("com.airbnb.android:lottie-compose:6.x.x") // Usa la versión más reciente
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Tests
     testImplementation(libs.junit)
