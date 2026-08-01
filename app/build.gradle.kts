@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 
@@ -89,6 +90,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.5")
     implementation("com.google.android.play:app-update-ktx:2.1.0")
 
+    implementation(libs.kotlinx.serialization.json)
     // Dagger Hilt con KSP
     implementation("com.google.dagger:hilt-android:2.60.1")
     ksp("com.google.dagger:hilt-compiler:2.60.1")
@@ -98,7 +100,6 @@ dependencies {
     implementation(project(":usecases"))
 
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

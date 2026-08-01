@@ -6,26 +6,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.provider.Settings
 import com.google.gson.Gson
+import com.tayler.entity.exception.GenericException
+import com.tayler.entity.exception.UnAuthorizedException
 import com.tayler.repository.network.exception.CompleteErrorModel
-import com.tayler.repository.network.exception.GenericException
-import com.tayler.repository.network.exception.UnAuthorizedException
 import okhttp3.ResponseBody
 import retrofit2.Response
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Date
-
-@SuppressLint("SimpleDateFormat")
-fun String.uiTayFormatTwelveHour():String{
-    return try {
-        val formatHour = SimpleDateFormat("hh:mm:ss")
-        val hourCurrent: Date = formatHour.parse(this) as Date
-        val converter = SimpleDateFormat("hh:mm a")
-        converter.format(hourCurrent)
-    } catch (e: ParseException) {
-        ""
-    }
-}
 
 @SuppressLint("MissingPermission")
 fun Context?.isConnected(): Boolean {

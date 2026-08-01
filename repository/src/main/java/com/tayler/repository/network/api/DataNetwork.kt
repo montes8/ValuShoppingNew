@@ -4,9 +4,9 @@ import com.tayler.entity.ImageModel
 import com.tayler.entity.ImageMoreModel
 import com.tayler.entity.ProductImageModel
 import com.tayler.entity.ProductModel
+import com.tayler.entity.exception.GenericException
 import com.tayler.repository.network.ServiceApi
 import com.tayler.repository.network.base.BaseNetwork
-import com.tayler.repository.network.exception.GenericException
 import com.tayler.repository.network.model.request.ProductImageRequest
 import com.tayler.repository.network.model.response.ImageMoreResponse
 import com.tayler.repository.network.model.response.ImageResponse

@@ -26,7 +26,6 @@ abstract class BaseActivity : ComponentActivity() {
         setContent {
             ValeTheme {
                 val viewModel = getViewModel()
-
                 val uiState by viewModel?.uiStateBase?.collectAsStateWithLifecycle()
                     ?: remember { mutableStateOf(BaseUiState()) }
 
@@ -35,7 +34,7 @@ abstract class BaseActivity : ComponentActivity() {
                 }
 
                 if (uiState.error) {
-                    DialogGeneric(message = uiState.errorType.mapperError()) { dialogResult ->
+                    DialogGeneric(message = uiState.errorType.mapperError().third) { dialogResult ->
                         viewModel?.dismissErrorDialog(dialogResult)
                     }
                 }

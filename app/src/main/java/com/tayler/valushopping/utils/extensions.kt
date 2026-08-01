@@ -1,41 +1,38 @@
 package com.tayler.valushopping.utils
 
-import android.content.Context
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
-import com.tayler.repository.ErrorAuthorization
-import com.tayler.repository.ErrorNetwork
-import com.tayler.repository.ExceptionMapper
-import com.tayler.repository.ExceptionMapperSoap
+import com.tayler.entity.exception.ApiException
+import com.tayler.entity.exception.MyNetworkException
+import com.tayler.entity.exception.OutOfHour
+import com.tayler.entity.exception.UnAuthorizedException
+import com.tayler.valushopping.R
+import com.tayler.valushopping.entity.AppDataVale
 
 
-fun Context.validNetWork() = isConnected() && !isAirplaneModeActive()
-
-fun Throwable.mapperError(): String{
+fun Throwable.mapperError(): Triple<Int, String, String> {
     return when (this) {
-        is ExceptionMapper -> {
-            this.apiException.errorMessage
-        }
-        is ExceptionMapperSoap ->{
-            Log.d("errorsoat",this.apiExceptionSoap)
-            this.apiExceptionSoap
-        }
+        is MyNetworkException -> Triple(
+            R.drawable.ic_error_red,
+            ERROR_TITLE_NETWORK,
+            ERROR_MESSAGE_NETWORK
+        )
 
+        is UnAuthorizedException -> Triple(
+            R.drawable.ic_info_error,
+            ERROR_TITLE_EXPIRE,
+            ERROR_MESSAGE_EXPIRE
+        )
 
-        is ErrorAuthorization -> {
-            "Error de autenticacion"
-        }
+        is ApiException -> Triple(R.drawable.ic_info_error, title, messageApi)
+        is OutOfHour -> Triple(
+            R.drawable.ic_info_error,
+            ERROR_TITLE_OF_HOUR,
+            AppDataVale.mapperDialogText()
+        )
 
-        is ErrorNetwork -> {
-            "Error de conexion de internet"
-        }
-
-        else -> "Error  Generic"
+        else -> Triple(R.drawable.ic_info_error, ERROR_TITLE_GENERAL, ERROR_MESSAGE_GENERAL)
     }
 }
-
-fun  String.mapperLog() = "$LINE_SEPARATOR $this"
-
 
 
 fun isNightModeEnabled(): Boolean {

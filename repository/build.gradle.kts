@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     id("com.google.devtools.ksp")
-    alias(libs.plugins.composeCompiler)
+    //alias(libs.plugins.composeCompiler)
+    id("com.google.dagger.hilt.android")
 }
 fun config(k: String): String = "\"${project.properties[k]}\""
 val baseUrl = "BASE_URL"
@@ -36,7 +37,6 @@ android {
     }
 
     buildFeatures {
-        compose = true
         buildConfig = true
         resValues = true
     }

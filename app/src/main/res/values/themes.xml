@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.ValuShoppingNew" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowSplashScreenBackground">@color/white</item>
+         <item name="android:windowSplashScreenAnimationDuration">0</item>
+    </style>
 
-    <style name="Theme.ValuShoppingNew" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Starting" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Hace que el fondo de la pantalla de inicio del sistema sea transparente -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

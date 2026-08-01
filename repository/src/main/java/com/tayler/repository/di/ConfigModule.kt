@@ -55,7 +55,7 @@ object NetworkModule {
 
 
     @Provides
-    fun provideBaseUrl() = BuildConfig.BASE_URL
+    fun provideBaseUrl(): String = BuildConfig.BASE_URL
 
 
     @Singleton

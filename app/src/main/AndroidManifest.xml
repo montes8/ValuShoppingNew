@@ -40,20 +40,14 @@
         android:name=".application.ApplicationVale"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ValuShoppingNew" >
+        android:theme="@style/Theme.Starting" >
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.ValuShoppingNew"
+            android:theme="@style/Theme.Starting"
             android:windowSoftInputMode="adjustResize"
-            tools:ignore="RedundantLabel" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            tools:ignore="RedundantLabel" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
