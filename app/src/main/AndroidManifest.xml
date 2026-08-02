@@ -39,12 +39,12 @@
         android:name=".application.ApplicationVale"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Starting" >
+        android:theme="@style/Theme.ValuShoppingNew" >
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Starting"
+            android:theme="@style/Theme.ValuShoppingNew"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="RedundantLabel" />
         <provider

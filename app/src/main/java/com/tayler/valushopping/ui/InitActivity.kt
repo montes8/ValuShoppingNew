@@ -2,6 +2,7 @@ package com.tayler.valushopping.ui
 
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
@@ -10,6 +11,7 @@ import com.tayler.valushopping.component.ValeNavigationMain
 import com.tayler.valushopping.ui.base.BaseActivity
 import com.tayler.valushopping.ui.base.BaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -26,9 +28,11 @@ class MainActivity : BaseActivity() {
     private val updateOptions = AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
 
     override fun setDataGlobal() {
-        validateVersionUpdate()
         appViewModel.loadParam()
         appViewModel.loadSplashData()
+        window.decorView.post {
+            validateVersionUpdate()
+        }
     }
 
     @Composable
