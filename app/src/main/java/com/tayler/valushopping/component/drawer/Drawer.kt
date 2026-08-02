@@ -113,7 +113,7 @@ fun MyDrawer(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_profile),
-                        contentDescription = "Perfil Avatar",
+                        contentDescription = "ProfileAvatar",
                         modifier = Modifier.size(35.dp),
                         tint = Color.White
                     )
@@ -161,7 +161,7 @@ fun DrawerItem(
             .fillMaxWidth()
             .height(56.dp)
             .padding(horizontal = 12.dp, vertical = 4.dp)
-            .clip(RoundedCornerShape(25.dp))
+            .clip(RoundedCornerShape(12.dp))
             .background(if (selected) pinkBackground else Color.Transparent)
             .clickable { onItemClick(item) }
             .padding(horizontal = 16.dp),

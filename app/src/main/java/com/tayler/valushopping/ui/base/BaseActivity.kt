@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,13 +48,15 @@ abstract class BaseActivity : ComponentActivity() {
                 val viewModel = getViewModel()
                 val uiState by viewModel?.uiStateBase?.collectAsStateWithLifecycle()
                     ?: remember { mutableStateOf(BaseUiState()) }
-               Box(
+
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.White)
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
                     ) {
                         Spacer(
                             modifier = Modifier
@@ -60,8 +64,11 @@ abstract class BaseActivity : ComponentActivity() {
                                 .windowInsetsTopHeight(WindowInsets.statusBars)
                                 .background(uiState.statusBarColor)
                         )
-
-                        Box(modifier = Modifier.fillMaxSize()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .windowInsetsPadding(WindowInsets.navigationBars)
+                        ) {
                             SetScreenConfig()
                         }
                     }

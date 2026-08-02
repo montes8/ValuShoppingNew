@@ -26,7 +26,7 @@ fun ValeNavigationMain() {
     ) {
         composable<ScreenVale.SplashScreen> {
             ScreenSplash{
-               // navController.navigate(ScreenVale.HomeScreen)
+                navController.navigate(ScreenVale.HomeScreen)
             }
         }
 

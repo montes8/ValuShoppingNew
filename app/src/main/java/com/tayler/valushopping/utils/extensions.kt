@@ -58,3 +58,61 @@ fun ParamModel.validateHourApp():Boolean{
     val validEnd = hourCurrent < hourEndParse
     return validStart && validEnd
 }
+
+fun setImageMenu():Int{
+    val image = when(AppDataVale.styleValu){
+        "0"->{
+            R.drawable.ic_menu_home
+        }
+        "1"->{R.drawable.ic_menu_home_1}
+        "2"->{R.drawable.ic_menu_home_2}
+        "3"->{R.drawable.ic_menu_home_3}
+        "4"->{R.drawable.ic_menu_home_4}
+        "5"->{R.drawable.ic_menu_home_5}
+        "6"->{R.drawable.ic_menu_home_6}
+        "7"->{R.drawable.ic_menu_home_7}
+        "8"->{R.drawable.ic_menu_home_8}
+        "9"->{R.drawable.ic_menu_home_9}
+        "10"->{R.drawable.ic_menu_home_10}
+        "11"->{R.drawable.ic_menu_home_11}
+        "12"->{R.drawable.ic_menu_home_12}
+        "13"->{R.drawable.ic_menu_home_13}
+        "14"->{R.drawable.ic_menu_home_14}
+        "15"->{R.drawable.ic_menu_home_15}
+        "16"->{R.drawable.ic_menu_home_16}
+        "17"->{R.drawable.ic_menu_home_17}
+        else->{
+            R.drawable.ic_menu_home
+        }
+    }
+    return image
+}
+
+fun setImageLogout():Int{
+    val image = when(AppDataVale.styleValu){
+        "0"->{
+            R.drawable.ic_logout
+        }
+        "1"->{R.drawable.ic_logout_1}
+        "2"->{R.drawable.ic_logout_2}
+        "3"->{R.drawable.ic_logout_3}
+        "4"->{R.drawable.ic_logout_4}
+        "5"->{R.drawable.ic_logout_5}
+        "6"->{R.drawable.ic_logout_6}
+        "7"->{R.drawable.ic_logout_7}
+        "8"->{R.drawable.ic_logout_8}
+        "9"->{R.drawable.ic_logout_9}
+        "10"->{R.drawable.ic_logout_10}
+        "11"->{R.drawable.ic_logout_11}
+        "12"->{R.drawable.ic_logout_12}
+        "13"->{R.drawable.ic_logout_13}
+        "14"->{R.drawable.ic_logout_14}
+        "15"->{R.drawable.ic_logout_15}
+        "16"->{R.drawable.ic_logout_16}
+        "17"->{R.drawable.ic_logout_17}
+        else->{
+            R.drawable.ic_logout
+        }
+    }
+    return image
+}
