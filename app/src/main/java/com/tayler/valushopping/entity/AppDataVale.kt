@@ -1,11 +1,18 @@
 package com.tayler.valushopping.entity
 
+import android.content.Context
 import androidx.compose.ui.graphics.Color
 import com.tayler.entity.CategoryModel
 import com.tayler.entity.ParamModel
 import com.tayler.entity.UserModel
+import com.tayler.valushopping.BuildConfig
+import com.tayler.valushopping.R
 import com.tayler.valushopping.utils.TY_DEFAULT
 import com.tayler.valushopping.utils.*
+import com.valu.uitaycompose.utils.UI_EMPTY
+import com.valu.uitaycompose.utils.extension.getNameBackgroundCustom
+import com.valu.uitaycompose.utils.extension.getNameSplashCustom
+import com.valu.uitaycompose.utils.extension.getNameToolbarCustom
 import com.valu.uitaycompose.utils.extension.uiTayFormatTwelveHour
 
 
@@ -19,6 +26,7 @@ object AppDataVale {
     var categories : List<CategoryModel> = ArrayList()
     var categoriesAll : List<CategoryModel> = ArrayList()
     var bgService : Boolean = false
+    var urlImage = "https://cockatoo-close-teal.ngrok-free.app/service/uploads/banners/"
 
     fun getColorPrincipal():Triple<Color,Color,Color>{
         return when(styleValu){
@@ -86,4 +94,30 @@ object AppDataVale {
                 "${paramData.hourStart?.uiTayFormatTwelveHour()} a " +
                 "${paramData.hourEnd?.uiTayFormatTwelveHour()}, gracias por su comprensión."
     }
+
+    fun getUrlBgSplash(context: Context): String{
+        return if (paramData.bgService == true){
+            "${urlImage}${context.getNameSplashCustom()}/${context.getNameSplashCustom()}.png"
+        }else{
+            UI_EMPTY
+        }
+    }
+
+    fun getUrlBg(context: Context): String{
+        return if (paramData.bgService == true){
+            "${urlImage}${context.getNameBackgroundCustom()}/${context.getNameBackgroundCustom()}.png"
+        }else{
+            UI_EMPTY
+        }
+    }
+
+    fun getUrlBgToolbar(context: Context): String{
+        return if (paramData.bgService == true){
+            "${urlImage}uploads/banners/${context.getNameToolbarCustom()}/" +
+                    "${context.getNameToolbarCustom()}.png"
+        }else{
+            UI_EMPTY
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.tayler.valushopping.component.drawer
+package com.tayler.valushopping.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,56 +29,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tayler.valushopping.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-
-data class DrawerMenuItem(
-    val title: String,
-    val icon: Int,
-    val action: Int
-)
-
-val drawerItems = listOf(
-    DrawerMenuItem(
-        title = "Perfil",
-        icon = R.drawable.ic_profile,
-        action = 5
-    ),
-    DrawerMenuItem(
-        title = "Sobre nostros",
-        icon = R.drawable.ic_home,
-        action = 0
-    ),
-    DrawerMenuItem(
-        title = "Se parte de nosotros",
-        icon = R.drawable.ic_about,
-        action = 1
-    ),
-    DrawerMenuItem(
-        title = "Puntos de entrega",
-        icon = R.drawable.ic_map,
-        action = 2
-    ),
-    DrawerMenuItem(
-        title = "soporte tecnico",
-        icon = R.drawable.ic_support,
-        action = 3
-    ), DrawerMenuItem(
-        title = "Facebook",
-        icon = R.drawable.ic_facebook_pink,
-        action = 4
-    )
-
-)
-
+import com.valu.uitaycompose.model.UiTayNavBarItem
+import com.valu.uitaycompose.model.UiTayNavBarModel
+import kotlin.collections.forEach
 
 @Composable
-fun MyDrawer(
-    scope: CoroutineScope,
-    scaffoldState: DrawerState,
-    items: List<DrawerMenuItem>,
+fun UiTayDrawer(
+    items: List<UiTayNavBarItem>,
     currentActionId: Int,
-    onItemClick: (DrawerMenuItem) -> Unit
+    bgColor : Color,
+    text : String,
+    model : UiTayNavBarModel = UiTayNavBarModel(),
+    onItemClick: (UiTayNavBarItem) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -108,25 +69,25 @@ fun MyDrawer(
                     modifier = Modifier
                         .size(70.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFFFF80AB)),
+                        .background(bgColor),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_profile),
                         contentDescription = "ProfileAvatar",
                         modifier = Modifier.size(35.dp),
-                        tint = Color.White
+                        tint = model.uiColorSelected
                     )
                 }
 
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Text(
-                    text = "Valu",
+                    text = text,
                     style = TextStyle(
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFFE91E63)
+                        color = model.uiColorSelected
                     )
                 )
             }
@@ -136,10 +97,7 @@ fun MyDrawer(
 
         items.forEach { item ->
             val isSelected = item.action == currentActionId
-            DrawerItem(item = item, selected = isSelected) {
-                scope.launch {
-                    scaffoldState.close()
-                }
+            UiTayDrawerItem(item, isSelected,model,bgColor) {
                 onItemClick(item)
             }
         }
@@ -147,14 +105,13 @@ fun MyDrawer(
 }
 
 @Composable
-fun DrawerItem(
-    item: DrawerMenuItem,
+fun UiTayDrawerItem(
+    item: UiTayNavBarItem,
     selected: Boolean,
-    onItemClick: (DrawerMenuItem) -> Unit
+    model : UiTayNavBarModel,
+    bgColor : Color,
+    onItemClick: (UiTayNavBarItem) -> Unit
 ) {
-    val pinkBackground = Color(0xFFFFEBEE)
-    val pinkDark = Color(0xFFE91E63)
-    val grayColor = Color.Gray
 
     Row(
         modifier = Modifier
@@ -162,7 +119,7 @@ fun DrawerItem(
             .height(56.dp)
             .padding(horizontal = 12.dp, vertical = 4.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(if (selected) pinkBackground else Color.Transparent)
+            .background(if (selected) bgColor else Color.Transparent)
             .clickable { onItemClick(item) }
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -171,17 +128,13 @@ fun DrawerItem(
             modifier = Modifier.size(24.dp),
             painter = painterResource(id = item.icon),
             contentDescription = item.title,
-            tint = if (selected) pinkDark else grayColor
+            tint = if (selected) model.uiColorSelected else model.uiUnColorSelected
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = item.title,
             style = TextStyle(fontSize = 16.sp),
-            color = if (selected) pinkDark else grayColor
+            color = if (selected) model.uiTextColorSelected else model.uiTextUnColorSelected
         )
     }
 }
-
-
-
-

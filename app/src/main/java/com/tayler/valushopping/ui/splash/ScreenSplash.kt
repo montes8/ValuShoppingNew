@@ -1,7 +1,5 @@
 package com.tayler.valushopping.ui.splash
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
@@ -24,8 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,7 +35,6 @@ import com.tayler.valushopping.ui.AppViewModel
 import com.tayler.valushopping.utils.validateHourApp
 import com.valu.uitaycompose.swipe.UiTayGif
 import com.valu.uitaycompose.swipe.UiTayUrlImage
-import com.valu.uitaycompose.utils.extension.getNameSplashCustom
 import com.valu.uitaycompose.utils.textPenny25
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
@@ -71,7 +66,7 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        BackgroundImage(state.showLogo, activity)
+        BackgroundImage( activity)
 
         CenterContent(
             modifier = Modifier.align(Alignment.Center), state
@@ -87,18 +82,9 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
 
 
 @Composable
-private fun BackgroundImage(activeUrl: Boolean,context: Context) {
+private fun BackgroundImage(context: Context) {
     Box(modifier = Modifier.fillMaxSize()) {
-        if (activeUrl){
-            UiTayUrlImage(url = "https://cockatoo-close-teal.ngrok-free.app/service/uploads/banners/${context.getNameSplashCustom()}/${context.getNameSplashCustom()}.png")
-        }else{
-            Image(
-                painter = painterResource(id = R.drawable.ic_bg_general),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-        }
+            UiTayUrlImage(url = AppDataVale.getUrlBgSplash(context), drawable = R.drawable.ic_bg_general)
     }
 }
 

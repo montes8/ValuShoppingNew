@@ -25,7 +25,7 @@ fun ValeNavigationMain() {
         exitTransition = { ExitTransition.None }
     ) {
         composable<ScreenVale.SplashScreen> {
-            ScreenSplash{
+            ScreenSplash {
                 navController.navigate(ScreenVale.HomeScreen)
             }
         }
@@ -47,47 +47,55 @@ sealed class ScreenVale(
 ) {
 
     @Serializable
-    data object SplashScreen: ScreenVale()
+    data object SplashScreen : ScreenVale()
+
     @Serializable
-    data object HomeScreen: ScreenVale()
+    data object HomeScreen : ScreenVale()
+
     @Serializable
-    data object ProfileScreen: ScreenVale()
+    data object ProfileScreen : ScreenVale()
+
     @Serializable
-    data object LoginScreen: ScreenVale()
+    data object LoginScreen : ScreenVale()
     data class ActionCustom(val url: Int) : ScreenVale()
 }
 
 @Serializable
 sealed interface TayRoute {
-    @Serializable object Init : TayRoute
-    @Serializable object Product : TayRoute
-    @Serializable object Category : TayRoute
-    @Serializable object Config : TayRoute
+    @Serializable
+    object Init : TayRoute
+    @Serializable
+    object Product : TayRoute
+    @Serializable
+    object Category : TayRoute
+    @Serializable
+    object Config : TayRoute
 }
 
-sealed class TayDestinations(
-    val route: TayRoute,
-    val title: String,
-    val icon: Int,
-    val iconSelected: Int = 0
-) {
-    data object InitNavScreen: TayDestinations(TayRoute.Init,"Inicio", R.drawable.ic_home)
-    data object ProductNavScreen: TayDestinations(TayRoute.Product,"Productos",R.drawable.ic_clothes)
-    data object CategoryScreenNavScreen: TayDestinations(TayRoute.Category,"Categorias",R.drawable.ic_category)
-    data object ConfigNavScreen: TayDestinations(TayRoute.Config,"Config",R.drawable.ic_admin)
-}
 
 @Composable
-fun NavigationNavBarHost() {
-    val navController: NavHostController = rememberNavController()
+fun NavigationNavBarHost(navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = TayRoute.Init,
+    NavHost(
+        navController = navController, startDestination = TayRoute.Init,
         exitTransition = {
             ExitTransition.None
         }) {
         composable<TayRoute.Init> { ScreenInit() }
         composable<TayRoute.Product> { ScreenProduct() }
         composable<TayRoute.Category> { ScreenCategory() }
-        composable<TayRoute.Config>  { ScreenConfig() }
+        composable<TayRoute.Config> { ScreenConfig() }
+
+    }
+}
+
+
+fun Int.mapperNavBar() : TayRoute {
+    return when (this) {
+        0 -> TayRoute.Init
+        1 -> TayRoute.Product
+        2 -> TayRoute.Category
+        3 -> TayRoute.Config
+        else -> TayRoute.Init
     }
 }
