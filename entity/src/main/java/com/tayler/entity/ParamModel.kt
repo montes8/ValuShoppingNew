@@ -20,10 +20,4 @@ class ParamModel (
     var idIcon: String? = "Icon",
     var idFacebook: String? = "61590557890653",
     var idYoutube: String? = "xH6qsMpA7NM"
-){
-    fun mapperDialogText(start: String,end: String): String {
-        return "Nuestros horario de atencion es de " +
-                "$start a " +
-                "$end, gracias por su comprensión."
-    }
-}
+)

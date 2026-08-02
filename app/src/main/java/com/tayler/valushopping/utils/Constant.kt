@@ -8,3 +8,4 @@ const val ERROR_MESSAGE_NETWORK = "El sistema no pudo conectarse a la red, le re
 const val ERROR_MESSAGE_EXPIRE = "Tu tiempo de conexión ha expirado. Por tu seguridad debes ingresar sesión nuevamente."
 const val ERROR_TITLE_OF_HOUR = "Fuera de horario de atención"
 const val TY_DEFAULT = "0"
+const val DEFAULT_TEXT_WELCOME = "VALU \nSHOOPING"

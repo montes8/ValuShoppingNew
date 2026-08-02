@@ -59,17 +59,17 @@
       android:fillAlpha="0.3"/>
   <path
       android:pathData="M361.104,150.896c-19.855,-19.855 -52.045,-19.855 -71.899,0l-10.553,10.554l71.898,71.898l10.554,-10.554C380.958,202.941 380.958,170.751 361.104,150.896z"
-      android:fillColor="@color/color_principal_yellow"/>
+      android:fillColor="#FFEB3D"/>
   <path
       android:pathData="M136.006,304.094l2.765,69.134l69.134,2.766l11.15,-11.151l-71.898,-71.898z"
-      android:fillColor="@color/color_principal_yellow"/>
+      android:fillColor="#FFEB3D"/>
   <path
       android:pathData="M181.682,313.332l117.356,-117.356l16.987,16.987l-117.356,117.356z"
-      android:fillColor="@color/color_principal_yellow"/>
+      android:fillColor="#FFEB3D"/>
   <path
       android:pathData="M154.225,285.875l117.357,-117.354l20.386,20.386l-117.357,117.354z"
-      android:fillColor="@color/color_principal_yellow"/>
+      android:fillColor="#FFEB3D"/>
   <path
       android:pathData="M205.738,337.387l117.357,-117.354l20.386,20.386l-117.357,117.354z"
-      android:fillColor="@color/color_principal_yellow"/>
+      android:fillColor="#FFEB3D"/>
 </vector>

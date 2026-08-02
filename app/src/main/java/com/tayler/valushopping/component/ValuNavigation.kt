@@ -25,7 +25,9 @@ fun ValeNavigationMain() {
         exitTransition = { ExitTransition.None }
     ) {
         composable<ScreenVale.SplashScreen> {
-            ScreenSplash()
+            ScreenSplash{
+               // navController.navigate(ScreenVale.HomeScreen)
+            }
         }
 
         composable<ScreenVale.HomeScreen> {
@@ -48,9 +50,11 @@ sealed class ScreenVale(
     data object SplashScreen: ScreenVale()
     @Serializable
     data object HomeScreen: ScreenVale()
-
+    @Serializable
+    data object ProfileScreen: ScreenVale()
     @Serializable
     data object LoginScreen: ScreenVale()
+    data class ActionCustom(val url: Int) : ScreenVale()
 }
 
 @Serializable

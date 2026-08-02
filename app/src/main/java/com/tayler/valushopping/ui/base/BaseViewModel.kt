@@ -62,4 +62,8 @@ open class BaseViewModel(private var valeD: CoroutineDispatcher = Dispatchers.IO
         }
     }
 
+    fun updateUiState(update: (BaseUiState) -> BaseUiState) {
+        _uiStateBase.update(update)
+    }
+
 }
