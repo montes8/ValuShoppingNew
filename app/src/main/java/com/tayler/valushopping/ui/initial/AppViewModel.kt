@@ -1,4 +1,4 @@
-package com.tayler.valushopping.ui
+package com.tayler.valushopping.ui.initial
 
 import android.app.Application
 import com.tayler.entity.CategoryModel
@@ -11,7 +11,7 @@ import com.tayler.usecases.ConfigUseCase
 import com.tayler.usecases.UserUseCase
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
-import com.tayler.valushopping.ui.splash.SplashUiState
+import com.tayler.valushopping.ui.initial.splash.SplashUiState
 import com.tayler.valushopping.utils.DEFAULT_TEXT_WELCOME
 import com.tayler.valushopping.utils.TY_DEFAULT
 import com.valu.uitaycompose.utils.extension.uiTayCountryNetwork
@@ -20,7 +20,6 @@ import com.valu.uitaycompose.utils.extension.uiTayGetMobilIPAddress
 import com.valu.uitaycompose.utils.extension.uiTayLoadImei
 import com.valu.uitaycompose.utils.extension.uiTayNumberPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -126,10 +125,10 @@ class AppViewModel @Inject constructor(
             configUseCase.saveHistory(
                 HistoryModel(
                     type = typeFlow,
-                    name = "${AppDataVale.user.names } ${AppDataVale.user.lastName}",
+                    name = "${AppDataVale.user.names} ${AppDataVale.user.lastName}",
                     AppDataVale.latitude,
                     AppDataVale.longitude,
-                    AppDataVale.user.address ,
+                    AppDataVale.user.address,
                     application.uiTayLoadImei(),
                     appUseCase.getUUID(),
                     Date().uiTayDateToString(),

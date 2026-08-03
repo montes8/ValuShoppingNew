@@ -1,4 +1,4 @@
-package com.tayler.valushopping.ui.login
+package com.tayler.valushopping.ui.initial.login
 
 import androidx.compose.runtime.Composable
 

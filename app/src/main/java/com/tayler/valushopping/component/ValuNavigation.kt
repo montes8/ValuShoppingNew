@@ -6,14 +6,59 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.tayler.valushopping.R
 import com.tayler.valushopping.ui.home.ScreenHome
 import com.tayler.valushopping.ui.home.category.ScreenCategory
 import com.tayler.valushopping.ui.home.config.ScreenConfig
 import com.tayler.valushopping.ui.home.init.ScreenInit
 import com.tayler.valushopping.ui.home.product.ScreenProduct
-import com.tayler.valushopping.ui.splash.ScreenSplash
+import com.tayler.valushopping.ui.initial.login.ScreenLogin
+import com.tayler.valushopping.ui.initial.option.ScreenOption
+import com.tayler.valushopping.ui.initial.splash.ScreenSplash
 import kotlinx.serialization.Serializable
+
+
+@Composable
+fun ValeNavigationInit() {
+
+    val navController: NavHostController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = ScreenInitNav.SplashScreen,
+        exitTransition = { ExitTransition.None }
+    ) {
+        composable<ScreenInitNav.SplashScreen> {
+            ScreenSplash {
+                navController.navigate(ScreenInitNav.OptionScreen)
+            }
+        }
+
+        composable<ScreenInitNav.OptionScreen> {
+            ScreenOption()
+        }
+
+        composable<ScreenInitNav.LoginScreen> {
+            ScreenLogin()
+        }
+
+    }
+}
+
+@Serializable
+sealed class ScreenInitNav(
+) {
+
+    @Serializable
+    data object SplashScreen : ScreenInitNav()
+
+
+    @Serializable
+    data object OptionScreen : ScreenInitNav()
+
+    @Serializable
+    data object LoginScreen : ScreenInitNav()
+
+}
+
 
 @Composable
 fun ValeNavigationMain() {
@@ -21,14 +66,9 @@ fun ValeNavigationMain() {
     val navController: NavHostController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = ScreenVale.SplashScreen,
+        startDestination = ScreenVale.HomeScreen,
         exitTransition = { ExitTransition.None }
     ) {
-        composable<ScreenVale.SplashScreen> {
-            ScreenSplash {
-                navController.navigate(ScreenVale.HomeScreen)
-            }
-        }
 
         composable<ScreenVale.HomeScreen> {
             ScreenHome()
@@ -45,9 +85,6 @@ fun ValeNavigationMain() {
 @Serializable
 sealed class ScreenVale(
 ) {
-
-    @Serializable
-    data object SplashScreen : ScreenVale()
 
     @Serializable
     data object HomeScreen : ScreenVale()

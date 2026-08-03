@@ -1,4 +1,4 @@
-package com.tayler.valushopping.ui.splash
+package com.tayler.valushopping.ui.initial.splash
 
 import android.content.Context
 import androidx.activity.ComponentActivity
@@ -31,7 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.entity.exception.ApiException
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
-import com.tayler.valushopping.ui.AppViewModel
+import com.tayler.valushopping.ui.initial.AppViewModel
 import com.tayler.valushopping.utils.validateHourApp
 import com.valu.uitaycompose.swipe.UiTayGif
 import com.valu.uitaycompose.swipe.UiTayUrlImage

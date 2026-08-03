@@ -1,15 +1,13 @@
-package com.tayler.valushopping.ui
+package com.tayler.valushopping.ui.initial
 
-import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.tayler.valushopping.component.ValeNavigationInit
 import com.tayler.valushopping.component.ValeNavigationMain
 import com.tayler.valushopping.ui.base.BaseActivity
-import com.tayler.valushopping.ui.base.BaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +26,7 @@ class MainActivity : BaseActivity() {
 
     @Composable
     override fun SetScreenConfig() {
-            ValeNavigationMain()
+        ValeNavigationInit()
     }
 
     private fun validateVersionUpdate() {
