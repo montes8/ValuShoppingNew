@@ -43,9 +43,13 @@ import kotlin.time.Duration.Companion.seconds
 fun ScreenSplash(onNavigateToMain: () -> Unit) {
 
     val activity = LocalActivity.current as ComponentActivity
-    val viewModel: AppViewModel = hiltViewModel(activity)
+    val viewModel: AppViewModel = hiltViewModel()
     val state by viewModel.uiState.collectAsState()
     val paramResponse by viewModel.successParamState.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) {
+        viewModel.loadParam()
+        viewModel.loadSplashData()
+    }
 
     LaunchedEffect(paramResponse) {
         paramResponse?.let { param ->

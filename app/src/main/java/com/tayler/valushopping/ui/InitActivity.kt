@@ -11,16 +11,9 @@ import com.tayler.valushopping.component.ValeNavigationMain
 import com.tayler.valushopping.ui.base.BaseActivity
 import com.tayler.valushopping.ui.base.BaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
-
-    private val appViewModel: AppViewModel by viewModels()
-
-    override fun getViewModel(): BaseViewModel {
-        return appViewModel
-    }
 
     companion object {
         private const val UPDATE_CODE = 100
@@ -28,8 +21,6 @@ class MainActivity : BaseActivity() {
     private val updateOptions = AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
 
     override fun setDataGlobal() {
-        appViewModel.loadParam()
-        appViewModel.loadSplashData()
         window.decorView.post {
             validateVersionUpdate()
         }

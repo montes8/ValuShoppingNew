@@ -13,22 +13,28 @@ import kotlinx.coroutines.withContext
 
 open class BaseViewModel(private var valeD: CoroutineDispatcher = Dispatchers.IO) : ViewModel() {
 
-    private val _uiStateBase = MutableStateFlow(BaseUiState())
-    val uiStateBase: StateFlow<BaseUiState> = _uiStateBase.asStateFlow()
+    companion object {
+        private val _sharedUiStateBase = MutableStateFlow(BaseUiState())
+        val sharedUiStateBase: StateFlow<BaseUiState> = _sharedUiStateBase.asStateFlow()
+
+        fun updateSharedUiState(update: (BaseUiState) -> BaseUiState) {
+            _sharedUiStateBase.update(update)
+        }
+    }
+    val uiStateBase: StateFlow<BaseUiState> = _sharedUiStateBase
 
     fun execute(loading: Boolean = true, func: suspend BaseViewModel.() -> Unit) {
         viewModelScope.launch {
             try {
                 if (loading) {
-                    _uiStateBase.update { currentState ->
+                    updateSharedUiState { currentState ->
                         currentState.copy(loading = true, error = false)
                     }
                 }
                 func()
-
             } catch (ex: Exception) {
                 ex.printStackTrace()
-                _uiStateBase.update { currentState ->
+                updateSharedUiState { currentState ->
                     currentState.copy(
                         error = true,
                         errorType = ex
@@ -36,7 +42,7 @@ open class BaseViewModel(private var valeD: CoroutineDispatcher = Dispatchers.IO
                 }
             } finally {
                 if (loading) {
-                    _uiStateBase.update { currentState ->
+                    updateSharedUiState { currentState ->
                         currentState.copy(loading = false)
                     }
                 }
@@ -52,18 +58,7 @@ open class BaseViewModel(private var valeD: CoroutineDispatcher = Dispatchers.IO
         block()
     }
 
-    fun dismissErrorDialog(dialogResult: Boolean) {
-        _uiStateBase.update { currentState ->
-            currentState.copy(
-                error = false,
-                popUpGeneric = true,
-                popUpGenericValue = dialogResult
-            )
-        }
-    }
-
     fun updateUiState(update: (BaseUiState) -> BaseUiState) {
-        _uiStateBase.update(update)
+        updateSharedUiState(update)
     }
-
 }

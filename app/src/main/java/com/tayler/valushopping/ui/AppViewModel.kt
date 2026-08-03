@@ -20,6 +20,7 @@ import com.valu.uitaycompose.utils.extension.uiTayGetMobilIPAddress
 import com.valu.uitaycompose.utils.extension.uiTayLoadImei
 import com.valu.uitaycompose.utils.extension.uiTayNumberPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

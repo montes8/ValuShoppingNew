@@ -1,5 +1,6 @@
 package com.tayler.valushopping.ui.base
 
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -33,10 +34,10 @@ abstract class BaseActivity : ComponentActivity() {
     @Composable
     abstract fun SetScreenConfig()
     abstract fun setDataGlobal()
-    open fun getViewModel(): BaseViewModel? = null
     open fun allowRecentsScreenshot(): Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         super.onCreate(savedInstanceState)
         setDataGlobal()
         enableEdgeToEdge()
@@ -45,9 +46,7 @@ abstract class BaseActivity : ComponentActivity() {
         }
         setContent {
             ValeTheme {
-                val viewModel = getViewModel()
-                val uiState by viewModel?.uiStateBase?.collectAsStateWithLifecycle()
-                    ?: remember { mutableStateOf(BaseUiState()) }
+                val uiState by BaseViewModel.sharedUiStateBase.collectAsStateWithLifecycle()
 
                 Box(
                     modifier = Modifier
@@ -79,7 +78,9 @@ abstract class BaseActivity : ComponentActivity() {
 
                     if (uiState.error) {
                         DialogGeneric(message = uiState.errorType.mapperError().third) { dialogResult ->
-                            viewModel?.dismissErrorDialog(dialogResult)
+                            BaseViewModel.updateSharedUiState { current ->
+                                current.copy(error = false, popUpGeneric = true, popUpGenericValue = dialogResult)
+                            }
                         }
                     }
                 }

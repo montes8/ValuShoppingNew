@@ -2,10 +2,10 @@ package com.tayler.entity
 
 class ParamModel (
     var uid: String? = "",
-    var title: String? = "",
-    var description: String? = "",
-    var idMovie: String? = "",
-    var enableCategory: Boolean? = false,
+    var title: String = "",
+    var description: String = "",
+    var idMovie: String = "",
+    var enableCategory: Boolean = false,
     var phone: String? = "",
     var textWelcome: String? = "",
     var hourStart: String? = "",
