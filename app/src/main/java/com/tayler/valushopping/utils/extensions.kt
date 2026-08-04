@@ -1,16 +1,28 @@
 package com.tayler.valushopping.utils
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.os.Environment
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.FileProvider
 import com.tayler.entity.ParamModel
 import com.tayler.entity.exception.ApiException
 import com.tayler.entity.exception.MyNetworkException
 import com.tayler.entity.exception.OutOfHour
 import com.tayler.entity.exception.UnAuthorizedException
+import com.tayler.valushopping.BuildConfig
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
 import com.valu.uitaycompose.utils.HOUR_END_DEFAULT
 import com.valu.uitaycompose.utils.HOUR_START_DEFAULT
+import com.valu.uitaycompose.utils.UI_EMPTY
+import com.valu.uitaycompose.utils.extension.uiTayShowToast
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -130,4 +142,55 @@ fun getDrawableResId(iconName: String?): Int {
         "ic_profile" -> R.drawable.ic_profile
         else -> R.drawable.ic_home
     }
+}
+
+fun Context.sharedImageViewFromBitmap(bitmap: Bitmap) {
+    try {
+        val fileShared = uiCreatePictureFile()
+        val url = uiTaySaveImg(fileShared, bitmap, PATH_IMAGE_SHARED)
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            putExtra(
+                Intent.EXTRA_STREAM,
+                FileProvider.getUriForFile(this@sharedImageViewFromBitmap, "${BuildConfig.APPLICATION_ID}.provider", File(url))
+            )
+            type = "image/*"
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        this.startActivity(Intent.createChooser(intent, TEXT_SHARED))
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+}
+
+fun Context.uiCreatePictureFile(nameFile: String = "imgSave"): File {
+    val storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+    val newPath = File("$storageDir$nameFile")
+    if (!newPath.exists()) {
+        newPath.mkdirs()
+    }
+    return newPath
+}
+
+fun Context.uiTaySaveImg(
+    nameFile: File, img: Bitmap, nameImage: String,
+    toast: Boolean = false, message: String = UI_EMPTY,
+): String {
+    val myPath = File(nameFile, "$nameImage.jpg")
+
+    val fos: FileOutputStream?
+    try {
+        fos = FileOutputStream(myPath)
+        img.compress(Bitmap.CompressFormat.JPEG, 10, fos)
+        fos.flush()
+        if (toast) this.uiTayShowToast(message)
+    } catch (ex: FileNotFoundException) {
+        ex.printStackTrace()
+        if (toast) this.uiTayShowToast("error al optener el archivo")
+    } catch (ex: IOException) {
+        ex.printStackTrace()
+        if (toast) this.uiTayShowToast("error al optener el archivo")
+    }
+    return myPath.absolutePath
 }

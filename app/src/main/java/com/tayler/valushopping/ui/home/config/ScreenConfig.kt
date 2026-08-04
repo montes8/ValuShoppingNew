@@ -51,6 +51,7 @@ fun ScreenConfig(viewModel: ConfigViewModel = hiltViewModel()) {
     var isDelay by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
+        isDelay = true
         viewModel.loadConfigData(context)
         delay(1000L.milliseconds)
         isDelay = false

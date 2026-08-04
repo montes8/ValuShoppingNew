@@ -15,3 +15,5 @@ const val URL_WHATS_APP_CUSTOM = "http" +
         "s://api.whatsapp.com/send?phone="
 const val PACKAGE_APP_WHATS_APP = "com.whatsapp"
 const val PACKAGE_APP_WHATS_APP_BUSINESS = "com.whatsapp.w4b"
+const val PATH_IMAGE_SHARED = "productshared"
+const val TEXT_SHARED = "Compartir producto"

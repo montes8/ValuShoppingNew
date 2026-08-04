@@ -67,9 +67,17 @@ import com.valu.uitaycompose.utils.textSe14
 import com.valu.uitaycompose.utils.textSe16
 import com.valu.uitaycompose.utils.textSeB18
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import com.tayler.valushopping.utils.sharedImageViewFromBitmap
 import com.valu.uitaycompose.utils.extension.uiTayShowToast
 import com.valu.uitaycompose.utils.tay_grey_600
 import com.valu.uitaycompose.utils.textGabbi10
+import kotlinx.coroutines.launch
 
 @Composable
 fun ScreenDetail(
@@ -81,6 +89,9 @@ fun ScreenDetail(
     val aViewModel: AppViewModel = hiltViewModel()
     val colorStyle = AppDataVale.getColorPrincipal()
     val imagesState by viewModel.successProductImageState.collectAsStateWithLifecycle()
+
+    val graphicsLayer = rememberGraphicsLayer()
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(product.uid) {
         viewModel.loadMoreImageProduct(product.uid)
@@ -123,11 +134,22 @@ fun ScreenDetail(
                     .padding(bottom = 90.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                HeaderProductSection(
-                    product = product,
-                    colorStyle = colorStyle,
-                    onImageClick = { url -> showZoomDialog = url }
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .drawWithContent {
+                            graphicsLayer.record {
+                                this@drawWithContent.drawContent()
+                            }
+                            drawLayer(graphicsLayer)
+                        }
+                ) {
+                    HeaderProductSection(
+                        product = product,
+                        colorStyle = colorStyle,
+                        onImageClick = { url -> showZoomDialog = url }
+                    )
+                }
 
                 if (imagesState.isNotEmpty()) {
                     LazyRow(
@@ -190,7 +212,15 @@ fun ScreenDetail(
 
                 ){
                     if (product.state) {
-                        // Lógica de compartir
+                        coroutineScope.launch {
+                            try {
+                                val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                                context.sharedImageViewFromBitmap(bitmap)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                context.uiTayShowToast("Error al generar la imagen")
+                            }
+                        }
                     } else {
                         context.uiTayShowToast("Producto no disponible")                    }
                 }

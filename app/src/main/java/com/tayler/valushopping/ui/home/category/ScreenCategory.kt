@@ -55,6 +55,7 @@ fun ScreenCategory() {
     var isDelay by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
+        isDelay = true
         viewModel.loadCategories()
         delay(1000L.milliseconds)
         isDelay = false

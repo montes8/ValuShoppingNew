@@ -1,6 +1,7 @@
 package com.tayler.valushopping.ui.home.product
 
 import android.content.Intent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -84,7 +85,9 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
     var isDelay by remember { mutableStateOf(true) }
     val products = productData.first
     val banners = productData.second
+    val empty = productData.third
     LaunchedEffect(Unit) {
+        isDelay = true
         viewModel.loadProductClient(country = "PE")
         delay(1000L.milliseconds)
         isDelay = false
@@ -104,6 +107,10 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
         },
         modifier = Modifier.fillMaxSize()
     ) {
+
+        if(empty && products.isEmpty()){
+            EmptyProductState()
+        }else{
 
             LazyColumn(
                 modifier = Modifier
@@ -150,6 +157,7 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
                 }
             }
 
+       }
     }
 }
 
@@ -214,6 +222,7 @@ fun BannerSection(
                         .size(8.dp)
                         .clip(CircleShape)
                         .background(color)
+                        .uiTayShimmer(isLoading = isShimmer, cornerRadius = 4.dp)
                 )
             }
         }
@@ -390,11 +399,10 @@ fun EmptyProductState() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
+        Image(
             painter = painterResource(id = R.drawable.ic_info_error),
             contentDescription = null,
-            modifier = Modifier.size(100.dp),
-            tint = Color.LightGray
+            modifier = Modifier.size(48.dp)
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
