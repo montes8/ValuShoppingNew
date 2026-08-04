@@ -13,3 +13,17 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# --- Credenciales y Firmas ---
+gradle.properties
+keystore.properties
+*.jks
+*.keystore
+
+# --- Android / Gradle ---
+/build/
+**/build/
+
+# --- IDE (Android Studio / IntelliJ) ---
+.idea/
+/uitaycompose/
