@@ -1,21 +1,27 @@
 package com.tayler.valushopping.component
 
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.tayler.entity.ProductModel
+import com.tayler.valushopping.ui.detail.ScreenDetail
 import com.tayler.valushopping.ui.home.ScreenHome
 import com.tayler.valushopping.ui.home.category.ScreenCategory
 import com.tayler.valushopping.ui.home.config.ScreenConfig
 import com.tayler.valushopping.ui.home.init.ScreenInit
 import com.tayler.valushopping.ui.home.product.ScreenProduct
-import com.tayler.valushopping.ui.initial.login.ScreenLogin
-import com.tayler.valushopping.ui.initial.option.ScreenOption
-import com.tayler.valushopping.ui.initial.splash.ScreenSplash
+import com.tayler.valushopping.ui.login.ScreenLogin
+import com.tayler.valushopping.ui.option.ScreenOption
+import com.tayler.valushopping.ui.splash.ScreenSplash
+import com.valu.uitaycompose.utils.extension.uiTayCreateSerializableNavType
 import kotlinx.serialization.Serializable
-
+import kotlinx.serialization.json.Json
+import kotlin.reflect.typeOf
 
 @Composable
 fun ValeNavigationInit() {
@@ -24,16 +30,36 @@ fun ValeNavigationInit() {
     NavHost(
         navController = navController,
         startDestination = ScreenInitNav.SplashScreen,
+        enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }
     ) {
         composable<ScreenInitNav.SplashScreen> {
             ScreenSplash {
-                navController.navigate(ScreenInitNav.OptionScreen)
+                navController.navigate(ScreenInitNav.HomeScreen) {
+                    popUpTo(ScreenInitNav.SplashScreen) { inclusive = true }
+                }
             }
         }
 
         composable<ScreenInitNav.OptionScreen> {
-            ScreenOption()
+            ScreenOption {
+                navController.navigate(ScreenInitNav.HomeScreen) {
+                    popUpTo(ScreenInitNav.OptionScreen) { inclusive = true }
+                }
+            }
+        }
+
+        composable<ScreenInitNav.HomeScreen> {
+            ScreenHome{ screenInitNav->
+                navController.navigate(screenInitNav)
+            }
+        }
+
+        composable<ScreenInitNav.DetailScreen>{ backStackEntry ->
+            val detailRoute = backStackEntry.toRoute<ScreenInitNav.DetailScreen>()
+            ScreenDetail(product = Json.decodeFromString<ProductModel>(detailRoute.productJson)) {
+                navController.popBackStack()
+            }
         }
 
         composable<ScreenInitNav.LoginScreen> {
@@ -57,44 +83,10 @@ sealed class ScreenInitNav(
     @Serializable
     data object LoginScreen : ScreenInitNav()
 
-}
-
-
-@Composable
-fun ValeNavigationMain() {
-
-    val navController: NavHostController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = ScreenVale.HomeScreen,
-        exitTransition = { ExitTransition.None }
-    ) {
-
-        composable<ScreenVale.HomeScreen> {
-            ScreenHome()
-        }
-
-        composable<ScreenVale.LoginScreen> {
-            ScreenHome()
-        }
-
-    }
-}
-
-
-@Serializable
-sealed class ScreenVale(
-) {
-
     @Serializable
-    data object HomeScreen : ScreenVale()
-
+    data object HomeScreen : ScreenInitNav()
     @Serializable
-    data object ProfileScreen : ScreenVale()
-
-    @Serializable
-    data object LoginScreen : ScreenVale()
-    data class ActionCustom(val url: Int) : ScreenVale()
+    data class DetailScreen(val productJson: String) : ScreenInitNav()
 }
 
 @Serializable
@@ -111,7 +103,7 @@ sealed interface TayRoute {
 
 
 @Composable
-fun NavigationNavBarHost(navController: NavHostController) {
+fun NavigationNavBarHost(navController: NavHostController,onNavigateToMain: (ScreenInitNav) -> Unit) {
 
     NavHost(
         navController = navController, startDestination = TayRoute.Init,
@@ -119,7 +111,10 @@ fun NavigationNavBarHost(navController: NavHostController) {
             ExitTransition.None
         }) {
         composable<TayRoute.Init> { ScreenInit() }
-        composable<TayRoute.Product> { ScreenProduct() }
+        composable<TayRoute.Product> { ScreenProduct{data->
+            onNavigateToMain.invoke(ScreenInitNav.DetailScreen(productJson = Json.encodeToString(data)))
+            }
+        }
         composable<TayRoute.Category> { ScreenCategory() }
         composable<TayRoute.Config> { ScreenConfig() }
 

@@ -1,4 +1,4 @@
-package com.tayler.valushopping.ui.initial.splash
+package com.tayler.valushopping.ui.splash
 
 import android.content.Context
 import androidx.activity.ComponentActivity
@@ -31,7 +31,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.entity.exception.ApiException
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
-import com.tayler.valushopping.ui.initial.AppViewModel
 import com.tayler.valushopping.utils.validateHourApp
 import com.valu.uitaycompose.swipe.UiTayGif
 import com.valu.uitaycompose.swipe.UiTayUrlImage
@@ -88,7 +87,10 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
 @Composable
 private fun BackgroundImage(context: Context) {
     Box(modifier = Modifier.fillMaxSize()) {
-            UiTayUrlImage(url = AppDataVale.getUrlBgSplash(context), drawable = R.drawable.ic_bg_general)
+            UiTayUrlImage(
+                url = AppDataVale.getUrlBgSplash(context), drawable = R.drawable.ic_bg_general,
+                modifier = Modifier.fillMaxSize()
+            )
     }
 }
 

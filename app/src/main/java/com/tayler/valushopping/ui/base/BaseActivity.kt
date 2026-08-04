@@ -1,5 +1,6 @@
 package com.tayler.valushopping.ui.base
 
+import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
@@ -36,8 +37,9 @@ abstract class BaseActivity : ComponentActivity() {
     abstract fun setDataGlobal()
     open fun allowRecentsScreenshot(): Boolean = false
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onCreate(savedInstanceState)
         setDataGlobal()
         enableEdgeToEdge()

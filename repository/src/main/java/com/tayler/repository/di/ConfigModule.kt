@@ -27,6 +27,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import com.tayler.repository.BuildConfig
+import okhttp3.CertificatePinner
+import java.net.URL
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -69,9 +71,23 @@ object NetworkModule {
 
     @Singleton
     @Provides
+    fun provideCertificatePinning(): CertificatePinner {
+        if (BuildConfig.DEBUG) {
+           return CertificatePinner.DEFAULT
+        }
+        val host = URL(BuildConfig.BASE_URL).host
+        return CertificatePinner.Builder()
+            .add(host, BuildConfig.PINNIG)
+            .add(host, BuildConfig.PINNIG_ROOT)
+            .build()
+    }
+
+    @Singleton
+    @Provides
     fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
-        apiInterceptor: Interceptor
+        apiInterceptor: Interceptor,
+        certificatePinning: CertificatePinner
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(MY_TIME_ON, TimeUnit.SECONDS)
@@ -79,6 +95,7 @@ object NetworkModule {
             .readTimeout(MY_TIME_ON, TimeUnit.SECONDS)
             .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(apiInterceptor)
+            .certificatePinner(certificatePinning)
             .build()
     }
 
@@ -115,6 +132,13 @@ class ApiInterceptor @Inject constructor(private val preferencesManager: Prefere
             builder.addHeader(AUTHORIZATION, preferencesManager.getString(PREFERENCE_TOKEN))
         }
         request = builder.build()
+        try {
+            return chain.proceed(request)
+        } catch (e: javax.net.ssl.SSLPeerUnverifiedException) {
+            // Esto imprimirá en rojo en tu Logcat la lista EXACTA de hashes válidos
+            android.util.Log.e("SSL_PINNING_ERROR", "ERROR DE PINNING DETECTADO", e)
+            throw e // Lanza el error para no romper el flujo
+        }
         return chain.proceed(request)
     }
 

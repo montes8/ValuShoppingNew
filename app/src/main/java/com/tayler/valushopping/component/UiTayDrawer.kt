@@ -86,8 +86,7 @@ fun UiTayDrawer(
                     text = text,
                     style = TextStyle(
                         fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = model.uiColorSelected
+                        color = model.uiColorSelected,
                     )
                 )
             }

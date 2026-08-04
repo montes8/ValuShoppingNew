@@ -1,4 +1,4 @@
-package com.tayler.valushopping.ui.initial
+package com.tayler.valushopping.ui.splash
 
 import android.app.Application
 import com.tayler.entity.CategoryModel
@@ -11,7 +11,6 @@ import com.tayler.usecases.ConfigUseCase
 import com.tayler.usecases.UserUseCase
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
-import com.tayler.valushopping.ui.initial.splash.SplashUiState
 import com.tayler.valushopping.utils.DEFAULT_TEXT_WELCOME
 import com.tayler.valushopping.utils.TY_DEFAULT
 import com.valu.uitaycompose.utils.extension.uiTayCountryNetwork
@@ -44,8 +43,6 @@ class AppViewModel @Inject constructor(
     private val _successListTaskState = MutableStateFlow<List<TaskModel>>(emptyList())
     val successListTaskState: StateFlow<List<TaskModel>> = _successListTaskState.asStateFlow()
 
-    private val _successCategoriesState = MutableStateFlow<List<CategoryModel>>(emptyList())
-    val successCategoriesState: StateFlow<List<CategoryModel>> = _successCategoriesState.asStateFlow()
 
     private val _uiState = MutableStateFlow(SplashUiState())
     val uiState: StateFlow<SplashUiState> = _uiState.asStateFlow()
@@ -55,6 +52,9 @@ class AppViewModel @Inject constructor(
             val welcome = io {
                 AppDataVale.styleValu = appUseCase.getStyle()
                 AppDataVale.bgService = appUseCase.getBgService()
+                AppDataVale.session =  appUseCase.getToken()
+                AppDataVale.categories = configUseCase.listCategories()
+                AppDataVale.categoriesAll = configUseCase.listCategoriesAll()
                 appUseCase.getTexWelcome().ifEmpty { DEFAULT_TEXT_WELCOME }
             }
 
@@ -161,13 +161,4 @@ class AppViewModel @Inject constructor(
         return false
     }
 
-    fun loadCategories() {
-        execute(false) {
-            val response = configUseCase.listCategories()
-            val responseAll = configUseCase.listCategoriesAll()
-            AppDataVale.categories = response
-            AppDataVale.categoriesAll = responseAll
-            _successCategoriesState.value = response.shuffled()
-        }
-    }
 }

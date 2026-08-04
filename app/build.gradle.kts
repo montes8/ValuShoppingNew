@@ -101,6 +101,9 @@ dependencies {
     implementation(project(":usecases"))
 
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
+    implementation("androidx.media3:media3-exoplayer:1.5.0")
+    implementation("androidx.media3:media3-ui:1.5.0")
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

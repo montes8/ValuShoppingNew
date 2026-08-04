@@ -1,4 +1,4 @@
-package com.tayler.valushopping.ui.initial.splash
+package com.tayler.valushopping.ui.splash
 
 import androidx.compose.ui.graphics.Color
 import com.tayler.valushopping.utils.DEFAULT_TEXT_WELCOME

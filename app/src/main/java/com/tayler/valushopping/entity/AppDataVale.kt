@@ -28,6 +28,8 @@ object AppDataVale {
     var bgService : Boolean = false
     var urlImage = "https://cockatoo-close-teal.ngrok-free.app/service/uploads/banners/"
 
+    var session : Boolean = false
+
     fun getColorPrincipal():Triple<Color,Color,Color>{
         return when(styleValu){
             "0"->{

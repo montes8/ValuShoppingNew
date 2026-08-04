@@ -117,3 +117,17 @@ fun setImageLogout():Int{
     return image
 }
 
+fun getDrawableResId(iconName: String?): Int {
+    return when (iconName) {
+        "ic_home" -> R.drawable.ic_home
+        "ic_param" -> R.drawable.ic_param
+        "ic_product" -> R.drawable.ic_product
+        "ic_support" -> R.drawable.ic_support
+        "ic_about" -> R.drawable.ic_about
+        "ic_clothes" -> R.drawable.ic_clothes
+        "ic_admin" -> R.drawable.ic_admin
+        "ic_category" -> R.drawable.ic_category
+        "ic_profile" -> R.drawable.ic_profile
+        else -> R.drawable.ic_home
+    }
+}

@@ -1,1 +1,18 @@
-/build
+# --- Android / Gradle ---
+.gradle
+/build/
+**/build/
+
+# --- Configuraciones locales y credenciales (¡Importante!) ---
+gradle.properties
+local.properties
+*.iml
+
+# --- IDE (Android Studio / IntelliJ) ---
+.idea/
+.DS_Store
+*.hprof
+.cxx/
+captures/
+
+/uitaycompose/

@@ -21,16 +21,14 @@ open class BaseViewModel(private var valeD: CoroutineDispatcher = Dispatchers.IO
             _sharedUiStateBase.update(update)
         }
     }
-    val uiStateBase: StateFlow<BaseUiState> = _sharedUiStateBase
 
     fun execute(loading: Boolean = true, func: suspend BaseViewModel.() -> Unit) {
         viewModelScope.launch {
             try {
-                if (loading) {
-                    updateSharedUiState { currentState ->
-                        currentState.copy(loading = true, error = false)
+                updateSharedUiState { currentState ->
+                        currentState.copy(loading = loading, shimmer = true, error = false)
                     }
-                }
+
                 func()
             } catch (ex: Exception) {
                 ex.printStackTrace()
@@ -41,11 +39,10 @@ open class BaseViewModel(private var valeD: CoroutineDispatcher = Dispatchers.IO
                     )
                 }
             } finally {
-                if (loading) {
                     updateSharedUiState { currentState ->
-                        currentState.copy(loading = false)
+                        currentState.copy(loading = false, shimmer = false)
                     }
-                }
+
             }
         }
     }

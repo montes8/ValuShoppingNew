@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     id("com.google.devtools.ksp")
-    //alias(libs.plugins.composeCompiler)
     id("com.google.dagger.hilt.android")
 }
 fun config(k: String): String = "\"${project.properties[k]}\""
 val baseUrl = "BASE_URL"
+val pinning = "PINNIG"
+val pinningRoot = "PINNIG_ROOT"
 
 android {
     namespace = "com.tayler.repository"
@@ -22,11 +23,15 @@ android {
     buildTypes {
         release {
             buildConfigField("String", baseUrl, config("production.server.url"))
+            buildConfigField("String", pinning, config("pinning.encryption"))
+            buildConfigField("String", pinningRoot, config("pinning.root"))
             resValue("string", "encryption_key", config("preferences.encryption"))
 
         }
         debug {
             buildConfigField("String", baseUrl, config("qa.server.url"))
+            buildConfigField("String", pinning, config("pinning.encryption"))
+            buildConfigField("String", pinningRoot, config("pinning.root"))
             resValue("string", "encryption_key", config("preferences.encryption"))
 
         }

@@ -1,6 +1,7 @@
 package com.tayler.valushopping.ui.home
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
@@ -21,9 +22,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.tayler.valushopping.R
 import com.tayler.valushopping.component.NavigationNavBarHost
+import com.tayler.valushopping.component.ScreenInitNav
 import com.tayler.valushopping.component.UiTayDrawer
 import com.tayler.valushopping.component.mapperNavBar
 import com.tayler.valushopping.entity.AppDataVale
@@ -36,11 +39,10 @@ import com.valu.uitaycompose.model.UiTayNavBarModel
 import com.valu.uitaycompose.model.UiToolBarModel
 import com.valu.uitaycompose.navigation.UiTayBottomBar
 import com.valu.uitaycompose.swipe.UiTayUrlImage
-import com.valu.uitaycompose.utils.extension.getNameToolbarCustom
 import kotlinx.coroutines.launch
 
 @Composable
-fun ScreenHome() {
+fun ScreenHome(onNavigateToMain: (ScreenInitNav) -> Unit) {
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     var currentActionId by remember { mutableIntStateOf(-1) }
@@ -50,6 +52,10 @@ fun ScreenHome() {
     val navController = rememberNavController()
     val itemsListNavBar = itemsNavBar.toMutableList()
     val activity = LocalActivity.current as ComponentActivity
+
+    BackHandler(enabled = true) {
+        activity.moveTaskToBack(true)
+    }
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -106,7 +112,13 @@ fun ScreenHome() {
                                 .uiTextUnColorSelected(colorStyle.second)
                     ) { item ->
                         currentActionIdNavBar = item.action
-                        navController.navigate(item.action.mapperNavBar())
+                        navController.navigate(item.action.mapperNavBar()) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 },
                 topBar = {
@@ -122,6 +134,7 @@ fun ScreenHome() {
                             .urlBgService(
                                 AppDataVale.getUrlBgToolbar(activity)
                             )
+                            .showEndIcon(AppDataVale.session)
                             .useOriginalTint(true)
                     ) { isStartIcon ->
                         if (isStartIcon) {
@@ -139,12 +152,12 @@ fun ScreenHome() {
                         .padding(paddingValues)
                         .fillMaxSize()
                 ) {
-                    NavigationNavBarHost(navController = navController)
+                    NavigationNavBarHost(navController = navController){screenInitNav->
+                        onNavigateToMain.invoke(screenInitNav)
+                    }
                 }
             }
-
         }
-
     }
 }
 

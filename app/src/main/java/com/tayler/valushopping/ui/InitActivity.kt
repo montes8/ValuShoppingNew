@@ -1,4 +1,4 @@
-package com.tayler.valushopping.ui.initial
+package com.tayler.valushopping.ui
 
 import androidx.compose.runtime.Composable
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -6,7 +6,6 @@ import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.tayler.valushopping.component.ValeNavigationInit
-import com.tayler.valushopping.component.ValeNavigationMain
 import com.tayler.valushopping.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
