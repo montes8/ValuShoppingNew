@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.tayler.entity.ParamModel
 import com.tayler.valushopping.R
+import com.tayler.valushopping.component.VideoPlayerCompose
 import com.tayler.valushopping.entity.AppDataVale
 import com.valu.uitaycompose.utils.extension.uiTayOpenUrl
 import com.valu.uitaycompose.utils.extension.uiTayUrlFacebook
@@ -77,8 +78,7 @@ fun MoviePlayerSection(idMovie: String) {
     val configuration = LocalConfiguration.current
     val screenWidthPx = with(LocalDensity.current) { configuration.screenWidthDp.dp.toPx().toInt() }
     val calculatedHeight = (screenWidthPx / 0.15).toInt()
-    val driveUrl = "https://drive.google.com/file/d/$idMovie/preview"
-
+    val urlCompatibleConExoPlayer = "https://drive.google.com/uc?export=download&id=$idMovie"
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -92,31 +92,12 @@ fun MoviePlayerSection(idMovie: String) {
                 .background(tay_grey_300),
             contentAlignment = Alignment.Center
         ) {
-            AndroidView(
+
+            VideoPlayerCompose(videoUrl = urlCompatibleConExoPlayer,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(with(LocalDensity.current) { calculatedHeight.toDp() }),
-                factory = { context ->
-                    WebView(context).apply {
-                        settings.apply {
-                            javaScriptEnabled = true
-                            domStorageEnabled = true
-                            useWideViewPort = true
-                            loadWithOverviewMode = true
-                            setSupportZoom(false)
-                            builtInZoomControls = false
-                            userAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-                        }
-                        webChromeClient = WebChromeClient()
-                        setLayerType(View.LAYER_TYPE_HARDWARE, null)
-                        loadUrl(driveUrl)
-                    }
-                },
-                update = { webView ->
-                    if (webView.url != driveUrl) {
-                        webView.loadUrl(driveUrl)
-                    }
-                }
+                    .height(with(LocalDensity.current) { calculatedHeight.toDp() })
+
             )
         }
     }
