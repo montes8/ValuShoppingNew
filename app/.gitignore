@@ -1,19 +1,17 @@
+# --- Credenciales y Firmas ---
+gradle.properties
+local.properties
+keystore.properties
+*.jks
+*.keystore
+*.iml
+
 # --- Android / Gradle ---
 .gradle
 /build/
 **/build/
 
-# --- Configuraciones locales y credenciales (¡Importante!) ---
-gradle.properties
-local.properties
-keystore.properties
-*.iml
-
 # --- IDE (Android Studio / IntelliJ) ---
 .idea/
 .DS_Store
-*.hprof
-.cxx/
-captures/
-
 /uitaycompose/
