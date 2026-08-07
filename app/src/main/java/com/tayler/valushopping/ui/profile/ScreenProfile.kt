@@ -109,12 +109,12 @@ fun ScreenProfile(
             override fun onCameraPermissionDenied() {}
 
             override fun onGetImageCameraCompleted(path: String, img: Bitmap) {
-                if (typeBanner) {
-                    userModel.imgBanner = path
+                userModel = if (typeBanner) {
                     bannerBitmap = img.asImageBitmap()
+                    userModel.copy(imgBanner = path)
                 } else {
-                    userModel.img = path
                     profileBitmap = img.uiTayConverterCircle().asImageBitmap()
+                    userModel.copy(img = path)
                 }
                 viewModel.saveUserImg(userModel)
             }
@@ -340,12 +340,14 @@ fun ScreenProfile(
                             uiTayText = stringResource(R.string.btn_save),
                             uiTayEnable = isButtonEnabled
                         ) {
-                            userModel.names = nameText
-                            userModel.lastName = lastNameText
-                            userModel.document = documentText
-                            userModel.email = emailText
-                            userModel.phone = phoneText
-                            userModel.address = addressText
+                            userModel = userModel.copy(
+                                names = nameText,
+                                lastName = lastNameText,
+                                document = documentText,
+                                email = emailText,
+                                phone = phoneText,
+                                address = addressText
+                            )
                             viewModel.saveUser(userModel)
                             isEditing = false
                         }

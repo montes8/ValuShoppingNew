@@ -1,6 +1,9 @@
 package com.tayler.entity
 
-class HistoryModel (
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class HistoryModel (
     val type: String,
     val name: String,
     val latitude: String,

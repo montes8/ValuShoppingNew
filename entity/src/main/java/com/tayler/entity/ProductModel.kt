@@ -3,36 +3,36 @@ package com.tayler.entity
 import kotlinx.serialization.Serializable
 
 @Serializable
-class ProductModel(
-    var uid: String = "",
-    var name: String = "",
-    var description: String = "",
-    var type: String = "0",
-    var category: String = "0",
-    var price: String = "",
-    var priceTwo: String = "",
-    var state: Boolean = false,
-    var img: String = "",
-    var url: String = "",
-    var urlBanner: String = "",
-    var gender: String = "0",
-    var phone: String = "",
-    var principal: Boolean = false,
-    var admin: Boolean = false,
-    var idUser: String = "",
-    var sizeHeight: String = "",
-    var countryCode: String = "",
-    var deliveryPoint: String = "",
-    var district: String = "",
-    var nameFile: String = "",
-    var latitude: String = "0",
-    var longitude: String = "0",
-    var limitDistance: String = "0",
-    var banner: Boolean = false,
-    var linkBanner: String = "",
-    var click: Boolean = true,
-    var stateNew: Boolean = true,
-    var sellerClient: String = ""
+data class ProductModel(
+    val uid: String = "",
+    val name: String = "",
+    val description: String = "",
+    val type: String = "0",
+    val category: String = "0",
+    val price: String = "",
+    val priceTwo: String = "",
+    val state: Boolean = false,
+    val img: String = "",
+    val url: String = "",
+    val urlBanner: String = "",
+    val gender: String = "0",
+    val phone: String = "",
+    val principal: Boolean = false,
+    val admin: Boolean = false,
+    val idUser: String = "",
+    val sizeHeight: String = "",
+    val countryCode: String = "",
+    val deliveryPoint: String = "",
+    val district: String = "",
+    val nameFile: String = "",
+    val latitude: String = "0",
+    val longitude: String = "0",
+    val limitDistance: String = "0",
+    val banner: Boolean = false,
+    val linkBanner: String = "",
+    val click: Boolean = true,
+    val stateNew: Boolean = true,
+    val sellerClient: String = ""
 ) {
 
     fun getPriceUnit() = "${getSymbolPrice()} $price"
@@ -53,9 +53,9 @@ class ProductModel(
         }
     }
 
-    fun visiblePriceDoc() = priceTwo?.isNotEmpty() == true && priceTwo != "0.00"
+    fun visiblePriceDoc() = priceTwo.isNotEmpty() && priceTwo != "0.00"
 
-    fun visiblePriceDocView() = priceTwo?.isEmpty() == true || priceTwo == "0.00"
+    fun visiblePriceDocView() = priceTwo.isEmpty() || priceTwo == "0.00"
 
     fun visibleDelivery() = sizeHeight == "M" || sizeHeight == "B"
 
@@ -81,5 +81,5 @@ class ProductModel(
         }
     }
 
-    fun tyFlowCreate() = uid?.isEmpty() == true
+    fun tyFlowCreate() = uid.isEmpty()
 }

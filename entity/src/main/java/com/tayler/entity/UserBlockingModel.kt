@@ -1,11 +1,14 @@
 package com.tayler.entity
 
-class UserBlockingModel (
-    var uid: String = "",
-    var imei: String = "",
-    var identifierId: String = "",
-    var phone: String? = "",
-    var description: String = "",
-    var name: String? = "",
-    var ipAddress: String = ""
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class UserBlockingModel (
+    val uid: String = "",
+    val imei: String = "",
+    val identifierId: String = "",
+    val phone: String? = "",
+    val description: String = "",
+    val name: String? = "",
+    val ipAddress: String = ""
 )

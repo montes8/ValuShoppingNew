@@ -1,6 +1,9 @@
 package com.tayler.entity
 
-class ProductImageModel (
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ProductImageModel (
     val name: String? = "",
     val idProduct: String? = "",
     val idUser: String? = "",

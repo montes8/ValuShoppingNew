@@ -77,8 +77,8 @@ class InitActivity : BaseActivity() {
                     changeIcon(activeAliasName = iconNew, oldAliasName = iconActual) { success ->
                         if (success) {
                             lifecycleScope.launch(Dispatchers.IO) {
-                                data.idIconOld = iconNew
-                                appUseCase.saveParam(data)
+                                val updatedData = data.copy(idIconOld = iconNew)
+                                appUseCase.saveParam(updatedData)
                             }
                         }
                     }

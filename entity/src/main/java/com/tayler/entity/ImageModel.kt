@@ -1,5 +1,8 @@
 package com.tayler.entity
 
-class ImageModel (
-    var nameImage: String
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ImageModel (
+    val nameImage: String
 )

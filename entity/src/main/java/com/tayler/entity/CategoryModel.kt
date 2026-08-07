@@ -1,9 +1,12 @@
 package com.tayler.entity
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CategoryModel (
-    var uid: String = "",
-    var name: String =  "",
-    var url: String =  "",
-    var identifier: String =  "",
-    var selected: Boolean = false
+    val uid: String = "",
+    val name: String =  "",
+    val url: String =  "",
+    val identifier: String =  "",
+    val selected: Boolean = false
 )

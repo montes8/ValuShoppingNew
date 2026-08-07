@@ -1,14 +1,17 @@
 package com.tayler.entity
 
-class TaskModel (
-    var uid: String? = "",
-    var course: String? =  "",
-    var issue: String? =  "",
-    var concept: String? =  "",
-    var titleOne: String? =  "",
-    var conceptOne: String? =  "",
-    var titleTwo: String? =  "",
-    var conceptTwo: String? =  "",
-    var titleThree: String? =  "",
-    var conceptThree: String? =  ""
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class TaskModel (
+    val uid: String? = "",
+    val course: String? =  "",
+    val issue: String? =  "",
+    val concept: String? =  "",
+    val titleOne: String? =  "",
+    val conceptOne: String? =  "",
+    val titleTwo: String? =  "",
+    val conceptTwo: String? =  "",
+    val titleThree: String? =  "",
+    val conceptThree: String? =  ""
 )
