@@ -48,8 +48,7 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
     val paramResponse by viewModel.successParamState.collectAsStateWithLifecycle()
     val sharedState by BaseViewModel.sharedUiStateBase.collectAsState()
     LaunchedEffect(Unit) {
-        viewModel.loadParam()
-        viewModel.loadSplashData()
+        viewModel.initSplash()
     }
 
     LaunchedEffect(sharedState.popUpGeneric) {

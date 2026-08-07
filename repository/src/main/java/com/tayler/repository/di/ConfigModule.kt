@@ -91,6 +91,7 @@ object NetworkModule {
         certificatePinning: CertificatePinner
     ): OkHttpClient {
         return OkHttpClient.Builder()
+            .retryOnConnectionFailure(true)
             .connectTimeout(MY_TIME_ON, TimeUnit.SECONDS)
             .writeTimeout(MY_TIME_ON, TimeUnit.SECONDS)
             .readTimeout(MY_TIME_ON, TimeUnit.SECONDS)

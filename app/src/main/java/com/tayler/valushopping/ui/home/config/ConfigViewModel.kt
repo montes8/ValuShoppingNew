@@ -21,7 +21,7 @@ class ConfigViewModel @Inject constructor() : ViewModel() {
 
     fun loadConfigData(context: Context) {
         if (_itemsState.value.isNotEmpty()) return
-        val jsonFile = if (AppDataVale.session) JSON_ITEM_ADMIN else JSON_ITEM
+        val jsonFile = if (AppDataVale.paramData.session) JSON_ITEM_ADMIN else JSON_ITEM
         val loadedItems: ArrayList<ItemModel> = uiTayDataJson(context, jsonFile)
         _itemsState.value = loadedItems.toList()
     }

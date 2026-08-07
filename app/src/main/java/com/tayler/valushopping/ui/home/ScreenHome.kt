@@ -195,11 +195,11 @@ fun ScreenHome(onNavigateToMain: (ScreenInitNav) -> Unit) {
                             .iconEnd(setImageLogout())
                             .backgroundColor(colorStyle.third)
                             .textColor(colorStyle.first)
-                            .bgService(AppDataVale.bgService)
+                            .bgService(AppDataVale.paramData.bgService)
                             .urlBgService(
                                 AppDataVale.getUrlBgToolbar(activity)
                             )
-                            .showEndIcon(AppDataVale.session)
+                            .showEndIcon(AppDataVale.paramData.session)
                             .useOriginalTint(true)
                     ) { _ ->
 

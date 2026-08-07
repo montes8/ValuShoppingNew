@@ -5,33 +5,77 @@ import androidx.compose.ui.graphics.Color
 import com.tayler.entity.CategoryModel
 import com.tayler.entity.ParamModel
 import com.tayler.entity.UserModel
-import com.tayler.valushopping.BuildConfig
-import com.tayler.valushopping.R
 import com.tayler.valushopping.utils.TY_DEFAULT
-import com.tayler.valushopping.utils.*
+import com.tayler.valushopping.utils.color_principal_amber
+import com.tayler.valushopping.utils.color_principal_amber_bg
+import com.tayler.valushopping.utils.color_principal_black
+import com.tayler.valushopping.utils.color_principal_black_bg
+import com.tayler.valushopping.utils.color_principal_blue
+import com.tayler.valushopping.utils.color_principal_blue_bg
+import com.tayler.valushopping.utils.color_principal_brown
+import com.tayler.valushopping.utils.color_principal_brown_bg
+import com.tayler.valushopping.utils.color_principal_cyan
+import com.tayler.valushopping.utils.color_principal_cyan_bg
+import com.tayler.valushopping.utils.color_principal_deep_orange
+import com.tayler.valushopping.utils.color_principal_deep_orange_bg
+import com.tayler.valushopping.utils.color_principal_green
+import com.tayler.valushopping.utils.color_principal_green_bg
+import com.tayler.valushopping.utils.color_principal_grey
+import com.tayler.valushopping.utils.color_principal_grey_bg
+import com.tayler.valushopping.utils.color_principal_indigo
+import com.tayler.valushopping.utils.color_principal_indigo_bg
+import com.tayler.valushopping.utils.color_principal_light_green
+import com.tayler.valushopping.utils.color_principal_light_green_bg
+import com.tayler.valushopping.utils.color_principal_lime
+import com.tayler.valushopping.utils.color_principal_lime_bg
+import com.tayler.valushopping.utils.color_principal_orange
+import com.tayler.valushopping.utils.color_principal_orange_bg
+import com.tayler.valushopping.utils.color_principal_pink
+import com.tayler.valushopping.utils.color_principal_pink_bg
+import com.tayler.valushopping.utils.color_principal_purple
+import com.tayler.valushopping.utils.color_principal_purple_bg
+import com.tayler.valushopping.utils.color_principal_red
+import com.tayler.valushopping.utils.color_principal_red_bg
+import com.tayler.valushopping.utils.color_principal_sky_blue
+import com.tayler.valushopping.utils.color_principal_sky_blue_bg
+import com.tayler.valushopping.utils.color_principal_teal
+import com.tayler.valushopping.utils.color_principal_teal_bg
+import com.tayler.valushopping.utils.color_principal_yellow
+import com.tayler.valushopping.utils.color_principal_yellow_bg
+import com.tayler.valushopping.utils.color_secondary_amber
+import com.tayler.valushopping.utils.color_secondary_black
+import com.tayler.valushopping.utils.color_secondary_blue
+import com.tayler.valushopping.utils.color_secondary_brown
+import com.tayler.valushopping.utils.color_secondary_cyan
+import com.tayler.valushopping.utils.color_secondary_deep_orange
+import com.tayler.valushopping.utils.color_secondary_green
+import com.tayler.valushopping.utils.color_secondary_grey
+import com.tayler.valushopping.utils.color_secondary_indigo
+import com.tayler.valushopping.utils.color_secondary_light_green
+import com.tayler.valushopping.utils.color_secondary_lime
+import com.tayler.valushopping.utils.color_secondary_orange
+import com.tayler.valushopping.utils.color_secondary_pink
+import com.tayler.valushopping.utils.color_secondary_purple
+import com.tayler.valushopping.utils.color_secondary_red
+import com.tayler.valushopping.utils.color_secondary_sky_blue
+import com.tayler.valushopping.utils.color_secondary_teal
+import com.tayler.valushopping.utils.color_secondary_yellow
 import com.valu.uitaycompose.utils.UI_EMPTY
 import com.valu.uitaycompose.utils.extension.getNameBackgroundCustom
 import com.valu.uitaycompose.utils.extension.getNameSplashCustom
 import com.valu.uitaycompose.utils.extension.getNameToolbarCustom
 import com.valu.uitaycompose.utils.extension.uiTayFormatTwelveHour
 
-
 object AppDataVale {
-
     var paramData: ParamModel = ParamModel()
     var user: UserModel = UserModel()
     var latitude : String = TY_DEFAULT
     var longitude : String = TY_DEFAULT
-    var styleValu : String = "0"
     var categories : List<CategoryModel> = ArrayList()
     var categoriesAll : List<CategoryModel> = ArrayList()
-    var bgService : Boolean = false
-    var urlImage = UI_EMPTY
-
-    var session : Boolean = false
 
     fun getColorPrincipal():Triple<Color,Color,Color>{
-        return when(styleValu){
+        return when(paramData.styleValu){
             "0"->{
                 Triple(color_principal_pink,color_secondary_pink,color_principal_pink_bg)
             }
@@ -98,24 +142,24 @@ object AppDataVale {
     }
 
     fun getUrlBgSplash(context: Context): String{
-        return if (paramData.bgService == true){
-            "${urlImage}uploads/banners/${context.getNameSplashCustom()}/${context.getNameSplashCustom()}.png"
+        return if (paramData.bgService){
+            "${paramData.urlImage}uploads/banners/${context.getNameSplashCustom()}/${context.getNameSplashCustom()}.png"
         }else{
             UI_EMPTY
         }
     }
 
     fun getUrlBg(context: Context): String{
-        return if (paramData.bgService == true){
-            "${urlImage}uploads/banners/${context.getNameBackgroundCustom()}/${context.getNameBackgroundCustom()}.png"
+        return if (paramData.bgService){
+            "${paramData.urlImage}uploads/banners/${context.getNameBackgroundCustom()}/${context.getNameBackgroundCustom()}.png"
         }else{
             UI_EMPTY
         }
     }
 
     fun getUrlBgToolbar(context: Context): String{
-        return if (paramData.bgService == true){
-            "${urlImage}uploads/banners/${context.getNameToolbarCustom()}/" +
+        return if (paramData.bgService){
+            "${paramData.urlImage}uploads/banners/${context.getNameToolbarCustom()}/" +
                     "${context.getNameToolbarCustom()}.png"
         }else{
             UI_EMPTY

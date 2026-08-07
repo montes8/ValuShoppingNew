@@ -68,7 +68,7 @@ fun ParamModel.validateHourApp():Boolean{
 }
 
 fun setImageMenu():Int{
-    val image = when(AppDataVale.styleValu){
+    val image = when(AppDataVale.paramData.styleValu){
         "0"->{
             R.drawable.ic_menu_home
         }
@@ -97,7 +97,7 @@ fun setImageMenu():Int{
 }
 
 fun setImageLogout():Int{
-    val image = when(AppDataVale.styleValu){
+    val image = when(AppDataVale.paramData.styleValu){
         "0"->{
             R.drawable.ic_logout
         }

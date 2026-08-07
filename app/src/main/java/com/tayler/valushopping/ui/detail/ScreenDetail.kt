@@ -111,7 +111,7 @@ fun ScreenDetail(
                 uiTayModifier = UiToolBarModel()
                     .backgroundColor(colorStyle.third)
                     .textColor(colorStyle.first)
-                    .bgService(AppDataVale.bgService)
+                    .bgService(AppDataVale.paramData.bgService)
                     .urlBgService(
                         AppDataVale.getUrlBgToolbar(context)
                     ).iconColor(colorStyle.first)

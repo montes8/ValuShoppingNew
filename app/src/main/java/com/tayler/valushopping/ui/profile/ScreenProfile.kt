@@ -205,7 +205,7 @@ fun ScreenProfile(
                             painter = painterResource(id = R.drawable.ic_profile_place_holder),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(80.dp)
+                                .size(90.dp)
                                 .align(Alignment.BottomEnd)
                                 .padding(end = 24.dp)
                                 .clickable {
@@ -218,7 +218,7 @@ fun ScreenProfile(
                             bitmap = profileBitmap!!,
                             contentDescription = null,
                             modifier = Modifier
-                                .size(80.dp)
+                                .size(90.dp)
                                 .align(Alignment.BottomEnd)
                                 .padding(end = 24.dp)
                                 .clickable {
