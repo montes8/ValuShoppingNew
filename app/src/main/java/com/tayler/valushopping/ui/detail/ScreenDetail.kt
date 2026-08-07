@@ -177,7 +177,7 @@ fun ScreenDetail(
                     .background(Color.White)
                     .padding(16.dp)
             ) {
-                UiTayButton(uiTayText= "Consultar",
+                UiTayButton(uiTayText= stringResource(R.string.btn_consult),
                     uiTayStyleBtn  = UTStyleCButton.UI_TAY_SECONDARY,
                     uiTayStyleIcon = UTStyleIcon.START,
                     uiTayBtnModifier = UiTayButtonModel()
@@ -194,13 +194,13 @@ fun ScreenDetail(
                             code = product.countryCode.mapperCodeSocial()
                         )
                     } else {
-                        context.uiTayShowToast("Producto no disponible")
+                        context.uiTayShowToast(R.string.toast_not_product)
                     }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                UiTayButton(uiTayText= "Compartir",
+                UiTayButton(uiTayText= stringResource(R.string.btn_shared),
                     uiTayStyleIcon = UTStyleIcon.START,
                     uiTayBtnModifier = UiTayButtonModel()
                         .bgColor(colorStyle.first)
@@ -217,11 +217,11 @@ fun ScreenDetail(
                                 context.sharedImageViewFromBitmap(bitmap)
                             } catch (e: Exception) {
                                 e.printStackTrace()
-                                context.uiTayShowToast("Error al generar la imagen")
+                                context.uiTayShowToast(R.string.error_image)
                             }
                         }
                     } else {
-                        context.uiTayShowToast("Producto no disponible")                    }
+                        context.uiTayShowToast(R.string.toast_not_product)                   }
                 }
             }
         }
@@ -310,7 +310,7 @@ fun HeaderProductSection(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "Consulte con el vendedor para mas detalle.",
+                    text = stringResource(R.string.error_consult_v),
                     style = textGabbi10,
                     color = tay_red_600
                 )
@@ -351,12 +351,12 @@ fun DescriptionSection(product: ProductModel,colorStyle: Color) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Descripción del producto",
+                text = stringResource(R.string.text_description_product),
                 style = textSeB18,
                 color = colorStyle
             )
             Text(
-                text = if(product.stateNew) "Nuevo" else "Semi uevo",
+                text = stringResource(if(product.stateNew)R.string.text_new else R.string.text_semi_new),
                 style= textB12,
                 color = Color.White,
                 modifier = Modifier
@@ -390,7 +390,7 @@ fun DeliverySection(product: ProductModel) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Puntos de entrega",
+                    text = stringResource(R.string.text_delivery_location),
                     style = textSe14,
                     color = tay_light_blue_500
                 )
@@ -403,7 +403,7 @@ fun DeliverySection(product: ProductModel) {
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Ciudad",
+                    text = stringResource(R.string.text_city),
                     style = textSe14, color = tay_light_blue_500
                 )
                 Text(
@@ -416,12 +416,12 @@ fun DeliverySection(product: ProductModel) {
 
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = "Otros puntos de entrega",
+                text = stringResource(R.string.text_delivery_location_other),
                 style = textSe12,
                 color = Color.Black,
             )
             Text(
-                text = "Otros puntos de entrega se coordina con el vendedor del producto y es un costo adicional",
+                text = stringResource(R.string.text_delivery_location_other_value),
                 style = textSe10, color = tay_grey_400,
                 modifier = Modifier.padding(top = 4.dp)
             )

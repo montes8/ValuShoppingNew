@@ -80,9 +80,9 @@ abstract class BaseActivity : ComponentActivity() {
                     if (uiState.error) {
                         UiTayDialog(
                             model = UiTayDialogModel(
-                                image = uiState.errorType.mapperError().first,
-                                title = uiState.errorType.mapperError().second,
-                                subTitle = uiState.errorType.mapperError().third,
+                                image = uiState.errorType.mapperError(this@BaseActivity).first,
+                                title = uiState.errorType.mapperError(this@BaseActivity).second,
+                                subTitle = uiState.errorType.mapperError(this@BaseActivity).third,
                                 isCancel = false
                             )
                         ) { dialogResult ->

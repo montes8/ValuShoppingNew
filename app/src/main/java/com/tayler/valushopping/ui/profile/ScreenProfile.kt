@@ -38,11 +38,10 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tayler.entity.UserModel
 import com.tayler.valushopping.R
@@ -245,7 +244,7 @@ fun ScreenProfile(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "Datos Personales",
+                                text = stringResource(R.string.title_data),
                                 style = textGabbiB20,
                                 color = AppDataVale.getColorPrincipal().first
                             )
@@ -267,7 +266,7 @@ fun ScreenProfile(
                     UiTayEditLayout(
                         value = nameText,
                         onValueChange = { nameText = it },
-                        hint = "Nombres",
+                        hint = stringResource(R.string.hint_names),
                         enabled = isEditing,
                         imeAction = ImeAction.Next,
                         modifier = Modifier.fillMaxWidth()
@@ -278,7 +277,7 @@ fun ScreenProfile(
                     UiTayEditLayout(
                         value = lastNameText,
                         onValueChange = { lastNameText = it },
-                        hint = "Apellidos",
+                        hint = stringResource(R.string.hint_lastname),
                         enabled = isEditing,
                         imeAction = ImeAction.Next,
                         modifier = Modifier.fillMaxWidth()
@@ -289,7 +288,7 @@ fun ScreenProfile(
                     UiTayEditLayout(
                         value = documentText,
                         onValueChange = { documentText = it },
-                        hint = "Numero de documento",
+                        hint = stringResource(R.string.hint_doc),
                         enabled = isEditing,
                         maxLength = 8,
                         keyboardType = KeyboardType.Number,
@@ -302,7 +301,7 @@ fun ScreenProfile(
                     UiTayEditLayout(
                         value = emailText,
                         onValueChange = { emailText = it },
-                        hint = "Correo electronico",
+                        hint = stringResource(R.string.hint_email),
                         enabled = isEditing,
                         imeAction = ImeAction.Next,
                         modifier = Modifier.fillMaxWidth()
@@ -313,7 +312,7 @@ fun ScreenProfile(
                     UiTayEditLayout(
                         value = phoneText,
                         onValueChange = { phoneText = it },
-                        hint = "Telefono",
+                        hint = stringResource(R.string.hint_phone),
                         enabled = isEditing,
                         maxLength = 9,
                         keyboardType = KeyboardType.Number,
@@ -326,7 +325,7 @@ fun ScreenProfile(
                     UiTayEditLayout(
                         value = addressText,
                         onValueChange = { addressText = it },
-                        hint = "Dirección",
+                        hint = stringResource(R.string.hint_address),
                         enabled = isEditing,
                         imeAction = ImeAction.Done,
                         modifier = Modifier.fillMaxWidth()
@@ -336,7 +335,7 @@ fun ScreenProfile(
                         Spacer(modifier = Modifier.height(40.dp))
 
                         UiTayButton(
-                            uiTayText = "Guardar",
+                            uiTayText = stringResource(R.string.btn_save),
                             uiTayEnable = isButtonEnabled
                         ) {
                             userModel.names = nameText

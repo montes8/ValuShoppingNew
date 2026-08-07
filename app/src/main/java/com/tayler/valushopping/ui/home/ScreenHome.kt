@@ -35,8 +35,6 @@ import com.tayler.valushopping.component.mapperNavBar
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.entity.drawerItems
 import com.tayler.valushopping.entity.itemsNavBar
-import com.tayler.valushopping.ui.base.BaseViewModel
-import com.tayler.valushopping.utils.mapperError
 import com.tayler.valushopping.utils.openWhatsApp
 import com.tayler.valushopping.utils.setImageLogout
 import com.tayler.valushopping.utils.setImageMenu
@@ -49,7 +47,6 @@ import com.valu.uitaycompose.model.UiToolBarModel
 import com.valu.uitaycompose.navigation.UiTayBottomBar
 import com.valu.uitaycompose.swipe.UiTayUrlImage
 import com.valu.uitaycompose.utils.COUNTRY_CODE_PE
-import com.valu.uitaycompose.utils.UI_EMPTY
 import com.valu.uitaycompose.utils.extension.uiTayUrlFacebook
 import com.valu.uitaycompose.utils.tay_green_400
 import kotlinx.coroutines.launch
@@ -204,14 +201,12 @@ fun ScreenHome(onNavigateToMain: (ScreenInitNav) -> Unit) {
                             )
                             .showEndIcon(AppDataVale.session)
                             .useOriginalTint(true)
-                    ) { isStartIcon ->
-                        if (isStartIcon) {
+                    ) { _ ->
+
                             scope.launch {
                                 drawerState.open()
                             }
-                        } else {
-                            // Acción del botón de menú
-                        }
+
                     }
                 }
             ) { paddingValues ->

@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,7 +73,7 @@ fun ScreenCategory() {
                 .padding(horizontal = 16.dp)
         ) {
             Text(
-                text = "Ver los productos por categoria",
+                text = stringResource(R.string.text_see_more_product),
                 modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)
                     .uiTayShimmer(isLoading = isLoading, cornerRadius = 12.dp),
                 style = textB18,
@@ -143,7 +144,7 @@ fun CategoryRowItem(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = if (isLoading) "Cargando..." else category.name,
+            text = category.name,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .uiTayShimmer(isLoading = isLoading, cornerRadius = 4.dp),

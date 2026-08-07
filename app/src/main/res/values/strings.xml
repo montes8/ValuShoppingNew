@@ -73,4 +73,52 @@
     <string name="title_parte_blocking">Faltas motivo de bloqueo</string>
     <string name="title_parte_recommendation">Recomendaciones</string>
     <string name="title_parte_profile">Uso del perfil</string>
+
+
+    <string name="toast_not_product">Producto no disponible</string>
+    <string name="btn_shared">Compartir</string>
+    <string name="error_image">Error al generar la imagen</string>
+    <string name="error_consult_v">Consulte con el vendedor para mas detalle.</string>
+
+    <string name="text_description_product">Descripción del producto</string>
+    <string name="text_new">Nuevo</string>
+    <string name="text_semi_new">Semi nuevo</string>
+    <string name="text_delivery_location">Puntos de entrega</string>
+
+    <string name="text_city">Ciudad</string>
+    <string name="text_delivery_location_other">Otros puntos de entrega</string>
+    <string name="text_delivery_location_other_value">Otros puntos de entrega se coordina con el vendedor del producto y es un costo adicional</string>
+
+    <string name="text_see_more_product">Ver los productos por categoria</string>
+
+    <string name="name_face">Facebook</string>
+    <string name="name_you">Youtube</string>
+    <string name="name_tik">Tiktok</string>
+    <string name="name_insta">Instagram</string>
+    <string name="text_choose_product"> Elige ahora un producto</string>
+    <string name="text_more_all">Ver todos</string>
+    <string name="text_empty_list">No hay productos disponibles</string>
+    <string name="title_data">Datos Personales</string>
+    <string name="hint_names">Nombres</string>
+    <string name="hint_lastname">Apellidos</string>
+    <string name="hint_doc">Numero de documento</string>
+    <string name="hint_email">Correo electronico</string>
+    <string name="hint_phone">Telefono</string>
+    <string name="hint_address">Dirección</string>
+
+    <string name="btn_consult">Consultar</string>
+    <string name="btn_save">Guardar</string>
+
+
+    <string name="error_text_generic">¡Ups ocurrió un error!</string>
+    <string name="error_text_expire">¡Sesión expirada</string>
+    <string name="error_text_connection">¡Error de conexión de red!</string>
+    <string name="error_message_generic">Se ha producido un error inesperado en el sistema o esta fuera del horario de atencion, intentalo de nuevo mas tarde y en el horario respectivo.</string>
+    <string name="error_message_connection">El sistema no pudo conectarse a la red, le recomendamos revisar su conexión de internet.</string>
+    <string name="error_message_expire">Tu tiempo de conexión ha expirado. Por tu seguridad debes ingresar sesión nuevamente.</string>
+    <string name="error_text_hour">Fuera de horario de atención</string>
+
+    <string name="error_archive">Error al optener el archivo</string>
+    <string name="error_not_install">No tiene la aplicacion instalada</string>
+
 </resources>

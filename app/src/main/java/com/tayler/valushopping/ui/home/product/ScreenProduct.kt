@@ -1,6 +1,5 @@
 package com.tayler.valushopping.ui.home.product
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +27,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -44,6 +42,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -241,7 +240,7 @@ fun HeaderSection(products: List<ProductModel>, isShimmer: Boolean, isDelay: Boo
     ) {
 
         Text(
-            text = "Elige ahora un producto",
+            text = stringResource(R.string.text_choose_product),
             modifier = Modifier.uiTayShimmer(isLoading = isShimmer, cornerRadius = 24.dp),
             color = AppDataVale.getColorPrincipal().first,
             style = textB16,
@@ -249,7 +248,7 @@ fun HeaderSection(products: List<ProductModel>, isShimmer: Boolean, isDelay: Boo
         )
         if (products.size > (AppDataVale.paramData.countProduct?.toInt() ?: 30)) {
             Text(
-                text = "Ver todos",
+                text = stringResource(R.string.text_more_all),
                 color = AppDataVale.getColorPrincipal().first,
                 style = textB16,
                 textAlign = TextAlign.End
@@ -303,7 +302,7 @@ fun ProductItem(
                 )
 
                 Text(
-                    text = if (product.stateNew) "Nuevo" else "Semi nuevo",
+                    text = stringResource(if(product.stateNew)R.string.text_new else R.string.text_semi_new),
                     style = textS8,
                     color = Color.White,
                     modifier = Modifier
@@ -414,7 +413,7 @@ fun EmptyProductState() {
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = "No hay productos disponibles",
+            text = stringResource(R.string.text_empty_list),
             style = textM14,
             color = tay_grey_400,
             textAlign = TextAlign.Center

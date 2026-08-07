@@ -1,10 +1,8 @@
 package com.tayler.valushopping.ui.splash
 
 import android.app.Application
-import com.tayler.entity.CategoryModel
 import com.tayler.entity.HistoryModel
 import com.tayler.entity.ParamModel
-import com.tayler.entity.TaskModel
 import com.tayler.entity.UserBlockingModel
 import com.tayler.usecases.AppUseCase
 import com.tayler.usecases.ConfigUseCase
@@ -36,13 +34,6 @@ class AppViewModel @Inject constructor(
 
     private val _successParamState = MutableStateFlow<ParamModel?>(null)
     val successParamState: StateFlow<ParamModel?> = _successParamState.asStateFlow()
-
-    private val _successUpdateParamState = MutableStateFlow<ParamModel?>(null)
-    val successUpdateParamState: StateFlow<ParamModel?> = _successUpdateParamState.asStateFlow()
-
-    private val _successListTaskState = MutableStateFlow<List<TaskModel>>(emptyList())
-    val successListTaskState: StateFlow<List<TaskModel>> = _successListTaskState.asStateFlow()
-
 
     private val _uiState = MutableStateFlow(SplashUiState())
     val uiState: StateFlow<SplashUiState> = _uiState.asStateFlow()
@@ -114,13 +105,6 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun loadListTask() {
-        execute(false) {
-            val response = configUseCase.listTask()
-            _successListTaskState.value = response
-        }
-    }
-
     fun saveHistory(typeFlow: String) {
         execute(false) {
             configUseCase.saveHistory(
@@ -138,15 +122,6 @@ class AppViewModel @Inject constructor(
                     application.uiTayNumberPhone()
                 )
             )
-        }
-    }
-
-    fun updateParam(param: ParamModel) {
-        execute(false) {
-            val response = if (param.uid?.isEmpty() == true)
-                userUseCase.saveParam(param) else
-                userUseCase.updateParam(param)
-            _successUpdateParamState.value = response
         }
     }
 

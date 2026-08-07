@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.tayler.entity.ProductModel
+import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
 import com.valu.uitaycompose.utils.COUNTRY_CODE_PE
 import com.valu.uitaycompose.utils.SIZE_BIG
@@ -24,8 +25,8 @@ import kotlin.math.sin
 
 
 fun ProductModel.distance(unit: String): Double {
-    val longitudeSend = this.longitude.toDouble()?:0.0
-    val latitudeSend = this.latitude.toDouble()?:0.0
+    val longitudeSend = this.longitude.toDouble()
+    val latitudeSend = this.latitude.toDouble()
     val theta =  longitudeSend - AppDataVale.longitude.toDouble()
     var dist =
         sin(uiTayDeg2rad(latitudeSend)) * sin(uiTayDeg2rad(AppDataVale.latitude.toDouble())) +
@@ -58,7 +59,7 @@ fun Context.openWhatsApp(phone: String, text: String,code : String = COUNTRY_COD
             )
         )
     } else {
-        this.uiTayShowToast("No tiene la aplicacion instalada")
+        this.uiTayShowToast(R.string.error_not_install)
     }
 }
 

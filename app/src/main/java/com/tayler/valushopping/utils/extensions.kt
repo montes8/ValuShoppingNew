@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Environment
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
 import com.tayler.entity.ParamModel
 import com.tayler.entity.exception.UiTayApiException
@@ -27,34 +26,31 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 
-fun Throwable.mapperError(): Triple<Int, String, String> {
+fun Throwable.mapperError(context: Context): Triple<Int, String, String> {
     return when (this) {
         is MyNetworkException -> Triple(
             R.drawable.ic_error_red,
-            ERROR_TITLE_NETWORK,
-            ERROR_MESSAGE_NETWORK
+            context.getString(R.string.error_text_connection) ,
+            context.getString(R.string.error_message_connection)
         )
 
         is UnAuthorizedException -> Triple(
             R.drawable.ic_info_error,
-            ERROR_TITLE_EXPIRE,
-            ERROR_MESSAGE_EXPIRE
+            context.getString(R.string.error_text_expire),
+            context.getString(R.string.error_message_expire)
         )
 
         is UiTayApiException -> Triple(R.drawable.ic_info_error, title, messageApi)
         is OutOfHour -> Triple(
             R.drawable.ic_info_error,
-            ERROR_TITLE_OF_HOUR,
+            context.getString(R.string.error_text_hour) ,
             AppDataVale.mapperDialogText()
         )
 
-        else -> Triple(R.drawable.ic_info_error, ERROR_TITLE_GENERAL, ERROR_MESSAGE_GENERAL)
+        else -> Triple(R.drawable.ic_info_error,
+            context.getString(R.string.error_text_generic) ,
+            context.getString(R.string.error_message_generic) )
     }
-}
-
-
-fun isNightModeEnabled(): Boolean {
-    return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 }
 
 @SuppressLint("SimpleDateFormat")
@@ -187,10 +183,10 @@ fun Context.uiTaySaveImg(
         if (toast) this.uiTayShowToast(message)
     } catch (ex: FileNotFoundException) {
         ex.printStackTrace()
-        if (toast) this.uiTayShowToast("error al optener el archivo")
+        if (toast) this.uiTayShowToast(R.string.error_archive)
     } catch (ex: IOException) {
         ex.printStackTrace()
-        if (toast) this.uiTayShowToast("error al optener el archivo")
+        if (toast) this.uiTayShowToast(R.string.error_archive)
     }
     return myPath.absolutePath
 }

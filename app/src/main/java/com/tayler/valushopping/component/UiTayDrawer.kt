@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -124,13 +125,13 @@ fun UiTayDrawerItem(
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
-            painter = painterResource(id = item.icon),
-            contentDescription = item.title,
+            painter = painterResource(id = item.iconId),
+            contentDescription = "iconItem$item.iconId",
             tint = if (selected) model.uiColorSelected else model.uiUnColorSelected
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = item.title,
+            text = stringResource(item.titleId) ,
             style = TextStyle(fontSize = 16.sp),
             color = if (selected) model.uiTextColorSelected else model.uiTextUnColorSelected
         )

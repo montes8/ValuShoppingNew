@@ -1,9 +1,6 @@
 package com.tayler.valushopping.ui.home.init
 
 import android.annotation.SuppressLint
-import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,8 +28,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import com.tayler.entity.ParamModel
 import com.tayler.valushopping.R
 import com.tayler.valushopping.component.VideoPlayerCompose
@@ -138,17 +135,17 @@ fun PrimarySocialLinksSection(param: ParamModel) {
     ) {
         SocialButton(
             modifier = Modifier.weight(1f),
-            text = "Facebook",
+            text = stringResource(R.string.name_face),
             textColor = tay_blue_800,
             iconRes = R.drawable.ic_facebook,
             onClick = {
-                context.uiTayUrlFacebook(param.idFacebook?:"61590557890653")
+                context.uiTayUrlFacebook(param.idFacebook)
             }
         )
 
         SocialButton(
             modifier = Modifier.weight(1f),
-            text = "Youtube",
+            text = stringResource(R.string.name_you),
             textColor = Color.Black,
             iconRes = R.drawable.ic_youtube,
             onClick = {
@@ -168,14 +165,14 @@ fun ExtraSocialLinksSection() {
     ) {
         SocialButton(
             modifier = Modifier.weight(1f),
-            text = "Tiktok",
+            text = stringResource(R.string.name_tik),
             textColor = Color.Black,
             iconRes = R.drawable.ic_tiktok,
             onClick = { /* Acción Tiktok */ }
         )
         SocialButton(
             modifier = Modifier.weight(1f),
-            text = "Instagram",
+            text = stringResource(R.string.name_insta),
             textColor = tay_purple_700,
             iconRes = R.drawable.ic_instagram,
             onClick = { /* Acción Instagram */ }

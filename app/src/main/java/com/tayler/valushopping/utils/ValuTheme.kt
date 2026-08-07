@@ -46,7 +46,7 @@ fun ValeTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicLightColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> LightColorScheme
+        darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
