@@ -10,6 +10,7 @@ import com.tayler.entity.exception.GenericException
 import com.tayler.entity.exception.UiTayApiException
 import com.tayler.entity.exception.UnAuthorizedException
 import com.tayler.repository.network.exception.CompleteErrorModel
+import kotlinx.coroutines.CancellationException
 import okhttp3.ResponseBody
 import retrofit2.Response
 
@@ -50,6 +51,7 @@ fun ResponseBody?.toCompleteErrorModel(code: Int): Exception {
 
 fun Throwable.toAppException(): Exception {
     return when (this) {
+        is CancellationException -> throw this
         is UiTayApiException -> this
         is UnAuthorizedException -> this
         is IllegalArgumentException -> UiTayApiException(

@@ -2,6 +2,7 @@ package com.tayler.valushopping.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,6 +35,7 @@ open class BaseViewModel : ViewModel() {
                 }
                 func()
             } catch (ex: Exception) {
+                if (ex is CancellationException) throw ex
                 ex.printStackTrace()
                 updateUiState { currentState ->
                     currentState.copy(

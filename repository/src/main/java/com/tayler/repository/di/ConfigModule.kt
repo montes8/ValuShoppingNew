@@ -38,17 +38,28 @@ class SharedPreferencesModule {
     @Singleton
     @Provides
     fun providerSharedPreference(@ApplicationContext context: Context): SharedPreferences {
+        val fileName = context.resources.getString(R.string.encryption_key)
+        return try {
+            createEncryptedSharedPreferences(context, fileName)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Si hay un error de corrupción (como el que estás viendo), borramos el archivo y reintentamos
+            context.deleteSharedPreferences(fileName)
+            createEncryptedSharedPreferences(context, fileName)
+        }
+    }
+
+    private fun createEncryptedSharedPreferences(context: Context, fileName: String): SharedPreferences {
         val masterKey = MasterKey.Builder(context)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
-        val sharedPreferences = EncryptedSharedPreferences.create(
+        return EncryptedSharedPreferences.create(
             context,
-            context.resources.getString(R.string.encryption_key),
+            fileName,
             masterKey,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
-        return sharedPreferences
     }
 }
 

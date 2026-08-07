@@ -4,12 +4,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
@@ -24,14 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.tayler.valushopping.R
 import com.tayler.valushopping.component.DeliveryPointsBottomSheet
 import com.tayler.valushopping.component.NavigationNavBarHost
 import com.tayler.valushopping.component.ScreenInitNav
-import com.tayler.valushopping.component.UiTayDrawer
-import com.tayler.valushopping.component.mapperNavBar
 import com.tayler.valushopping.entity.LocalAppDataVale
 import com.tayler.valushopping.ui.home.components.HomeBottomBar
 import com.tayler.valushopping.ui.home.components.HomeDrawer

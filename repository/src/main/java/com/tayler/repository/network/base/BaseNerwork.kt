@@ -8,6 +8,8 @@ import com.tayler.repository.utils.toAppException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+import kotlinx.coroutines.CancellationException
+
 open class BaseNetwork @Inject constructor(
     @param:ApplicationContext val context: Context
 ) {
@@ -18,6 +20,7 @@ open class BaseNetwork @Inject constructor(
         return try {
             block()
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             throw e.toAppException()
         }
     }
