@@ -55,6 +55,7 @@ import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
 import com.tayler.valushopping.utils.mapperHeight
 import com.valu.uitaycompose.swipe.UiTayUrlImage
+import com.valu.uitaycompose.utils.extension.uiTayDialogZoom
 import com.valu.uitaycompose.utils.extension.uiTayOpenUrl
 import com.valu.uitaycompose.utils.extension.uiTayShimmer
 import com.valu.uitaycompose.utils.tay_grey_400
@@ -265,6 +266,7 @@ fun ProductItem(
     onClickItem: (ProductModel) -> Unit,
     onClickImage: (String) -> Unit
 ) {
+    var showZoom by remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -291,7 +293,13 @@ fun ProductItem(
             ) {
                 UiTayUrlImage(
                     url = product.url,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize().clickable{
+                        showZoom = true
+                    }.uiTayDialogZoom(
+                        showDialog = showZoom,
+                        imageUrl = product.url,
+                        onShowDialogChange = { newState -> showZoom = newState },
+                    )
                 )
 
                 Text(

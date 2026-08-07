@@ -1,4 +1,76 @@
 <resources>
     <string name="app_name">Valu</string>
     <string name="tb_principal">VALU SHOOPING</string>
+
+
+
+    <string name="text_about_use">* En esta app podras ver en la sección de principal los productos disponibles, para poder adquirilos.\n* Luego para poder ver mas detall del producto darle click al producto para poder ver el detalle, tambien podras ver ma imagen mas grande dandole click a la imagen del prodcuto
+    \n* En la pantalla del detalle del producto podras ver toda la información completa del produto podra contactarte con el vendedor via redirección al whatsApp y tambien podras compartir el producto con alguna otra persona dandole click a la opcion de compartir y decidiras porquemedio hacerlo.
+    \n* El ultimo paso lo de la coordinación para adquirir el producto lo realizaran internamente el comprador con el vendedor.
+    </string>
+    <string name="text_about_blocking">* Trate de no fallar en coordinaciones de las ventas, si tiene algun reporte por algunas parte sea vendedor o comprador seran bloqueado de esta aplicacion y no podra usarlo.
+    \n* Aclarar que todos lo que anuncien sus productos sera validados internamente para la confiabilidad y evitar inconvenientes.
+    </string>
+    <string name="text_about_recommended">* Esta app recomienda que todo pago se realize cuando tenga el producto entregado.
+    \n* Revisar el producto que cumpla con las caracteristicas de la descripción del producto.
+        \n* Toda entrega se recomienda que sean en punto publicos y seguros y/o en el local fisico en caso lo tenga.
+        \n* Si eres un anunciante se recomienda poner datos claro al momento de agregar producto y las imagenes sea cuadradas.
+    </string>
+
+    <string name="text_about_profile">* En la patanlla de perfil los datos que ingrese solo sera guardado localmente.
+        * Para empezar darle clic al icono de lapiz para poder ingrsar los datos.
+    \n* Las imagenes de perfil y banner traten que sean en la dimensiones similares a los ejemplos presentados.
+        \n* Asegurese de colocar todos los datos correctamente para que el boton de guardado se active.
+    </string>
+
+    <string name="text_title_logout">Deseas cerrar sesión</string>
+    <string name="sub_text_title_logout">Estas seguro que deseas cerrar sesión</string>
+    <string name="text_empty_type_product">No hay producto de este tipo disponible</string>
+    <string name="btn_link_see_all"><u>Ver Todos</u></string>
+    <string name="text_description_detail">Descripción del producto</string>
+    <string name="text_title_city">Ciudad</string>
+    <string name="text_title_delivery">Puntos de entrega</string>
+    <string name="text_title_other">Otros puntos de entrega</string>
+    <string name="text_value_other">Otros puntos de entrega se coordina con el vendedor del producto y es un costo adicional</string>
+    <string name="text_country_pe">Peru - Lima metropolitana</string>
+    <string name="text_country_ar">Argentina - Provincias</string>
+    <string name="text_register"><u>Si aun no tienes cuenta, Conctatos</u></string>
+    <string name="hint_description">Agrega descripcion minuno de caranteres 10</string>
+
+    <!-- sub text title views-->
+
+    <string name="text_info_user">Si usted no se encuentra loageado, sus datos personales solo de guardaran de forma local</string>
+    <string name="text_info_product">Consulte con el vendedor para mas detalle.</string>
+    <string name="text_title_delivery_points">Recomedaciones de puntos de entrega</string>
+    <string name="text_message_delivery_points">- Estaciones del tren electrico de lima\n- Estaciones del metropolitano\n- Centros comerciales (Plaza norte, mega plaza,etc), Huaral</string>
+    <string name="text_info_delivery_points">Los puntos de entrega se coordinan con el vendedor del producto que desea adquirir.</string>
+    <string name="text_message_delivery_points_ar">- Los puntos de entrega puede varias en argentina, es de acuerdo a la provincia en donde se vende el producto</string>
+
+    <string name="text_title_support">Soporte tecnico</string>
+    <string name="sub_text_title_support">Te contactaremos con un asesor si tienes algun problema tecnico en el proceso de uso de nuestra aplicación</string>
+    <string name="text_support">Hola tengo un problema en la app valu</string>
+
+    <string name="text_title_join">Unete a nosotros</string>
+    <string name="sub_text_title_join">Te contactaremos con un encargado que te ayudara a saber el proceso para que tus productos aparescan en nuestra aplicacion, asegurate de haber leido la seccion de SOBRE NOSOTROS para saber un poco mas de nosotros.</string>
+    <string name="text_body_join">Me gustaria ser parte de ustedes y que mis productos esten en su aplicacion, me indica los pasos a seguir</string>
+
+
+    <string name="text_item_init">Inicio</string>
+    <string name="text_item_product">Productos</string>
+    <string name="text_item_categories">Categorias</string>
+    <string name="text_item_config">Config</string>
+    <string name="text_item_profile">Perfil</string>
+
+    <string name="text_item_about">Sobre nostros</string>
+    <string name="text_item_part">Se parte de nosotros</string>
+    <string name="text_item_delivery">Puntos de entrega</string>
+    <string name="text_item_support">soporte tecnico</string>
+    <string name="text_item_social">Facebook</string>
+
+
+
+    <string name="title_parte_mode">Modo de uso</string>
+    <string name="title_parte_blocking">Faltas motivo de bloqueo</string>
+    <string name="title_parte_recommendation">Recomendaciones</string>
+    <string name="title_parte_profile">Uso del perfil</string>
 </resources>

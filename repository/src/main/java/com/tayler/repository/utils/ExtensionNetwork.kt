@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import android.provider.Settings
 import com.google.gson.Gson
 import com.tayler.entity.exception.GenericException
+import com.tayler.entity.exception.UiTayApiException
 import com.tayler.entity.exception.UnAuthorizedException
 import com.tayler.repository.network.exception.CompleteErrorModel
 import okhttp3.ResponseBody
@@ -45,4 +46,21 @@ fun ResponseBody?.toCompleteErrorModel(code: Int): Exception {
             CompleteErrorModel::class.java
         )?.getApiException() ?: GenericException()
     } ?: GenericException()
+}
+
+fun Throwable.toAppException(): Exception {
+    return when (this) {
+        is UiTayApiException -> this
+        is UnAuthorizedException -> this
+        is IllegalArgumentException -> UiTayApiException(
+            code = 0,
+            title = "Error de Configuración",
+            messageApi = "Error en el CertificatePinner: ${message}"
+        )
+        else -> UiTayApiException(
+            code = 0,
+            title = "Error",
+            messageApi = message ?: "Error desconocido"
+        )
+    }
 }

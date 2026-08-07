@@ -4,6 +4,7 @@ import android.content.Context
 import com.tayler.entity.exception.MyNetworkException
 import com.tayler.repository.utils.isAirplaneModeActive
 import com.tayler.repository.utils.isConnected
+import com.tayler.repository.utils.toAppException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -14,6 +15,10 @@ open class BaseNetwork @Inject constructor(
         if (!context.applicationContext.isConnected() || context.applicationContext.isAirplaneModeActive()) {
             throw MyNetworkException()
         }
-        return block()
+        return try {
+            block()
+        } catch (e: Exception) {
+            throw e.toAppException()
+        }
     }
 }

@@ -26,7 +26,7 @@ object AppDataVale {
     var categories : List<CategoryModel> = ArrayList()
     var categoriesAll : List<CategoryModel> = ArrayList()
     var bgService : Boolean = false
-    var urlImage = "https://cockatoo-close-teal.ngrok-free.app/service/uploads/banners/"
+    var urlImage = UI_EMPTY
 
     var session : Boolean = false
 
@@ -99,7 +99,7 @@ object AppDataVale {
 
     fun getUrlBgSplash(context: Context): String{
         return if (paramData.bgService == true){
-            "${urlImage}${context.getNameSplashCustom()}/${context.getNameSplashCustom()}.png"
+            "${urlImage}uploads/banners/${context.getNameSplashCustom()}/${context.getNameSplashCustom()}.png"
         }else{
             UI_EMPTY
         }
@@ -107,7 +107,7 @@ object AppDataVale {
 
     fun getUrlBg(context: Context): String{
         return if (paramData.bgService == true){
-            "${urlImage}${context.getNameBackgroundCustom()}/${context.getNameBackgroundCustom()}.png"
+            "${urlImage}uploads/banners/${context.getNameBackgroundCustom()}/${context.getNameBackgroundCustom()}.png"
         }else{
             UI_EMPTY
         }

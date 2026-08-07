@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.tayler.entity.exception.UiTayApiException
 import com.tayler.repository.R
 import com.tayler.repository.network.ServiceApi
 import com.tayler.repository.preferences.manager.PreferencesManager
@@ -47,7 +48,7 @@ class SharedPreferencesModule {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
-        return  sharedPreferences
+        return sharedPreferences
     }
 }
 
@@ -73,7 +74,7 @@ object NetworkModule {
     @Provides
     fun provideCertificatePinning(): CertificatePinner {
         if (BuildConfig.DEBUG) {
-           return CertificatePinner.DEFAULT
+            return CertificatePinner.DEFAULT
         }
         val host = URL(BuildConfig.BASE_URL).host
         return CertificatePinner.Builder()
@@ -132,14 +133,6 @@ class ApiInterceptor @Inject constructor(private val preferencesManager: Prefere
             builder.addHeader(AUTHORIZATION, preferencesManager.getString(PREFERENCE_TOKEN))
         }
         request = builder.build()
-        try {
-            return chain.proceed(request)
-        } catch (e: javax.net.ssl.SSLPeerUnverifiedException) {
-            // Esto imprimirá en rojo en tu Logcat la lista EXACTA de hashes válidos
-            android.util.Log.e("SSL_PINNING_ERROR", "ERROR DE PINNING DETECTADO", e)
-            throw e // Lanza el error para no romper el flujo
-        }
         return chain.proceed(request)
     }
-
 }

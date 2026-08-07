@@ -8,7 +8,7 @@ import android.os.Environment
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.FileProvider
 import com.tayler.entity.ParamModel
-import com.tayler.entity.exception.ApiException
+import com.tayler.entity.exception.UiTayApiException
 import com.tayler.entity.exception.MyNetworkException
 import com.tayler.entity.exception.OutOfHour
 import com.tayler.entity.exception.UnAuthorizedException
@@ -41,7 +41,7 @@ fun Throwable.mapperError(): Triple<Int, String, String> {
             ERROR_MESSAGE_EXPIRE
         )
 
-        is ApiException -> Triple(R.drawable.ic_info_error, title, messageApi)
+        is UiTayApiException -> Triple(R.drawable.ic_info_error, title, messageApi)
         is OutOfHour -> Triple(
             R.drawable.ic_info_error,
             ERROR_TITLE_OF_HOUR,

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -27,10 +28,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,38 +51,31 @@ import com.tayler.valushopping.utils.mapperCodeSocial
 import com.tayler.valushopping.utils.mapperHeight
 import com.tayler.valushopping.utils.mapperNextProduct
 import com.tayler.valushopping.utils.openWhatsApp
+import com.tayler.valushopping.utils.sharedImageViewFromBitmap
 import com.valu.uitaycompose.button.UiTayButton
 import com.valu.uitaycompose.extra.UiTayCToolBar
+import com.valu.uitaycompose.modal.UiTayDialogZoomDetail
 import com.valu.uitaycompose.model.UTStyleCButton
 import com.valu.uitaycompose.model.UTStyleIcon
 import com.valu.uitaycompose.model.UiTayButtonModel
 import com.valu.uitaycompose.model.UiToolBarModel
 import com.valu.uitaycompose.swipe.UiTayUrlImage
 import com.valu.uitaycompose.utils.TYPE_CONSULT
+import com.valu.uitaycompose.utils.extension.uiTayShowToast
 import com.valu.uitaycompose.utils.tay_green_600
-import com.valu.uitaycompose.utils.tay_grey_300
 import com.valu.uitaycompose.utils.tay_grey_400
+import com.valu.uitaycompose.utils.tay_grey_600
 import com.valu.uitaycompose.utils.tay_light_blue_500
 import com.valu.uitaycompose.utils.tay_red_600
 import com.valu.uitaycompose.utils.textB12
 import com.valu.uitaycompose.utils.textFlexoB20
+import com.valu.uitaycompose.utils.textGabbi10
 import com.valu.uitaycompose.utils.textGabbi12
 import com.valu.uitaycompose.utils.textSe10
 import com.valu.uitaycompose.utils.textSe12
 import com.valu.uitaycompose.utils.textSe14
 import com.valu.uitaycompose.utils.textSe16
 import com.valu.uitaycompose.utils.textSeB18
-import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.layer.drawLayer
-import androidx.compose.ui.graphics.rememberGraphicsLayer
-import com.tayler.valushopping.utils.sharedImageViewFromBitmap
-import com.valu.uitaycompose.utils.extension.uiTayShowToast
-import com.valu.uitaycompose.utils.tay_grey_600
-import com.valu.uitaycompose.utils.textGabbi10
 import kotlinx.coroutines.launch
 
 @Composable
@@ -100,9 +99,9 @@ fun ScreenDetail(
     var showZoomDialog by remember { mutableStateOf<String?>(null) }
 
     showZoomDialog?.let { imageUrl ->
-        //DialogZoomDetail(image = imageUrl) {
-        //   showZoomDialog = null
-        // }
+        UiTayDialogZoomDetail(imageUrl = imageUrl,enableAdvancedZoom = false) {
+            showZoomDialog = null
+        }
     }
 
     Scaffold(
@@ -115,7 +114,7 @@ fun ScreenDetail(
                     .bgService(AppDataVale.bgService)
                     .urlBgService(
                         AppDataVale.getUrlBgToolbar(context)
-                    )
+                    ).iconColor(colorStyle.first)
             ) { _ ->
                 onBackClick.invoke()
             }

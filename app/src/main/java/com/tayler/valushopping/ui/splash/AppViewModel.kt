@@ -50,6 +50,7 @@ class AppViewModel @Inject constructor(
     fun loadSplashData() {
         execute(false) {
             val welcome = io {
+                AppDataVale.styleValu = appUseCase.urlImage()
                 AppDataVale.styleValu = appUseCase.getStyle()
                 AppDataVale.bgService = appUseCase.getBgService()
                 AppDataVale.session =  appUseCase.getToken()

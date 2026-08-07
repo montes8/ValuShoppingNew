@@ -2,10 +2,9 @@ package com.tayler.valushopping.utils
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.tayler.entity.ProductModel
 import com.tayler.valushopping.entity.AppDataVale
 import com.valu.uitaycompose.utils.COUNTRY_CODE_PE
@@ -55,7 +54,7 @@ fun Context.openWhatsApp(phone: String, text: String,code : String = COUNTRY_COD
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("$URL_WHATS_APP_CUSTOM$code$phone&text=$text")
+                "$URL_WHATS_APP_CUSTOM$code$phone&text=$text".toUri()
             )
         )
     } else {

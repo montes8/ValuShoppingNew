@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.tayler.entity.ProductModel
+import com.tayler.valushopping.ui.about.ScreenAbout
 import com.tayler.valushopping.ui.detail.ScreenDetail
 import com.tayler.valushopping.ui.home.ScreenHome
 import com.tayler.valushopping.ui.home.category.ScreenCategory
@@ -17,6 +18,7 @@ import com.tayler.valushopping.ui.home.init.ScreenInit
 import com.tayler.valushopping.ui.home.product.ScreenProduct
 import com.tayler.valushopping.ui.login.ScreenLogin
 import com.tayler.valushopping.ui.option.ScreenOption
+import com.tayler.valushopping.ui.profile.ScreenProfile
 import com.tayler.valushopping.ui.splash.ScreenSplash
 import com.valu.uitaycompose.utils.extension.uiTayCreateSerializableNavType
 import kotlinx.serialization.Serializable
@@ -66,6 +68,18 @@ fun ValeNavigationInit() {
             ScreenLogin()
         }
 
+        composable<ScreenInitNav.ProfileScreen> {
+            ScreenProfile{
+                navController.popBackStack()
+            }
+        }
+
+        composable<ScreenInitNav.AboutScreen> {
+            ScreenAbout{
+                navController.popBackStack()
+            }
+        }
+
     }
 }
 
@@ -87,6 +101,12 @@ sealed class ScreenInitNav(
     data object HomeScreen : ScreenInitNav()
     @Serializable
     data class DetailScreen(val productJson: String) : ScreenInitNav()
+
+    @Serializable
+    data object ProfileScreen : ScreenInitNav()
+
+    @Serializable
+    data object AboutScreen : ScreenInitNav()
 }
 
 @Serializable
@@ -116,7 +136,11 @@ fun NavigationNavBarHost(navController: NavHostController,onNavigateToMain: (Scr
             }
         }
         composable<TayRoute.Category> { ScreenCategory() }
-        composable<TayRoute.Config> { ScreenConfig() }
+        composable<TayRoute.Config> { ScreenConfig{
+            onNavigateToMain.invoke(ScreenInitNav.AboutScreen)
+
+        }
+        }
 
     }
 }

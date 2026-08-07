@@ -28,9 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tayler.entity.exception.ApiException
+import com.tayler.entity.exception.UiTayApiException
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.ui.base.BaseViewModel
 import com.tayler.valushopping.utils.validateHourApp
 import com.valu.uitaycompose.swipe.UiTayGif
 import com.valu.uitaycompose.swipe.UiTayUrlImage
@@ -45,9 +46,16 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
     val viewModel: AppViewModel = hiltViewModel()
     val state by viewModel.uiState.collectAsState()
     val paramResponse by viewModel.successParamState.collectAsStateWithLifecycle()
+    val sharedState by BaseViewModel.sharedUiStateBase.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.loadParam()
         viewModel.loadSplashData()
+    }
+
+    LaunchedEffect(sharedState.popUpGeneric) {
+        if (sharedState.popUpGeneric){
+            activity.finish()
+        }
     }
 
     LaunchedEffect(paramResponse) {
@@ -58,7 +66,7 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
                 onNavigateToMain()
             } else {
                 viewModel.updateUiState { currentState ->
-                    currentState.copy(error = true, errorType = ApiException(messageApi = AppDataVale.mapperDialogText()))
+                    currentState.copy(error = true, errorType = UiTayApiException(messageApi = AppDataVale.mapperDialogText()))
                 }
             }
         }

@@ -6,7 +6,7 @@ class ParamModel (
     var description: String = "",
     var idMovie: String = "",
     var enableCategory: Boolean = false,
-    var phone: String? = "",
+    var phone: String = "935096444",
     var textWelcome: String? = "",
     var hourStart: String? = "",
     var hourEnd: String? = "",
@@ -18,6 +18,6 @@ class ParamModel (
     var countryCode: String? = "PE",
     var blocking: Boolean? = null,
     var idIcon: String? = "Icon",
-    var idFacebook: String? = "61590557890653",
+    var idFacebook: String = "61590557890653",
     var idYoutube: String? = "xH6qsMpA7NM"
 )

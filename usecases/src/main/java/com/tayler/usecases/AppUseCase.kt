@@ -1,6 +1,7 @@
 package com.tayler.usecases
 
 import com.tayler.entity.UserModel
+import com.tayler.repository.BuildConfig
 import com.tayler.repository.preferences.IAppPreferences
 import jakarta.inject.Inject
 
@@ -64,5 +65,9 @@ class AppUseCase@Inject constructor(
     }
     fun geIdIconOld(): String{
         return iAppPreferences.geIdIconOld()
+    }
+
+    fun urlImage(): String{
+        return BuildConfig.BASE_URL
     }
 }

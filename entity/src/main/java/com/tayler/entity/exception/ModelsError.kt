@@ -1,6 +1,6 @@
 package com.tayler.entity.exception
 
-data class ApiException(
+data class UiTayApiException(
     val code: Int = 0,
     val title: String = "",
     val messageApi: String = ""

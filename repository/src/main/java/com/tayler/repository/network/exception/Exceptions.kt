@@ -1,7 +1,7 @@
 package com.tayler.repository.network.exception
 
 import com.google.gson.annotations.SerializedName
-import com.tayler.entity.exception.ApiException
+import com.tayler.entity.exception.UiTayApiException
 import com.tayler.repository.utils.DEFAULT_CODE
 import com.tayler.repository.utils.ERROR_MESSAGE_GENERAL
 import com.tayler.repository.utils.ERROR_TITLE_GENERAL
@@ -17,7 +17,7 @@ data class CompleteErrorModel(
 ) : Exception(description) {
 
     fun getApiException(): Exception {
-        return ApiException(
+        return UiTayApiException(
             this.code ?: 0,
             this.title ?: ERROR_MESSAGE_GENERAL,
             this.description ?: ERROR_MESSAGE_GENERAL

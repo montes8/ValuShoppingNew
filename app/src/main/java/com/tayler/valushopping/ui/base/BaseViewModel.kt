@@ -2,7 +2,6 @@ package com.tayler.valushopping.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-open class BaseViewModel(private var valeD: CoroutineDispatcher = Dispatchers.IO) : ViewModel() {
+open class BaseViewModel : ViewModel() {
 
     companion object {
         private val _sharedUiStateBase = MutableStateFlow(BaseUiState())
@@ -47,6 +46,17 @@ open class BaseViewModel(private var valeD: CoroutineDispatcher = Dispatchers.IO
         }
     }
 
+    fun <T> executeState(
+        initialValue: T? = null,
+        stateFlow: MutableStateFlow<T?>,
+        func: suspend () -> T
+    ) {
+        execute(false) {
+            val result = io { func() }
+            stateFlow.value = result
+        }
+    }
+
     suspend fun <T> io(block: suspend () -> T): T = withContext(Dispatchers.IO) {
         block()
     }
@@ -58,4 +68,5 @@ open class BaseViewModel(private var valeD: CoroutineDispatcher = Dispatchers.IO
     fun updateUiState(update: (BaseUiState) -> BaseUiState) {
         updateSharedUiState(update)
     }
+
 }

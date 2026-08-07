@@ -20,15 +20,14 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tayler.valushopping.component.DialogGeneric
-import com.tayler.valushopping.component.ProgressDialogApp
 import com.tayler.valushopping.utils.ValeTheme
 import com.tayler.valushopping.utils.mapperError
+import com.valu.uitaycompose.loading.UiProgress
+import com.valu.uitaycompose.modal.UiTayDialog
+import com.valu.uitaycompose.model.UiTayDialogModel
 
 abstract class BaseActivity : ComponentActivity() {
 
@@ -75,13 +74,24 @@ abstract class BaseActivity : ComponentActivity() {
                     }
 
                     if (uiState.loading) {
-                        ProgressDialogApp()
+                        UiProgress()
                     }
 
                     if (uiState.error) {
-                        DialogGeneric(message = uiState.errorType.mapperError().third) { dialogResult ->
+                        UiTayDialog(
+                            model = UiTayDialogModel(
+                                image = uiState.errorType.mapperError().first,
+                                title = uiState.errorType.mapperError().second,
+                                subTitle = uiState.errorType.mapperError().third,
+                                isCancel = false
+                            )
+                        ) { dialogResult ->
                             BaseViewModel.updateSharedUiState { current ->
-                                current.copy(error = false, popUpGeneric = true, popUpGenericValue = dialogResult)
+                                current.copy(
+                                    error = false,
+                                    popUpGeneric = true,
+                                    popUpGenericValue = dialogResult
+                                )
                             }
                         }
                     }
