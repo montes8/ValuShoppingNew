@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 
-fun Throwable.mapperError(context: Context): Triple<Int, String, String> {
+fun Throwable.mapperError(context: Context, appDataVale: AppDataVale): Triple<Int, String, String> {
     return when (this) {
         is MyNetworkException -> Triple(
             R.drawable.ic_error_red,
@@ -44,7 +44,7 @@ fun Throwable.mapperError(context: Context): Triple<Int, String, String> {
         is OutOfHour -> Triple(
             R.drawable.ic_info_error,
             context.getString(R.string.error_text_hour) ,
-            AppDataVale.mapperDialogText()
+            appDataVale.mapperDialogText()
         )
 
         else -> Triple(R.drawable.ic_info_error,
@@ -67,8 +67,8 @@ fun ParamModel.validateHourApp():Boolean{
     return validStart && validEnd
 }
 
-fun setImageMenu():Int{
-    val image = when(AppDataVale.paramData.styleValu){
+fun setImageMenu(appDataVale: AppDataVale):Int{
+    val image = when(appDataVale.paramData.styleValu){
         "0"->{
             R.drawable.ic_menu_home
         }
@@ -96,8 +96,8 @@ fun setImageMenu():Int{
     return image
 }
 
-fun setImageLogout():Int{
-    val image = when(AppDataVale.paramData.styleValu){
+fun setImageLogout(appDataVale: AppDataVale):Int{
+    val image = when(appDataVale.paramData.styleValu){
         "0"->{
             R.drawable.ic_logout
         }

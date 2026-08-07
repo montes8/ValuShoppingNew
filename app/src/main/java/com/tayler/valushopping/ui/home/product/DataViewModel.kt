@@ -4,6 +4,7 @@ import com.tayler.entity.ProductModel
 import com.tayler.usecases.DataUseCase
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
+import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.tayler.valushopping.utils.TY_DEFAULT
 import com.tayler.valushopping.utils.distance
 import com.valu.uitaycompose.utils.UI_EMPTY
@@ -15,7 +16,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
-    private val dataUseCase: DataUseCase
+    private val dataUseCase: DataUseCase,
+    private val appDataVale: AppDataVale,
+    private val globalUiStateManager: GlobalUiStateManager
 ) : BaseViewModel() {
 
     private val _successLoadProductClientState = MutableStateFlow(
@@ -32,12 +35,12 @@ class DataViewModel @Inject constructor(
         val isAlreadyLoaded = currentProducts.firstOrNull()?.uid?.isNotEmpty() == true
         if (isAlreadyLoaded) return
 
-        execute(false) {
+        execute(loading = false, globalUiStateManager = globalUiStateManager) {
             val listFilter: ArrayList<ProductModel> = ArrayList()
             val response = dataUseCase.loadProduct(all, admin, country)
             val listBanner = response.filter { it.banner }
             response.forEach {
-                val distanceM = it.distance("K")
+                val distanceM = it.distance("K", appDataVale)
                 if (distanceM < (getRangeFilterProduct(it)) || it.latitude == "0") {
                     listFilter.add(it)
                 }
@@ -49,7 +52,7 @@ class DataViewModel @Inject constructor(
 
     private fun getRangeFilterProduct(it: ProductModel): Int {
         return if (it.limitDistance.isEmpty() || it.limitDistance == TY_DEFAULT)
-            AppDataVale.paramData.limitDistance?.toInt() ?: 5
+            appDataVale.paramData.limitDistance?.toInt() ?: 5
         else it.limitDistance.toInt()
     }
 }

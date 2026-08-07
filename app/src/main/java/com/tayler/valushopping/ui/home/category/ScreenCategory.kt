@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.entity.CategoryModel
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
 import com.valu.uitaycompose.swipe.UiTayUrlImage
 import com.valu.uitaycompose.utils.extension.uiTayShimmer
@@ -47,10 +48,11 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun ScreenCategory() {
+    val appDataVale = LocalAppDataVale.current
     val viewModel: CategoryViewModel = hiltViewModel()
 
     val categories by viewModel.successCategoriesState.collectAsStateWithLifecycle()
-    val uiState by BaseViewModel.sharedUiStateBase.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiStateBase.collectAsStateWithLifecycle()
     val isLoading = uiState.shimmer
 
     var isDelay by remember { mutableStateOf(true) }
@@ -77,7 +79,7 @@ fun ScreenCategory() {
                 modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)
                     .uiTayShimmer(isLoading = isLoading, cornerRadius = 12.dp),
                 style = textB18,
-                color = AppDataVale.getColorPrincipal().first,
+                color = appDataVale.getColorPrincipal().first,
                 lineHeight = 24.sp
             )
 
@@ -92,6 +94,7 @@ fun ScreenCategory() {
                         CategoryRowItem(
                             category = category,
                             isLoading = isLoading,isDelay,
+                            appDataVale = appDataVale,
                             onClick = {
                                 // ListProductCategoryActivity.newInstance(context, category)
                             }
@@ -108,6 +111,7 @@ fun CategoryRowItem(
     category: CategoryModel,
     isLoading: Boolean = false,
     isDelay: Boolean,
+    appDataVale: AppDataVale,
     onClick: () -> Unit
 ) {
     Column(
@@ -149,7 +153,7 @@ fun CategoryRowItem(
                 .align(Alignment.CenterHorizontally)
                 .uiTayShimmer(isLoading = isLoading, cornerRadius = 4.dp),
             style = textB16,
-            color = AppDataVale.getColorPrincipal().first,
+            color = appDataVale.getColorPrincipal().first,
             textAlign = TextAlign.Center
         )
     }

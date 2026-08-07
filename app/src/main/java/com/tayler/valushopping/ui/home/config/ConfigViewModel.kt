@@ -1,9 +1,10 @@
 package com.tayler.valushopping.ui.home.config
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.entity.ItemModel
+import com.tayler.valushopping.ui.base.BaseViewModel
+import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.tayler.valushopping.utils.JSON_ITEM
 import com.tayler.valushopping.utils.JSON_ITEM_ADMIN
 import com.valu.uitaycompose.utils.extension.uiTayDataJson
@@ -14,14 +15,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
-class ConfigViewModel @Inject constructor() : ViewModel() {
+class ConfigViewModel @Inject constructor(
+    private val appDataVale: AppDataVale,
+    private val globalUiStateManager: GlobalUiStateManager
+) : BaseViewModel() {
 
     private val _itemsState = MutableStateFlow<List<ItemModel>>(emptyList())
     val itemsState: StateFlow<List<ItemModel>> = _itemsState.asStateFlow()
 
     fun loadConfigData(context: Context) {
         if (_itemsState.value.isNotEmpty()) return
-        val jsonFile = if (AppDataVale.paramData.session) JSON_ITEM_ADMIN else JSON_ITEM
+        val jsonFile = if (appDataVale.paramData.session) JSON_ITEM_ADMIN else JSON_ITEM
         val loadedItems: ArrayList<ItemModel> = uiTayDataJson(context, jsonFile)
         _itemsState.value = loadedItems.toList()
     }

@@ -32,19 +32,14 @@ import com.tayler.valushopping.component.NavigationNavBarHost
 import com.tayler.valushopping.component.ScreenInitNav
 import com.tayler.valushopping.component.UiTayDrawer
 import com.tayler.valushopping.component.mapperNavBar
-import com.tayler.valushopping.entity.AppDataVale
-import com.tayler.valushopping.entity.drawerItems
-import com.tayler.valushopping.entity.itemsNavBar
+import com.tayler.valushopping.entity.LocalAppDataVale
+import com.tayler.valushopping.ui.home.components.HomeBottomBar
+import com.tayler.valushopping.ui.home.components.HomeDrawer
+import com.tayler.valushopping.ui.home.components.HomeTopBar
 import com.tayler.valushopping.utils.openWhatsApp
-import com.tayler.valushopping.utils.setImageLogout
-import com.tayler.valushopping.utils.setImageMenu
-import com.valu.uitaycompose.extra.UiTayCToolBar
 import com.valu.uitaycompose.modal.UiTayDialog
 import com.valu.uitaycompose.model.UiTayDialogModel
 import com.valu.uitaycompose.model.UiTayDialogModelCustom
-import com.valu.uitaycompose.model.UiTayNavBarModel
-import com.valu.uitaycompose.model.UiToolBarModel
-import com.valu.uitaycompose.navigation.UiTayBottomBar
 import com.valu.uitaycompose.swipe.UiTayUrlImage
 import com.valu.uitaycompose.utils.COUNTRY_CODE_PE
 import com.valu.uitaycompose.utils.extension.uiTayUrlFacebook
@@ -55,13 +50,13 @@ import kotlinx.coroutines.launch
 fun ScreenHome(onNavigateToMain: (ScreenInitNav) -> Unit) {
 
     val context = LocalContext.current
+    val appDataVale = LocalAppDataVale.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     var currentActionId by remember { mutableIntStateOf(-1) }
     var currentActionIdNavBar by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
-    val colorStyle = AppDataVale.getColorPrincipal()
+    val colorStyle = appDataVale.getColorPrincipal()
     val navController = rememberNavController()
-    val itemsListNavBar = itemsNavBar.toMutableList()
     val activity = LocalActivity.current as ComponentActivity
     var showDeliveryPoints by remember { mutableStateOf(false) }
     var showModal by remember { mutableStateOf(false) }
@@ -99,8 +94,7 @@ fun ScreenHome(onNavigateToMain: (ScreenInitNav) -> Unit) {
         ) { dialogResult ->
             showModal = false
             if (dialogResult){
-                context.openWhatsApp(AppDataVale.paramData.phone, message,COUNTRY_CODE_PE)
-
+                context.openWhatsApp(appDataVale.paramData.phone, message,COUNTRY_CODE_PE)
             }
         }
     }
@@ -108,106 +102,51 @@ fun ScreenHome(onNavigateToMain: (ScreenInitNav) -> Unit) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet(
-                modifier = Modifier.fillMaxWidth(0.8f),
-                windowInsets = WindowInsets(0, 0, 0, 0)
-            ) {
-                UiTayDrawer(
-                    items = drawerItems,
-                    currentActionId = currentActionId,
-                    bgColor = colorStyle.third,
-                    text = "Valu",
-                    model =
-                        UiTayNavBarModel()
-                            .uiBgColor(colorStyle.first)
-                            .uiColorSelected(colorStyle.first)
-                            .uiUnColorSelected(colorStyle.second)
-                            .uiTextColorSelected(colorStyle.first)
-                            .uiTextUnColorSelected(colorStyle.second)
-                ) { menuItem ->
-                    currentActionId = menuItem.action
-                    scope.launch {
-                        drawerState.close()
-                    }
-                    when (menuItem.action) {
-                        0 -> {
-                            onNavigateToMain.invoke(ScreenInitNav.ProfileScreen)
-                        }
-                        1 -> {
-                            onNavigateToMain.invoke(ScreenInitNav.AboutScreen)
-                        }
+            HomeDrawer(
+                currentActionId = currentActionId,
+                onActionClick = { actionId ->
+                    currentActionId = actionId
+                    scope.launch { drawerState.close() }
+                    when (actionId) {
+                        0 -> onNavigateToMain(ScreenInitNav.ProfileScreen)
+                        1 -> onNavigateToMain(ScreenInitNav.AboutScreen)
                         2 -> {
                             textRes = R.string.text_body_join
                             titleModal =  R.string.text_title_join
                             subTitleModal = R.string.sub_text_title_join
                             showModal = true
                         }
-                        3 -> {   showDeliveryPoints = true}
+                        3 -> showDeliveryPoints = true
                         4 -> {
                             textRes = R.string.text_support
                             titleModal =  R.string.text_title_support
                             subTitleModal = R.string.sub_text_title_support
                             showModal = true
                         }
-                        5 -> {
-                            context.uiTayUrlFacebook(AppDataVale.paramData.idFacebook)
-                        }
+                        5 -> context.uiTayUrlFacebook(appDataVale.paramData.idFacebook)
                     }
                 }
-            }
+            )
         },
         gesturesEnabled = true
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             UiTayUrlImage(
-                url = AppDataVale.getUrlBg(activity),
+                url = appDataVale.getUrlBg(activity),
                 drawable = R.drawable.ic_bg_general,
                 modifier = Modifier.fillMaxSize()
             )
             Scaffold(
                 containerColor = Color.Transparent,
                 bottomBar = {
-                    UiTayBottomBar(
-                        itemsListNavBar, currentActionIdNavBar, uiTayModifier =
-                            UiTayNavBarModel()
-                                .uiBgColor(colorStyle.third)
-                                .uiColorSelected(colorStyle.first)
-                                .uiUnColorSelected(colorStyle.second)
-                                .uiTextColorSelected(colorStyle.first)
-                                .uiTextUnColorSelected(colorStyle.second)
-                    ) { item ->
-                        currentActionIdNavBar = item.action
-                        navController.navigate(item.action.mapperNavBar()) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
+                    HomeBottomBar(
+                        navController = navController,
+                        currentActionIdNavBar = currentActionIdNavBar,
+                        onActionChange = { currentActionIdNavBar = it }
+                    )
                 },
                 topBar = {
-                    UiTayCToolBar(
-                        uiTayText = stringResource(R.string.tb_principal),
-                        uiTayModifier = UiToolBarModel()
-                            .height(70)
-                            .iconStart(setImageMenu())
-                            .iconEnd(setImageLogout())
-                            .backgroundColor(colorStyle.third)
-                            .textColor(colorStyle.first)
-                            .bgService(AppDataVale.paramData.bgService)
-                            .urlBgService(
-                                AppDataVale.getUrlBgToolbar(activity)
-                            )
-                            .showEndIcon(AppDataVale.paramData.session)
-                            .useOriginalTint(true)
-                    ) { _ ->
-
-                            scope.launch {
-                                drawerState.open()
-                            }
-
-                    }
+                    HomeTopBar(onOpenDrawer = { scope.launch { drawerState.open() } })
                 }
             ) { paddingValues ->
                 Box(

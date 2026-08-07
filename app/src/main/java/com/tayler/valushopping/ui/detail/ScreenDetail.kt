@@ -46,6 +46,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.entity.ProductModel
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
 import com.tayler.valushopping.ui.splash.AppViewModel
 import com.tayler.valushopping.utils.mapperCodeSocial
 import com.tayler.valushopping.utils.mapperHeight
@@ -83,10 +84,11 @@ fun ScreenDetail(
     product: ProductModel,
     onBackClick: () -> Unit
 ) {
+    val appDataVale = LocalAppDataVale.current
     val context = LocalContext.current
     val viewModel: DetailViewModel = hiltViewModel()
     val aViewModel: AppViewModel = hiltViewModel()
-    val colorStyle = AppDataVale.getColorPrincipal()
+    val colorStyle = appDataVale.getColorPrincipal()
     val imagesState by viewModel.successProductImageState.collectAsStateWithLifecycle()
 
     val graphicsLayer = rememberGraphicsLayer()
@@ -111,9 +113,9 @@ fun ScreenDetail(
                 uiTayModifier = UiToolBarModel()
                     .backgroundColor(colorStyle.third)
                     .textColor(colorStyle.first)
-                    .bgService(AppDataVale.paramData.bgService)
+                    .bgService(appDataVale.paramData.bgService)
                     .urlBgService(
-                        AppDataVale.getUrlBgToolbar(context)
+                        appDataVale.getUrlBgToolbar(context)
                     ).iconColor(colorStyle.first)
             ) { _ ->
                 onBackClick.invoke()
@@ -146,6 +148,7 @@ fun ScreenDetail(
                     HeaderProductSection(
                         product = product,
                         colorStyle = colorStyle,
+                        appDataVale = appDataVale,
                         onImageClick = { url -> showZoomDialog = url }
                     )
                 }
@@ -232,6 +235,7 @@ fun ScreenDetail(
 fun HeaderProductSection(
     product: ProductModel,
     colorStyle: Triple<Color, Color, Color>,
+    appDataVale: AppDataVale,
     onImageClick: (String) -> Unit
 ) {
     Row(
@@ -267,7 +271,7 @@ fun HeaderProductSection(
             )
 
             Text(
-                text = product.getMapperTypeAndGender(AppDataVale.categories),
+                text = product.getMapperTypeAndGender(appDataVale.categories),
                 style = textSe14,
                  color = tay_grey_400
             )

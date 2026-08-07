@@ -51,6 +51,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.entity.ProductModel
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
 import com.tayler.valushopping.utils.mapperHeight
 import com.valu.uitaycompose.swipe.UiTayUrlImage
@@ -75,12 +76,13 @@ import kotlin.time.Duration.Companion.milliseconds
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
+    val appDataVale = LocalAppDataVale.current
     val context = LocalContext.current
     val viewModel: DataViewModel = hiltViewModel()
 
     val productData by viewModel.successLoadProductClientState.collectAsStateWithLifecycle()
     var isRefreshing by remember { mutableStateOf(false) }
-    val uiState by BaseViewModel.sharedUiStateBase.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiStateBase.collectAsStateWithLifecycle()
     val isShimmer = uiState.shimmer
     var isDelay by remember { mutableStateOf(true) }
     val products = productData.first
@@ -122,6 +124,7 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
                     item {
                         BannerSection(
                             banners = banners, isShimmer, isDelay,
+                            appDataVale = appDataVale,
                             onClickBanner = { banner ->
                                 if (banner.click){
                                     if (banner.linkBanner.isNotEmpty()){
@@ -136,13 +139,14 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
                 }
 
                 item {
-                    HeaderSection(products, isShimmer, isDelay)
+                    HeaderSection(products, isShimmer, isDelay, appDataVale = appDataVale)
                 }
 
                 items(products) { product ->
                     ProductItem(
                         product = product,
                         isShimmer, isDelay,
+                        appDataVale = appDataVale,
                         onClickItem = {
                             if (product.click){
                                 if (product.linkBanner.isNotEmpty()){
@@ -165,6 +169,7 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
 fun BannerSection(
     banners: List<ProductModel>, isShimmer: Boolean,
     isDelay: Boolean,
+    appDataVale: AppDataVale,
     onClickBanner: (ProductModel) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
@@ -214,8 +219,8 @@ fun BannerSection(
             }
 
             repeat(banners.size) { iteration ->
-                val color = if (currentIndex == iteration) AppDataVale.getColorPrincipal().first
-                else AppDataVale.getColorPrincipal().third
+                val color = if (currentIndex == iteration) appDataVale.getColorPrincipal().first
+                else appDataVale.getColorPrincipal().third
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
@@ -230,7 +235,7 @@ fun BannerSection(
 }
 
 @Composable
-fun HeaderSection(products: List<ProductModel>, isShimmer: Boolean, isDelay: Boolean) {
+fun HeaderSection(products: List<ProductModel>, isShimmer: Boolean, isDelay: Boolean, appDataVale: AppDataVale) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -242,14 +247,14 @@ fun HeaderSection(products: List<ProductModel>, isShimmer: Boolean, isDelay: Boo
         Text(
             text = stringResource(R.string.text_choose_product),
             modifier = Modifier.uiTayShimmer(isLoading = isShimmer, cornerRadius = 24.dp),
-            color = AppDataVale.getColorPrincipal().first,
+            color = appDataVale.getColorPrincipal().first,
             style = textB16,
             textAlign = TextAlign.Start
         )
-        if (products.size > (AppDataVale.paramData.countProduct?.toInt() ?: 30)) {
+        if (products.size > (appDataVale.paramData.countProduct?.toInt() ?: 30)) {
             Text(
                 text = stringResource(R.string.text_more_all),
-                color = AppDataVale.getColorPrincipal().first,
+                color = appDataVale.getColorPrincipal().first,
                 style = textB16,
                 textAlign = TextAlign.End
             )
@@ -262,6 +267,7 @@ fun HeaderSection(products: List<ProductModel>, isShimmer: Boolean, isDelay: Boo
 fun ProductItem(
     product: ProductModel,
     isShimmer: Boolean, isDelay: Boolean,
+    appDataVale: AppDataVale,
     onClickItem: (ProductModel) -> Unit,
     onClickImage: (String) -> Unit
 ) {
@@ -320,7 +326,7 @@ fun ProductItem(
                 Text(
                     text = product.name,
                     style = textSeB14,
-                    color = AppDataVale.getColorPrincipal().first,
+                    color = appDataVale.getColorPrincipal().first,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -390,7 +396,7 @@ fun ProductItem(
                 )
 
                 Text(
-                    text = product.getMapperTypeAndGender(AppDataVale.categories),
+                    text = product.getMapperTypeAndGender(appDataVale.categories),
                     style = textSe12,
                     color = Color.Black
                 )

@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
 import com.valu.uitaycompose.extra.UiTayCToolBar
 import com.valu.uitaycompose.model.UiToolBarModel
 import com.valu.uitaycompose.utils.textSeB14
@@ -23,8 +24,9 @@ import com.valu.uitaycompose.utils.tay_grey_400
 fun ScreenAbout(
     onNavigateBack: () -> Unit
 ) {
+    val appDataVale = LocalAppDataVale.current
     val context = LocalContext.current
-    val colorStyle = AppDataVale.getColorPrincipal()
+    val colorStyle = appDataVale.getColorPrincipal()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -34,9 +36,9 @@ fun ScreenAbout(
             uiTayModifier = UiToolBarModel()
                 .backgroundColor(colorStyle.third)
                 .textColor(colorStyle.first)
-                .bgService(AppDataVale.paramData.bgService)
+                .bgService(appDataVale.paramData.bgService)
                 .urlBgService(
-                    AppDataVale.getUrlBgToolbar(context)
+                    appDataVale.getUrlBgToolbar(context)
                 ).iconColor(colorStyle.first)
         ) { _ ->
             onNavigateBack.invoke()

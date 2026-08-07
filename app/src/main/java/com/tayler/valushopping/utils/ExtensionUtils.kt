@@ -24,13 +24,13 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 
-fun ProductModel.distance(unit: String): Double {
+fun ProductModel.distance(unit: String, appDataVale: AppDataVale): Double {
     val longitudeSend = this.longitude.toDouble()
     val latitudeSend = this.latitude.toDouble()
-    val theta =  longitudeSend - AppDataVale.longitude.toDouble()
+    val theta =  longitudeSend - appDataVale.longitude.toDouble()
     var dist =
-        sin(uiTayDeg2rad(latitudeSend)) * sin(uiTayDeg2rad(AppDataVale.latitude.toDouble())) +
-                cos(uiTayDeg2rad(latitudeSend)) * cos(uiTayDeg2rad(AppDataVale.latitude.toDouble())) * cos(
+        sin(uiTayDeg2rad(latitudeSend)) * sin(uiTayDeg2rad(appDataVale.latitude.toDouble())) +
+                cos(uiTayDeg2rad(latitudeSend)) * cos(uiTayDeg2rad(appDataVale.latitude.toDouble())) * cos(
             uiTayDeg2rad(theta)
         )
     dist = acos(dist)

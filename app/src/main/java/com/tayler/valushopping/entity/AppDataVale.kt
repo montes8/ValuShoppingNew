@@ -66,13 +66,26 @@ import com.valu.uitaycompose.utils.extension.getNameSplashCustom
 import com.valu.uitaycompose.utils.extension.getNameToolbarCustom
 import com.valu.uitaycompose.utils.extension.uiTayFormatTwelveHour
 
-object AppDataVale {
-    var paramData: ParamModel = ParamModel()
-    var user: UserModel = UserModel()
-    var latitude : String = TY_DEFAULT
-    var longitude : String = TY_DEFAULT
-    var categories : List<CategoryModel> = ArrayList()
-    var categoriesAll : List<CategoryModel> = ArrayList()
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import javax.inject.Inject
+import javax.inject.Singleton
+
+import androidx.compose.runtime.staticCompositionLocalOf
+
+val LocalAppDataVale = staticCompositionLocalOf<AppDataVale> {
+    error("No AppDataVale provided")
+}
+
+@Singleton
+class AppDataVale @Inject constructor() {
+    var paramData by mutableStateOf(ParamModel())
+    var user by mutableStateOf(UserModel())
+    var latitude by mutableStateOf(TY_DEFAULT)
+    var longitude by mutableStateOf(TY_DEFAULT)
+    var categories by mutableStateOf<List<CategoryModel>>(ArrayList())
+    var categoriesAll by mutableStateOf<List<CategoryModel>>(ArrayList())
 
     fun getColorPrincipal():Triple<Color,Color,Color>{
         return when(paramData.styleValu){

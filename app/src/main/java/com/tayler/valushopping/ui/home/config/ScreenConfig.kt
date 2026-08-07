@@ -35,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
 import com.tayler.valushopping.entity.ItemModel
 import com.tayler.valushopping.utils.getDrawableResId
 import com.tayler.valushopping.utils.openWhatsApp
@@ -49,6 +50,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun ScreenConfig(onNavigateToMain: () -> Unit) {
+    val appDataVale = LocalAppDataVale.current
     val context = LocalContext.current
 
     val viewModel: ConfigViewModel = hiltViewModel()
@@ -87,7 +89,7 @@ fun ScreenConfig(onNavigateToMain: () -> Unit) {
             ){ dialogResult ->
                 showModal = false
                 if (dialogResult){
-                    context.openWhatsApp(AppDataVale.paramData.phone, message,COUNTRY_CODE_PE)
+                    context.openWhatsApp(appDataVale.paramData.phone, message,COUNTRY_CODE_PE)
 
                 }
             }
@@ -99,7 +101,8 @@ fun ScreenConfig(onNavigateToMain: () -> Unit) {
             items(items) { item ->
                 AdminRowItem(
                     admin = item,
-                    isDelay = isDelay
+                    isDelay = isDelay,
+                    appDataVale = appDataVale
                 ) { value ->
                     when(value.id){
                         4 -> {
@@ -133,6 +136,7 @@ fun ScreenConfig(onNavigateToMain: () -> Unit) {
 fun AdminRowItem(
     admin: ItemModel,
     isDelay: Boolean,
+    appDataVale: AppDataVale,
     onClickItem: (ItemModel) -> Unit
 ) {
     val iconResId = remember(admin.icon) {
@@ -158,14 +162,14 @@ fun AdminRowItem(
             Icon(
                 painter = painterResource(id = iconResId),
                 contentDescription = "itemsconfig${admin.id}",
-                tint = AppDataVale.getColorPrincipal().first
+                tint = appDataVale.getColorPrincipal().first
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(
                 text = admin.title,
-                color = AppDataVale.getColorPrincipal().first,
+                color = appDataVale.getColorPrincipal().first,
                 style = textSeB18,
             )
         }

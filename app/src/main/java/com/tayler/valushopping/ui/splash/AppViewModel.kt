@@ -19,6 +19,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import java.util.Date
 import javax.inject.Inject
 
@@ -26,7 +27,9 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor(
     private val configUseCase: ConfigUseCase,
     private val appUseCase: AppUseCase,
-    private val application: Application
+    private val application: Application,
+    private val appDataVale: AppDataVale,
+    private val globalUiStateManager: GlobalUiStateManager
 ) : BaseViewModel() {
 
     private val _successParamState = MutableStateFlow<ParamModel?>(null)
@@ -36,7 +39,7 @@ class AppViewModel @Inject constructor(
     val uiState: StateFlow<SplashUiState> = _uiState.asStateFlow()
 
     fun initSplash() {
-        execute(false) {
+        execute(loading = false, globalUiStateManager = globalUiStateManager) {
             setupInitialUiState()
             loadRemoteParams()
         }
@@ -44,15 +47,15 @@ class AppViewModel @Inject constructor(
 
     private suspend fun setupInitialUiState() {
         val paramInit = io { appUseCase.configInitParam() }
-        AppDataVale.paramData = paramInit
-        Log.d("servicedata","${AppDataVale.paramData}")
+        appDataVale.paramData = paramInit
+        Log.d("servicedata","${appDataVale.paramData}")
         _uiState.value = SplashUiState(
-            welcomeText = AppDataVale.paramData.textWelcome,
-            textColor = AppDataVale.getColorPrincipal().first,
-            showLogo = AppDataVale.paramData.bgService
+            welcomeText = appDataVale.paramData.textWelcome,
+            textColor = appDataVale.getColorPrincipal().first,
+            showLogo = appDataVale.paramData.bgService
         )
         updateUiState { currentState ->
-            currentState.copy(statusBarColor = AppDataVale.getColorPrincipal().second)
+            currentState.copy(statusBarColor = appDataVale.getColorPrincipal().second)
         }
     }
 
@@ -69,8 +72,8 @@ class AppViewModel @Inject constructor(
                 val userDeferred = async { appUseCase.getUser() }
                 val categoriesAllDeferred = async { configUseCase.listCategoriesAll() }
 
-                AppDataVale.user = userDeferred.await()
-                AppDataVale.categoriesAll = categoriesAllDeferred.await()
+                appDataVale.user = userDeferred.await()
+                appDataVale.categoriesAll = categoriesAllDeferred.await()
                 paramDeferred.await()
             }
         }
@@ -82,10 +85,10 @@ class AppViewModel @Inject constructor(
             configUseCase.saveHistory(
                 HistoryModel(
                     type = typeFlow,
-                    name = "${AppDataVale.user.names} ${AppDataVale.user.lastName}",
-                    AppDataVale.latitude,
-                    AppDataVale.longitude,
-                    AppDataVale.user.address,
+                    name = "${appDataVale.user.names} ${appDataVale.user.lastName}",
+                    appDataVale.latitude,
+                    appDataVale.longitude,
+                    appDataVale.user.address,
                     application.uiTayLoadImei(),
                     appUseCase.getUUID(),
                     Date().uiTayDateToString(),

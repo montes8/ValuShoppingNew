@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.tayler.entity.ParamModel
 import com.tayler.valushopping.R
 import com.tayler.valushopping.component.VideoPlayerCompose
-import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
 import com.valu.uitaycompose.utils.extension.uiTayOpenUrl
 import com.valu.uitaycompose.utils.extension.uiTayUrlFacebook
 import com.valu.uitaycompose.utils.tay_blue_800
@@ -48,7 +48,8 @@ import com.valu.uitaycompose.utils.textSe20
 
 @Composable
 fun ScreenInit() {
-    val param = AppDataVale.paramData
+    val appDataVale = LocalAppDataVale.current
+    val param = appDataVale.paramData
     val showExtraSocialButtons = true
 
     Column(

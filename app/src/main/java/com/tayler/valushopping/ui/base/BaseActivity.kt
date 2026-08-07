@@ -19,17 +19,28 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
+import com.tayler.valushopping.ui.base.LocalGlobalUiStateManager
 import com.tayler.valushopping.utils.ValeTheme
 import com.tayler.valushopping.utils.mapperError
 import com.valu.uitaycompose.loading.UiProgress
 import com.valu.uitaycompose.modal.UiTayDialog
 import com.valu.uitaycompose.model.UiTayDialogModel
+import jakarta.inject.Inject
 
 abstract class BaseActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var globalUiStateManager: GlobalUiStateManager
+
+    @Inject
+    lateinit var appDataVale: AppDataVale
 
     @Composable
     abstract fun SetScreenConfig()
@@ -47,51 +58,56 @@ abstract class BaseActivity : ComponentActivity() {
         }
         setContent {
             ValeTheme {
-                val uiState by BaseViewModel.sharedUiStateBase.collectAsStateWithLifecycle()
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.White)
+                CompositionLocalProvider(
+                    LocalAppDataVale provides appDataVale,
+                    LocalGlobalUiStateManager provides globalUiStateManager
                 ) {
-                    Column(
+                    val uiState by globalUiStateManager.uiState.collectAsStateWithLifecycle()
+
+                    Box(
                         modifier = Modifier
                             .fillMaxSize()
+                            .background(Color.White)
                     ) {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .windowInsetsTopHeight(WindowInsets.statusBars)
-                                .background(uiState.statusBarColor)
-                        )
-                        Box(
+                        Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .windowInsetsPadding(WindowInsets.navigationBars)
                         ) {
-                            SetScreenConfig()
-                        }
-                    }
-
-                    if (uiState.loading) {
-                        UiProgress()
-                    }
-
-                    if (uiState.error) {
-                        UiTayDialog(
-                            model = UiTayDialogModel(
-                                image = uiState.errorType.mapperError(this@BaseActivity).first,
-                                title = uiState.errorType.mapperError(this@BaseActivity).second,
-                                subTitle = uiState.errorType.mapperError(this@BaseActivity).third,
-                                isCancel = false
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .windowInsetsTopHeight(WindowInsets.statusBars)
+                                    .background(uiState.statusBarColor)
                             )
-                        ) { dialogResult ->
-                            BaseViewModel.updateSharedUiState { current ->
-                                current.copy(
-                                    error = false,
-                                    popUpGeneric = true,
-                                    popUpGenericValue = dialogResult
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .windowInsetsPadding(WindowInsets.navigationBars)
+                            ) {
+                                SetScreenConfig()
+                            }
+                        }
+
+                        if (uiState.loading) {
+                            UiProgress()
+                        }
+
+                        if (uiState.error) {
+                            UiTayDialog(
+                                model = UiTayDialogModel(
+                                    image = uiState.errorType.mapperError(this@BaseActivity, appDataVale).first,
+                                    title = uiState.errorType.mapperError(this@BaseActivity, appDataVale).second,
+                                    subTitle = uiState.errorType.mapperError(this@BaseActivity, appDataVale).third,
+                                    isCancel = false
                                 )
+                            ) { dialogResult ->
+                                globalUiStateManager.updateUiState { current ->
+                                    current.copy(
+                                        error = false,
+                                        popUpGeneric = true,
+                                        popUpGenericValue = dialogResult
+                                    )
+                                }
                             }
                         }
                     }

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
 import com.valu.uitaycompose.swipe.UiTayInfoCompose
 import com.valu.uitaycompose.utils.tay_grey_400
 import com.valu.uitaycompose.utils.textSe16
@@ -30,6 +31,7 @@ import com.valu.uitaycompose.utils.textSeB16
 fun DeliveryPointsBottomSheet(
     onDismissRequest: () -> Unit
 ) {
+    val appDataVale = LocalAppDataVale.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
@@ -49,7 +51,7 @@ fun DeliveryPointsBottomSheet(
                     fontFamily = FontFamily.Serif,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
-                    color = AppDataVale.getColorPrincipal().first,
+                    color = appDataVale.getColorPrincipal().first,
                     modifier = Modifier
                 )
 

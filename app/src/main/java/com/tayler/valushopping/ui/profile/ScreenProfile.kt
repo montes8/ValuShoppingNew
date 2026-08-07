@@ -46,6 +46,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tayler.entity.UserModel
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
 import com.valu.uitaycompose.button.UiTayButton
 import com.valu.uitaycompose.label.UiTayEditLayout
 import com.valu.uitaycompose.utils.UI_EMPTY
@@ -63,6 +64,7 @@ import kotlinx.coroutines.withContext
 fun ScreenProfile(
     onNavigateBack: () -> Unit
 ) {
+    val appDataVale = LocalAppDataVale.current
     val viewModel: UserViewModel = hiltViewModel()
     val user by viewModel.successUserState.collectAsState()
     var userModel by remember { mutableStateOf(UserModel()) }
@@ -182,7 +184,7 @@ fun ScreenProfile(
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
                                 .padding(top = 36.dp, end = 16.dp),
-                            tint = AppDataVale.getColorPrincipal().first
+                            tint = appDataVale.getColorPrincipal().first
                         )
                     }
 
@@ -246,7 +248,7 @@ fun ScreenProfile(
                             Text(
                                 text = stringResource(R.string.title_data),
                                 style = textGabbiB20,
-                                color = AppDataVale.getColorPrincipal().first
+                                color = appDataVale.getColorPrincipal().first
                             )
 
                             Spacer(modifier = Modifier.width(6.dp))

@@ -12,36 +12,48 @@ import kotlinx.coroutines.withContext
 
 open class BaseViewModel : ViewModel() {
 
-    companion object {
-        private val _sharedUiStateBase = MutableStateFlow(BaseUiState())
-        val sharedUiStateBase: StateFlow<BaseUiState> = _sharedUiStateBase.asStateFlow()
+    private val _uiStateBase = MutableStateFlow(BaseUiState())
+    val uiStateBase: StateFlow<BaseUiState> = _uiStateBase.asStateFlow()
 
-        fun updateSharedUiState(update: (BaseUiState) -> BaseUiState) {
-            _sharedUiStateBase.update(update)
-        }
+    fun updateUiState(update: (BaseUiState) -> BaseUiState) {
+        _uiStateBase.update(update)
     }
 
-    fun execute(loading: Boolean = true, func: suspend BaseViewModel.() -> Unit) {
+    fun execute(
+        loading: Boolean = true,
+        globalUiStateManager: GlobalUiStateManager? = null,
+        func: suspend BaseViewModel.() -> Unit
+    ) {
         viewModelScope.launch {
             try {
-                updateSharedUiState { currentState ->
-                        currentState.copy(loading = loading, shimmer = true, error = false)
-                    }
-
+                updateUiState { currentState ->
+                    currentState.copy(loading = loading, shimmer = true, error = false)
+                }
+                globalUiStateManager?.updateUiState { currentState ->
+                    currentState.copy(loading = loading, shimmer = true, error = false)
+                }
                 func()
             } catch (ex: Exception) {
                 ex.printStackTrace()
-                updateSharedUiState { currentState ->
+                updateUiState { currentState ->
+                    currentState.copy(
+                        error = true,
+                        errorType = ex
+                    )
+                }
+                globalUiStateManager?.updateUiState { currentState ->
                     currentState.copy(
                         error = true,
                         errorType = ex
                     )
                 }
             } finally {
-                    updateSharedUiState { currentState ->
-                        currentState.copy(loading = false, shimmer = false)
-                    }
-
+                updateUiState { currentState ->
+                    currentState.copy(loading = false, shimmer = false)
+                }
+                globalUiStateManager?.updateUiState { currentState ->
+                    currentState.copy(loading = false, shimmer = false)
+                }
             }
         }
     }
@@ -49,9 +61,10 @@ open class BaseViewModel : ViewModel() {
     fun <T> executeState(
         initialValue: T? = null,
         stateFlow: MutableStateFlow<T?>,
+        globalUiStateManager: GlobalUiStateManager? = null,
         func: suspend () -> T
     ) {
-        execute(false) {
+        execute(loading = false, globalUiStateManager = globalUiStateManager) {
             val result = io { func() }
             stateFlow.value = result
         }
@@ -64,9 +77,4 @@ open class BaseViewModel : ViewModel() {
     suspend fun <T> default(block: suspend () -> T): T = withContext(Dispatchers.Default) {
         block()
     }
-
-    fun updateUiState(update: (BaseUiState) -> BaseUiState) {
-        updateSharedUiState(update)
-    }
-
 }

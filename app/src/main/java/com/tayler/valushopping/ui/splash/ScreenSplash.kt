@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.entity.exception.UiTayApiException
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.valushopping.entity.LocalAppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
 import com.tayler.valushopping.utils.validateHourApp
 import com.valu.uitaycompose.swipe.UiTayGif
@@ -39,33 +40,37 @@ import com.valu.uitaycompose.utils.textPenny25
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
+import com.tayler.valushopping.ui.base.LocalGlobalUiStateManager
+
 @Composable
 fun ScreenSplash(onNavigateToMain: () -> Unit) {
-
+    val appDataVale = LocalAppDataVale.current
+    val globalUiStateManager = LocalGlobalUiStateManager.current
     val activity = LocalActivity.current as ComponentActivity
     val viewModel: AppViewModel = hiltViewModel()
     val state by viewModel.uiState.collectAsState()
     val paramResponse by viewModel.successParamState.collectAsStateWithLifecycle()
-    val sharedState by BaseViewModel.sharedUiStateBase.collectAsState()
+    val globalState by globalUiStateManager.uiState.collectAsStateWithLifecycle()
+
     LaunchedEffect(Unit) {
         viewModel.initSplash()
     }
 
-    LaunchedEffect(sharedState.popUpGeneric) {
-        if (sharedState.popUpGeneric){
+    LaunchedEffect(globalState.popUpGeneric) {
+        if (globalState.popUpGeneric){
             activity.finish()
         }
     }
 
     LaunchedEffect(paramResponse) {
         paramResponse?.let { param ->
-            AppDataVale.paramData = param
-            if (AppDataVale.paramData.validateHourApp()) {
+            appDataVale.paramData = param
+            if (appDataVale.paramData.validateHourApp()) {
                 delay(2.seconds)
                 onNavigateToMain()
             } else {
                 viewModel.updateUiState { currentState ->
-                    currentState.copy(error = true, errorType = UiTayApiException(messageApi = AppDataVale.mapperDialogText()))
+                    currentState.copy(error = true, errorType = UiTayApiException(messageApi = appDataVale.mapperDialogText()))
                 }
             }
         }
@@ -76,7 +81,7 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        BackgroundImage( activity)
+        BackgroundImage( activity, appDataVale)
 
         CenterContent(
             modifier = Modifier.align(Alignment.Center), state
@@ -92,10 +97,10 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
 
 
 @Composable
-private fun BackgroundImage(context: Context) {
+private fun BackgroundImage(context: Context, appDataVale: AppDataVale) {
     Box(modifier = Modifier.fillMaxSize()) {
             UiTayUrlImage(
-                url = AppDataVale.getUrlBgSplash(context), drawable = R.drawable.ic_bg_general,
+                url = appDataVale.getUrlBgSplash(context), drawable = R.drawable.ic_bg_general,
                 modifier = Modifier.fillMaxSize()
             )
     }

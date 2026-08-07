@@ -29,7 +29,7 @@ class InitActivity : BaseActivity() {
     private val updateOptions = AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
 
     override fun setDataGlobal() {
-        //checkAndUpdateAppIcon()
+        checkAndUpdateAppIcon()
         window.decorView.post {
             validateVersionUpdate()
         }
@@ -73,18 +73,14 @@ class InitActivity : BaseActivity() {
             val iconNew = data.idIcon.ifEmpty { "Principal" }
 
             if (iconActual != iconNew) {
-                updateAppIcon(data, iconActual, iconNew)
-            }
-        }
-    }
-
-    private suspend fun updateAppIcon(data: ParamModel, oldIcon: String, newIcon: String) {
-        withContext(Dispatchers.Main) {
-            changeIcon(activeAliasName = newIcon, oldAliasName = oldIcon) { success ->
-                if (success) {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        data.idIconOld = newIcon
-                        appUseCase.saveParam(data)
+                withContext(Dispatchers.Main) {
+                    changeIcon(activeAliasName = iconNew, oldAliasName = iconActual) { success ->
+                        if (success) {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                data.idIconOld = iconNew
+                                appUseCase.saveParam(data)
+                            }
+                        }
                     }
                 }
             }

@@ -4,6 +4,7 @@ import com.tayler.entity.CategoryModel
 import com.tayler.usecases.ConfigUseCase
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
+import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.valu.uitaycompose.utils.UI_EMPTY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val configUseCase: ConfigUseCase,
+    private val appDataVale: AppDataVale,
+    private val globalUiStateManager: GlobalUiStateManager
 ) : BaseViewModel() {
 
     private val _successCategoriesState = MutableStateFlow(
@@ -26,11 +29,11 @@ class CategoryViewModel @Inject constructor(
         val isAlreadyLoaded = currentList.firstOrNull()?.uid?.isNotEmpty() == true
         if (isAlreadyLoaded) return
 
-        execute(false) {
+        execute(loading = false, globalUiStateManager = globalUiStateManager) {
             val response = configUseCase.listCategories()
             val responseAll = configUseCase.listCategoriesAll()
-            AppDataVale.categories = response
-            AppDataVale.categoriesAll = responseAll
+            appDataVale.categories = response
+            appDataVale.categoriesAll = responseAll
             _successCategoriesState.value = response.shuffled()
         }
     }
