@@ -2,6 +2,7 @@ package com.tayler.valushopping.ui.profile
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -52,6 +53,7 @@ import com.valu.uitaycompose.utils.UI_EMPTY
 import com.valu.uitaycompose.utils.extension.uiTayConverterCircle
 import com.valu.uitaycompose.utils.extension.uiTayValidateEmail
 import com.valu.uitaycompose.utils.extension.uiTayValidatePhoneFormat
+import com.valu.uitaycompose.utils.extension.uiTayWriteCodeQrImage
 import com.valu.uitaycompose.utils.permission.UiTayCameraManagerCompose
 import com.valu.uitaycompose.utils.permission.rememberUiTayCameraManager
 import com.valu.uitaycompose.utils.textGabbiB20
@@ -113,6 +115,8 @@ fun ScreenProfile(
                 } else {
                     userModel.img = path
                     profileBitmap = img.uiTayConverterCircle().asImageBitmap()
+                    val texturl = img.uiTayWriteCodeQrImage()
+                    Log.d("IMGTATY","texturl $texturl")
                 }
                 viewModel.saveUserImg(userModel)
             }

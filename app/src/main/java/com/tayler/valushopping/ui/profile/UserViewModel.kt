@@ -17,6 +17,7 @@ class UserViewModel @Inject constructor(
     private val _successUserState = MutableStateFlow<UserModel?>(null)
     val successUserState: StateFlow<UserModel?> = _successUserState.asStateFlow()
 
+
     fun loadUser() {
         executeState(stateFlow = _successUserState) {
             appPreferences.getUser()
@@ -27,6 +28,12 @@ class UserViewModel @Inject constructor(
         execute {
             val response = appPreferences.saveUser(user)
             _successUserState.value = response
+        }
+    }
+
+    fun saveUserImg(user: UserModel) {
+        execute {
+             appPreferences.saveUser(user)
         }
     }
 }

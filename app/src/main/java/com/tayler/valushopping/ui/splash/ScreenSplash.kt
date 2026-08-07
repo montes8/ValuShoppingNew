@@ -110,7 +110,7 @@ private fun CenterContent(modifier: Modifier = Modifier,splashState : SplashUiSt
         modifier = modifier.padding(horizontal = 30.dp)
     ) {
         UiTayGif(
-            resId = R.drawable.gif_splash,
+            resId = com.valu.uitaycompose.R.drawable.gif_splash,
             width = 250.dp,
             height = 250.dp
         )
