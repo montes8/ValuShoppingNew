@@ -45,7 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tayler.entity.UserModel
 import com.tayler.valushopping.R
-import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.entity.LocalAppDataVale
 import com.valu.uitaycompose.button.UiTayButton
 import com.valu.uitaycompose.label.UiTayEditLayout

@@ -4,7 +4,6 @@ import android.content.Context
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.entity.ItemModel
 import com.tayler.valushopping.ui.base.BaseViewModel
-import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.tayler.valushopping.utils.JSON_ITEM
 import com.tayler.valushopping.utils.JSON_ITEM_ADMIN
 import com.valu.uitaycompose.utils.extension.uiTayDataJson
@@ -16,8 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class ConfigViewModel @Inject constructor(
-    private val appDataVale: AppDataVale,
-    private val globalUiStateManager: GlobalUiStateManager
+    private val appDataVale: AppDataVale
 ) : BaseViewModel() {
 
     private val _itemsState = MutableStateFlow<List<ItemModel>>(emptyList())
@@ -26,7 +24,13 @@ class ConfigViewModel @Inject constructor(
     fun loadConfigData(context: Context) {
         if (_itemsState.value.isNotEmpty()) return
         val jsonFile = if (appDataVale.paramData.session) JSON_ITEM_ADMIN else JSON_ITEM
-        val loadedItems: ArrayList<ItemModel> = uiTayDataJson(context, jsonFile)
-        _itemsState.value = loadedItems.toList()
+
+        try {
+            val loadedItems: List<ItemModel> = uiTayDataJson(context, jsonFile)
+            _itemsState.value = loadedItems
+        } catch (e: Exception) {
+            e.printStackTrace()
+            _itemsState.value = emptyList()
+        }
     }
 }

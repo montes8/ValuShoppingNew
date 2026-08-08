@@ -16,14 +16,14 @@ class AppUseCase @Inject constructor(
     private val configNetwork: IConfigNetwork,
 ) {
 
-    suspend fun paramInit(imei: String, number: String, code: String): ParamModel {
+    suspend fun paramInit(imei: String, code: String): ParamModel {
         if (appPreferences.getUUID().isEmpty()) {
             appPreferences.saveUUID(UUID.randomUUID().toString())
         }
         val response = userNetwork.loadParam(code)
         val responseSecurity = configNetwork.loadBlocking()
         val updatedResponse = response.copy(
-            blocking = validateBlocking(responseSecurity, imei, number)
+            blocking = validateBlocking(responseSecurity, imei)
         )
         appPreferences.saveParaDb(updatedResponse)
         return updatedResponse
@@ -56,10 +56,10 @@ class AppUseCase @Inject constructor(
         return appPreferences.getUser()
     }
 
-    fun validateBlocking(list: List<UserBlockingModel>, imei: String, number: String): Boolean {
+    fun validateBlocking(list: List<UserBlockingModel>, imei: String): Boolean {
         val valeUUID = appPreferences.getUUID()
         return list.any {
-            it.imei == imei || it.identifierId == valeUUID || number == it.ipAddress
+            (it.imei == imei) || (it.identifierId == valeUUID)
         }
     }
 }

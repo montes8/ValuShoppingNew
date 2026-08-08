@@ -61,7 +61,6 @@ open class BaseViewModel : ViewModel() {
     }
 
     fun <T> executeState(
-        initialValue: T? = null,
         stateFlow: MutableStateFlow<T?>,
         globalUiStateManager: GlobalUiStateManager? = null,
         func: suspend () -> T
@@ -73,10 +72,6 @@ open class BaseViewModel : ViewModel() {
     }
 
     suspend fun <T> io(block: suspend () -> T): T = withContext(Dispatchers.IO) {
-        block()
-    }
-
-    suspend fun <T> default(block: suspend () -> T): T = withContext(Dispatchers.Default) {
         block()
     }
 }

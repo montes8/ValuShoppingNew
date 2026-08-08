@@ -30,16 +30,6 @@ fun Context?.isAirplaneModeActive(): Boolean {
 }
 
 
-fun <T> Response<T>?.validateData(): Boolean {
-    return this?.isSuccessful == true && this.body() != null
-}
-
-fun <T> Response<T>?.validateBody(): T {
-    this?.body()?.let {
-        return it
-    } ?: throw NullPointerException()
-}
-
 fun ResponseBody?.toCompleteErrorModel(code: Int): Exception {
     return this?.let {
         return if (code == 407) throw UnAuthorizedException() else Gson().fromJson(
@@ -49,7 +39,7 @@ fun ResponseBody?.toCompleteErrorModel(code: Int): Exception {
     } ?: GenericException()
 }
 
-fun <T, R> Response<T>.processResponse(transform: (T) -> R): R {
+inline fun <T, R> Response<T>.processResponse(transform: (T) -> R): R {
     if (this.isSuccessful) {
         this.body()?.let {
             return transform(it)
@@ -59,8 +49,6 @@ fun <T, R> Response<T>.processResponse(transform: (T) -> R): R {
     }
 }
 
-fun <T> Response<T>.processResponse(): T = processResponse { it }
-
 fun Throwable.toAppException(): Exception {
     return when (this) {
         is CancellationException -> throw this
@@ -69,7 +57,7 @@ fun Throwable.toAppException(): Exception {
         is IllegalArgumentException -> UiTayApiException(
             code = 0,
             title = "Error de Configuración",
-            messageApi = "Error en el CertificatePinner: ${message}"
+            messageApi = "Error en el CertificatePinner: $message"
         )
         else -> UiTayApiException(
             code = 0,

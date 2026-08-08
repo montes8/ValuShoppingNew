@@ -26,8 +26,8 @@ configure<ApplicationExtension> {
         applicationId = "com.tayler.valushopping"
         minSdk = 25
         targetSdk = 37
-        versionCode = 48
-        versionName = "1.4.7"
+        versionCode = 49
+        versionName = "1.4.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,9 +48,10 @@ configure<ApplicationExtension> {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("config")
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             isDebuggable = false
+            ndk.debugSymbolLevel = "FULL"
         }
         debug {
             proguardFiles(
@@ -92,6 +93,7 @@ dependencies {
     implementation("com.google.android.play:app-update-ktx:2.1.0")
 
     implementation(libs.kotlinx.serialization.json)
+    implementation("com.google.code.gson:gson:2.11.0")
     // Dagger Hilt con KSP
     implementation("com.google.dagger:hilt-android:2.60.1")
     ksp("com.google.dagger:hilt-compiler:2.60.1")

@@ -49,7 +49,6 @@ fun ScreenHome(onNavigateToMain: (ScreenInitNav) -> Unit) {
     var currentActionId by remember { mutableIntStateOf(-1) }
     var currentActionIdNavBar by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
-    val colorStyle = appDataVale.getColorPrincipal()
     val navController = rememberNavController()
     val activity = LocalActivity.current as ComponentActivity
     var showDeliveryPoints by remember { mutableStateOf(false) }

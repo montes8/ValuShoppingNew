@@ -47,7 +47,7 @@ class DataViewModel @Inject constructor(
             val listBanner = response.filter { it.banner }
             response.forEach {
                 val distanceM = it.distance("K", appDataVale)
-                if (distanceM < (getRangeFilterProduct(it)) || it.latitude == "0") {
+                if ((distanceM < getRangeFilterProduct(it)) || it.latitude == "0") {
                     listFilter.add(it)
                 }
             }

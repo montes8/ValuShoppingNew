@@ -27,18 +27,14 @@ class ApplicationVale : Application(), DefaultLifecycleObserver {
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        // Se ejecuta cuando la app pasa a segundo plano (Background)
         applicationScope.launch {
             val data = appUseCase.configInitParam()
             val iconActual = if (data.idIconOld == "0" || data.idIconOld.isEmpty()) "Principal" else data.idIconOld
             val iconNew = data.idIcon.ifEmpty { "Principal" }
 
             if (iconActual != iconNew) {
-                // Aplicamos el cambio de icono AQUÍ, mientras el usuario no ve la app
                 val updatedData = data.copy(idIconOld = iconNew)
                 appUseCase.saveParam(updatedData)
-
-                // Llamamos a changeIcon de forma silenciosa
                 changeIcon(activeAliasName = iconNew, oldAliasName = iconActual)
             }
         }

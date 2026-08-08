@@ -11,8 +11,7 @@ import com.tayler.valushopping.ui.base.BaseViewModel
 import com.valu.uitaycompose.utils.extension.uiTayCountryNetwork
 import com.valu.uitaycompose.utils.extension.uiTayDateToString
 import com.valu.uitaycompose.utils.extension.uiTayGetMobilIPAddress
-import com.valu.uitaycompose.utils.extension.uiTayLoadImei
-import com.valu.uitaycompose.utils.extension.uiTayNumberPhone
+import com.valu.uitaycompose.utils.extension.uiTayGetAndroidId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
+import com.valu.uitaycompose.utils.UI_EMPTY
 import java.util.Date
 import javax.inject.Inject
 
@@ -48,7 +48,7 @@ class AppViewModel @Inject constructor(
     private suspend fun setupInitialUiState() {
         val paramInit = io { appUseCase.configInitParam() }
         appDataVale.paramData = paramInit
-        Log.d("servicedata","${appDataVale.paramData}")
+        Log.d("servicedata", appDataVale.paramData.toString())
         _uiState.value = SplashUiState(
             welcomeText = appDataVale.paramData.textWelcome,
             textColor = appDataVale.getColorPrincipal().first,
@@ -62,12 +62,13 @@ class AppViewModel @Inject constructor(
     private suspend fun loadRemoteParams() {
         val paramResponse = io {
             coroutineScope {
+                val androidId = try { application.uiTayGetAndroidId() } catch (_: Exception) {
+                    UI_EMPTY }
+
+                val country = try { application.uiTayCountryNetwork() } catch (_: Exception) { "PE" }
+
                 val paramDeferred = async {
-                    appUseCase.paramInit(
-                        application.uiTayLoadImei(),
-                        application.uiTayNumberPhone(),
-                        application.uiTayCountryNetwork()
-                    )
+                    appUseCase.paramInit(androidId, country)
                 }
                 val userDeferred = async { appUseCase.getUser() }
                 val categoriesAllDeferred = async { configUseCase.listCategoriesAll() }
@@ -81,7 +82,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun saveHistory(typeFlow: String) {
-        execute(false) {
+        execute(loading = false) {
             configUseCase.saveHistory(
                 HistoryModel(
                     type = typeFlow,
@@ -89,12 +90,11 @@ class AppViewModel @Inject constructor(
                     appDataVale.latitude,
                     appDataVale.longitude,
                     appDataVale.user.address,
-                    application.uiTayLoadImei(),
+                    application.uiTayGetAndroidId(),
                     appUseCase.getUUID(),
                     Date().uiTayDateToString(),
                     Date().uiTayDateToString("hh:mm a"),
-                    uiTayGetMobilIPAddress(),
-                    application.uiTayNumberPhone()
+                    uiTayGetMobilIPAddress(),UI_EMPTY
                 )
             )
         }

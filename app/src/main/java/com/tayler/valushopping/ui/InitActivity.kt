@@ -1,26 +1,16 @@
 package com.tayler.valushopping.ui
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.tayler.usecases.AppUseCase
 import com.tayler.valushopping.component.ValeNavigationInit
 import com.tayler.valushopping.ui.base.BaseActivity
-import com.valu.uitaycompose.utils.extension.changeIcon
 import dagger.hilt.android.AndroidEntryPoint
-import jakarta.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class InitActivity : BaseActivity() {
-
-    @Inject
-    lateinit var appUseCase: AppUseCase
 
     companion object {
         private const val UPDATE_CODE = 100

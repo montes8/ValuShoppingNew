@@ -23,7 +23,7 @@ class ConfigNetwork @Inject constructor(
     override suspend fun loadBlocking(): List<UserBlockingModel> = base.safeApiCall {
         try {
             serviceApi.loadUserBlocking().processResponse { UserBlockingResponse.toList(it) }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
@@ -35,7 +35,7 @@ class ConfigNetwork @Inject constructor(
     override suspend fun listTask(): List<TaskModel> = base.safeApiCall {
         try {
             serviceApi.loadTaskValu().processResponse { TaskResponse.toList(it) }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             listOf(
                 TaskModel(
                     uid = EMPTY_VALE,

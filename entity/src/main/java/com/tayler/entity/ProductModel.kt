@@ -80,6 +80,4 @@ data class ProductModel(
             else -> "Mujer"
         }
     }
-
-    fun tyFlowCreate() = uid.isEmpty()
 }

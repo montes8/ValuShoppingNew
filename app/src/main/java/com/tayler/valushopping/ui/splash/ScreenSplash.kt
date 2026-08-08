@@ -77,9 +77,9 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
                 delay(2.seconds)
                 onNavigateToMain()
             } else {
-                viewModel.updateUiState { currentState ->
+                globalUiStateManager.updateUiState { currentState ->
                     currentState.copy(
-                        error = true,
+                        error = true, 
                         errorType = UiTayApiException(messageApi = appDataVale.mapperDialogText())
                     )
                 }
