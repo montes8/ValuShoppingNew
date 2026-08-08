@@ -21,13 +21,14 @@ val keystoreProps = Properties().apply {
 configure<ApplicationExtension> {
     namespace = "com.tayler.valushopping"
     compileSdk = 37
+    ndkVersion = "30.0.15729638"
 
     defaultConfig {
         applicationId = "com.tayler.valushopping"
         minSdk = 25
         targetSdk = 37
-        versionCode = 49
-        versionName = "1.4.8"
+        versionCode = 58
+        versionName = "1.5.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,6 +44,7 @@ configure<ApplicationExtension> {
 
     buildTypes {
         release {
+            ndk.debugSymbolLevel = "FULL"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -51,7 +53,6 @@ configure<ApplicationExtension> {
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
-            ndk.debugSymbolLevel = "FULL"
         }
         debug {
             proguardFiles(
@@ -59,6 +60,12 @@ configure<ApplicationExtension> {
                 "proguard-rules.pro"
             )
             isDebuggable = true
+        }
+    }
+
+    packaging {
+        jniLibs {
+            keepDebugSymbols.add("**/*.so")
         }
     }
 
