@@ -37,7 +37,6 @@ import com.tayler.entity.CategoryModel
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.entity.LocalAppDataVale
-import com.tayler.valushopping.ui.base.BaseViewModel
 import com.valu.uitaycompose.swipe.UiTayUrlImage
 import com.valu.uitaycompose.utils.extension.uiTayShimmer
 import com.valu.uitaycompose.utils.tay_grey_100

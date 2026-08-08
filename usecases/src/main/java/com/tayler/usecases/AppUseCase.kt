@@ -11,58 +11,55 @@ import jakarta.inject.Inject
 import java.util.UUID
 
 class AppUseCase @Inject constructor(
-    private val iAppPreferences: IAppPreferences,
-    private val iUserNetwork: IUserNetwork,
-    private val iConfigNetwork: IConfigNetwork,
+    private val appPreferences: IAppPreferences,
+    private val userNetwork: IUserNetwork,
+    private val configNetwork: IConfigNetwork,
 ) {
 
     suspend fun paramInit(imei: String, number: String, code: String): ParamModel {
-        if (iAppPreferences.getUUID().isEmpty()) {
-            iAppPreferences.saveUUID(UUID.randomUUID().toString())
+        if (appPreferences.getUUID().isEmpty()) {
+            appPreferences.saveUUID(UUID.randomUUID().toString())
         }
-        val response = iUserNetwork.loadParam(code)
-        val responseSecurity = iConfigNetwork.loadBlocking()
+        val response = userNetwork.loadParam(code)
+        val responseSecurity = configNetwork.loadBlocking()
         val updatedResponse = response.copy(
             blocking = validateBlocking(responseSecurity, imei, number)
         )
-        iAppPreferences.saveParaDb(updatedResponse)
+        appPreferences.saveParaDb(updatedResponse)
         return updatedResponse
     }
 
     fun configInitParam(): ParamModel {
-        if (iAppPreferences.getUUID().isEmpty()) {
-            iAppPreferences.saveUUID(UUID.randomUUID().toString())
+        if (appPreferences.getUUID().isEmpty()) {
+            appPreferences.saveUUID(UUID.randomUUID().toString())
         }
-        val param = iAppPreferences.getParaDb()
+        val param = appPreferences.getParaDb()
         return param.copy(
-            session = iAppPreferences.getToken(),
+            session = appPreferences.getToken(),
             urlImage = BuildConfig.BASE_URL
         )
     }
 
     fun saveParam(model: ParamModel) {
-        iAppPreferences.saveParaDb(model)
+        appPreferences.saveParaDb(model)
     }
 
     fun getUUID(): String {
-        return iAppPreferences.getUUID()
+        return appPreferences.getUUID()
     }
 
     fun saveUser(value: UserModel): UserModel {
-        return iAppPreferences.saveUser(value)
+        return appPreferences.saveUser(value)
     }
 
     fun getUser(): UserModel {
-        return iAppPreferences.getUser()
+        return appPreferences.getUser()
     }
 
     fun validateBlocking(list: List<UserBlockingModel>, imei: String, number: String): Boolean {
-        val valeUUID = iAppPreferences.getUUID()
-        list.forEach {
-            if (it.imei == imei || it.identifierId == valeUUID || number == it.ipAddress) {
-                return true
-            }
+        val valeUUID = appPreferences.getUUID()
+        return list.any {
+            it.imei == imei || it.identifierId == valeUUID || number == it.ipAddress
         }
-        return false
     }
 }

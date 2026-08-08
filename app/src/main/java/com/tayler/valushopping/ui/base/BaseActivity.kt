@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.entity.LocalAppDataVale
-import com.tayler.valushopping.ui.base.LocalGlobalUiStateManager
 import com.tayler.valushopping.utils.ValeTheme
 import com.tayler.valushopping.utils.mapperError
 import com.valu.uitaycompose.loading.UiProgress

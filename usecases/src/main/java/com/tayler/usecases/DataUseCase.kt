@@ -9,37 +9,46 @@ import jakarta.inject.Inject
 import java.io.File
 
 class DataUseCase @Inject constructor(
-    private val iDataNetwork: IDataNetwork
+    private val dataNetwork: IDataNetwork
 ) {
 
-    suspend fun saveProduct(data: ProductModel): ProductModel{
-        return iDataNetwork.saveProduct(data)
+    suspend fun saveProduct(data: ProductModel): ProductModel {
+        return dataNetwork.saveProduct(data)
     }
-    suspend fun loadProduct(all: Boolean, isUser: String,country : String): List<ProductModel>{
-        return iDataNetwork.loadProduct(all,isUser,country)
+
+    suspend fun loadProduct(all: Boolean, isUser: String, country: String): List<ProductModel> {
+        return dataNetwork.loadProduct(all, isUser, country)
     }
-    suspend fun deleteProduct(idProduct: String): ProductModel{
-        return iDataNetwork.deleteProduct(idProduct)
+
+    suspend fun deleteProduct(idProduct: String): ProductModel {
+        return dataNetwork.deleteProduct(idProduct)
     }
-    suspend fun updateProduct(product: ProductModel): ProductModel{
-        return iDataNetwork.updateProduct(product)
+
+    suspend fun updateProduct(product: ProductModel): ProductModel {
+        return dataNetwork.updateProduct(product)
     }
-    suspend fun saveImage(file: File?, nameFile: String): ImageModel{
-        return iDataNetwork.saveImage(file,nameFile)
+
+    suspend fun saveImage(file: File?, nameFile: String): ImageModel {
+        return dataNetwork.saveImage(file, nameFile)
     }
-    suspend fun loadProductImage(idProduct: String): List<ImageMoreModel>{
-        return iDataNetwork.loadProductImage(idProduct)
+
+    suspend fun loadProductImage(idProduct: String): List<ImageMoreModel> {
+        return dataNetwork.loadProductImage(idProduct)
     }
-    suspend fun deleteProductImage(idProduct: String): ImageMoreModel{
-        return iDataNetwork.deleteProductImage(idProduct)
+
+    suspend fun deleteProductImage(idProduct: String): ImageMoreModel {
+        return dataNetwork.deleteProductImage(idProduct)
     }
-    suspend fun saveImageMore(file: File?, nameFile: String): ImageModel{
-        return iDataNetwork.saveImageMore(file,nameFile)
+
+    suspend fun saveImageMore(file: File?, nameFile: String): ImageModel {
+        return dataNetwork.saveImageMore(file, nameFile)
     }
-    suspend fun saveProductDBImages(request: ProductImageModel): ImageMoreModel{
-        return iDataNetwork.saveProductDBImages(request)
+
+    suspend fun saveProductDBImages(request: ProductImageModel): ImageMoreModel {
+        return dataNetwork.saveProductDBImages(request)
     }
-    suspend fun loadProductCategory(category : String): List<ProductModel>{
-        return iDataNetwork.loadProductCategory(category)
+
+    suspend fun loadProductCategory(category: String): List<ProductModel> {
+        return dataNetwork.loadProductCategory(category)
     }
 }

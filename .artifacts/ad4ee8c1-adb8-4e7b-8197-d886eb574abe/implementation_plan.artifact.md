@@ -1,73 +1,43 @@
-# Plan de Mejora del Módulo App
+# Plan de Centralización de Red: Eliminación total de Boilerplate
 
-Este plan detalla las refactorizaciones recomendadas para mejorar la arquitectura, estabilidad y mantenibilidad del módulo `:app`. El objetivo es aplicar mejores prácticas de Android (Clean Architecture, Hilt, Jetpack Compose) sin alterar la funcionalidad actual.
+Este plan corrige la redundancia que mencionaste, moviendo la verificación de conectividad a un Interceptor y centralizando la ejecución de llamadas a la API para que las clases Network sean lo más limpias posible.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> **Cambio en AppDataVale**: Al convertir `AppDataVale` de un objeto estático a una clase inyectada, eliminaremos el acceso global `AppDataVale.variable`. En su lugar, se inyectará en los ViewModels y se pasará a los Composables (o se usará un `CompositionLocal`). Esto requiere cambios en muchos archivos del módulo `:app`.
-
-> [!WARNING]
-> **BaseViewModel**: Cambiaremos cómo se maneja el estado de carga y error para evitar conflictos entre diferentes ViewModels, eliminando el uso de `companion object`.
+> **Cambio de Flujo**: La verificación de internet ya no ocurrirá manualmente dentro de cada función. Ocurrirá automáticamente a nivel de red (OkHttp). Si no hay internet, se lanzará una `MyNetworkException` antes de que la petición siquiera intente salir.
 
 ## Proposed Changes
 
-### 1. Refactorización de Estado Global (`AppDataVale`)
+### 1. Interceptor de Conectividad Automático
 
-Convertiremos `AppDataVale` en un administrador de estado inyectable para mejorar la testabilidad y evitar fugas de memoria.
+#### [NEW] [ConnectivityInterceptor.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/repository/src/main/java/com/tayler/repository/network/interceptor/ConnectivityInterceptor.kt)
+- Clase que hereda de `Interceptor`.
+- Lógica de `isConnected()` e `isAirplaneModeActive()` centralizada aquí.
 
-#### [MODIFY] [AppDataVale.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/app/src/main/java/com/tayler/valushopping/entity/AppDataVale.kt)
-- Cambiar de `object` a `class`.
-- Agregar anotación `@Singleton` (vía un módulo de Hilt).
-- Usar `StateFlow` para datos que cambian (como `paramData` o `user`) para que la UI reaccione automáticamente.
+#### [MODIFY] [ConfigModule.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/repository/src/main/java/com/tayler/repository/di/ConfigModule.kt)
+- Inyectar el `ConnectivityInterceptor` en el `OkHttpClient`.
 
-#### [NEW] [AppModule.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/app/src/main/java/com/tayler/valushopping/di/AppModule.kt)
-- Crear módulo de Hilt para proveer la instancia única de `AppDataVale`.
+### 2. Centralización de Llamadas (Safe Api Call)
 
----
+#### [MODIFY] [BaseNetwork.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/repository/src/main/java/com/tayler/repository/network/base/BaseNerwork.kt)
+- Crear una función genérica `safeApiCall` que envuelva el `try/catch` y el mapeo de excepciones (`toAppException`).
 
-### 2. Mejora en `BaseViewModel` y `BaseActivity`
+### 3. Limpieza de Clases Network
 
-Eliminar el estado compartido global por uno más seguro.
+#### [MODIFY] [DataNetwork.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/repository/src/main/java/com/tayler/repository/network/api/DataNetwork.kt)
+- Eliminar todos los `base.executeWithConnection`.
+- Usar `base.safeApiCall` directamente.
 
-#### [MODIFY] [BaseViewModel.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/app/src/main/java/com/tayler/valushopping/ui/base/BaseViewModel.kt)
-- Eliminar el `companion object`.
-- Cada ViewModel tendrá su propio `_uiStateBase`.
-- (Opcional) Crear un `GlobalEventManager` si se desea mantener la funcionalidad de errores globales.
-
-#### [MODIFY] [BaseActivity.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/app/src/main/java/com/tayler/valushopping/ui/base/BaseActivity.kt)
-- Ajustar la observación del estado para que provenga del ViewModel específico de la actividad.
-
----
-
-### 3. Refactorización de `ScreenHome`
-
-Dividir el archivo masivo en componentes manejables.
-
-#### [MODIFY] [ScreenHome.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/app/src/main/java/com/tayler/valushopping/ui/home/ScreenHome.kt)
-- Extraer `HomeDrawerContent`, `HomeBottomBar` y `HomeTopBar` a funciones o archivos separados.
-
----
-
-### 4. Optimización de Corrutinas
-
-#### [MODIFY] [InitActivity.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/app/src/main/java/com/tayler/valushopping/ui/InitActivity.kt)
-- Limpiar el uso de `lifecycleScope` y `withContext` para que sea más idiomático y fácil de seguir.
-
----
-
-### 5. Navegación y Usos de AppDataVale
-
-#### [MODIFY] Múltiples Archivos en `:app`
-- Actualizar todas las referencias de `AppDataVale.xxx` por la instancia inyectada o pasada por parámetro.
+#### [MODIFY] [UserNetwork.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/repository/src/main/java/com/tayler/repository/network/api/UserNetwork.kt) y [ConfigNetwork.kt](file:///Users/tayler/Desktop/project/android/ValuShoppingNew/repository/src/main/java/com/tayler/repository/network/api/ConfigNetwork.kt)
+- Aplicar la misma simplificación drástica.
 
 ## Verification Plan
 
 ### Automated Tests
-- Ejecutar `gradlew :app:assembleDebug` para asegurar que no hay errores de compilación tras los cambios de inyección.
+- Ejecutar `./gradlew :repository:assembleDebug`.
+- Verificar que el `OkHttpClient` se construye correctamente con el nuevo interceptor.
 
 ### Manual Verification
-- Iniciar la aplicación y verificar que el Splash carga correctamente.
-- Navegar por el Home y comprobar que el estilo (colores) se aplica según `AppDataVale`.
-- Abrir el Drawer y verificar las acciones de soporte y perfil.
-- Forzar un error (ej. desconectando internet) para ver si el diálogo de error de `BaseActivity` sigue funcionando.
+- Desactivar el Wi-Fi/Datos y abrir la app. Se debe mostrar el diálogo de "Error de conexión" (esto confirma que el Interceptor funciona).
+- Navegar con internet para confirmar que las llamadas exitosas siguen funcionando.

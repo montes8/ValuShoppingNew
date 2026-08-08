@@ -25,5 +25,5 @@ data class ParamModel (
     val idYoutube: String? = "xH6qsMpA7NM",
     val session: Boolean = false,
     val urlImage: String? = "",
-    val idIconOld: String = "0",
+    val idIconOld: String = "Principal",
 )

@@ -6,7 +6,6 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.tayler.entity.ParamModel
 import com.tayler.usecases.AppUseCase
 import com.tayler.valushopping.component.ValeNavigationInit
 import com.tayler.valushopping.ui.base.BaseActivity
@@ -29,7 +28,6 @@ class InitActivity : BaseActivity() {
     private val updateOptions = AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
 
     override fun setDataGlobal() {
-        checkAndUpdateAppIcon()
         window.decorView.post {
             validateVersionUpdate()
         }
@@ -63,27 +61,6 @@ class InitActivity : BaseActivity() {
         }
         appUpdateInfoTask.addOnFailureListener {
             //not code
-        }
-    }
-
-    private fun checkAndUpdateAppIcon() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val data = appUseCase.configInitParam()
-            val iconActual = data.idIconOld.ifEmpty { "Principal" }
-            val iconNew = data.idIcon.ifEmpty { "Principal" }
-
-            if (iconActual != iconNew) {
-                withContext(Dispatchers.Main) {
-                    changeIcon(activeAliasName = iconNew, oldAliasName = iconActual) { success ->
-                        if (success) {
-                            lifecycleScope.launch(Dispatchers.IO) {
-                                val updatedData = data.copy(idIconOld = iconNew)
-                                appUseCase.saveParam(updatedData)
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }

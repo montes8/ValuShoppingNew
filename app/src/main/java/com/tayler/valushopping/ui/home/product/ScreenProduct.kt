@@ -52,7 +52,6 @@ import com.tayler.entity.ProductModel
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.entity.LocalAppDataVale
-import com.tayler.valushopping.ui.base.BaseViewModel
 import com.tayler.valushopping.utils.mapperHeight
 import com.valu.uitaycompose.swipe.UiTayUrlImage
 import com.valu.uitaycompose.utils.extension.uiTayDialogZoom

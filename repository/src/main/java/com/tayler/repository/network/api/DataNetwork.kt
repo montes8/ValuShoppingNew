@@ -1,7 +1,5 @@
 package com.tayler.repository.network.api
 
-import com.tayler.entity.ImageModel
-import com.tayler.entity.ImageMoreModel
 import com.tayler.entity.ProductImageModel
 import com.tayler.entity.ProductModel
 import com.tayler.entity.exception.GenericException
@@ -12,9 +10,7 @@ import com.tayler.repository.network.model.response.ImageMoreResponse
 import com.tayler.repository.network.model.response.ImageResponse
 import com.tayler.repository.network.model.response.ProductResponse
 import com.tayler.repository.network.protocol.IDataNetwork
-import com.tayler.repository.utils.toCompleteErrorModel
-import com.tayler.repository.utils.validateBody
-import com.tayler.repository.utils.validateData
+import com.tayler.repository.utils.processResponse
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -24,130 +20,64 @@ import javax.inject.Inject
 class DataNetwork @Inject constructor(
     private val serviceApi: ServiceApi,
     private val base: BaseNetwork
-) :
-    IDataNetwork {
-    override suspend fun saveProduct(data: ProductModel): ProductModel {
-        return base.executeWithConnection {
-            var model: ProductModel? = null
-            val response = serviceApi.saveProduct(ProductResponse.toModelRequest(data))
-            if (response.validateData()) {
-                model = ProductResponse.toModel(response.validateBody() )
+) : IDataNetwork {
+
+    override suspend fun saveProduct(data: ProductModel) = base.safeApiCall {
+        serviceApi.saveProduct(ProductResponse.toModelRequest(data)).processResponse {
+            ProductResponse.toModel(it)
+        }
+    }
+
+    override suspend fun loadProduct(all: Boolean, isUser: String, country: String) = base.safeApiCall {
+        val response = if (all) serviceApi.loadProducts(isUser) else serviceApi.loadProduct(country)
+        response.processResponse { ProductResponse.toList(it) }
+    }
+
+    override suspend fun loadProductCategory(category: String) = base.safeApiCall {
+        serviceApi.loadProductCategory(category).processResponse { ProductResponse.toList(it) }
+    }
+
+    override suspend fun deleteProduct(idProduct: String) = base.safeApiCall {
+        serviceApi.deleteProduct(idProduct).processResponse { ProductResponse.toModel(it) }
+    }
+
+    override suspend fun deleteProductImage(idProduct: String) = base.safeApiCall {
+        serviceApi.deleteProductImage(idProduct).processResponse { ImageMoreResponse.toModel(it) }
+    }
+
+    override suspend fun updateProduct(product: ProductModel) = base.safeApiCall {
+        serviceApi.updateProduct(ProductResponse.toModelRequest(product)).processResponse {
+            ProductResponse.toModel(it)
+        }
+    }
+
+    override suspend fun saveImage(file: File?, nameFile: String) = base.safeApiCall {
+        file?.let {
+            val image = it.asRequestBody("image/*".toMediaType())
+            val multiPartBody = MultipartBody.Part.createFormData("archivo", it.name, image)
+            serviceApi.saveImage(multiPartBody, nameFile).processResponse { response ->
+                ImageResponse.toModel(response)
             }
-            model ?: throw response.errorBody().toCompleteErrorModel(response.code())
-
-        }
+        } ?: throw GenericException()
     }
 
-    override suspend fun loadProduct(all: Boolean, isUser: String,country : String): List<ProductModel> {
-        return base.executeWithConnection {
-            var model: List<ProductModel>? = null
-            val response = if (all) serviceApi.loadProducts(isUser) else serviceApi.loadProduct(country)
-            if (response.validateData()) {
-                model = ProductResponse.toList(response.validateBody() )
+    override suspend fun saveImageMore(file: File?, nameFile: String) = base.safeApiCall {
+        file?.let {
+            val image = it.asRequestBody("image/*".toMediaType())
+            val multiPartBody = MultipartBody.Part.createFormData("archivo", it.name, image)
+            serviceApi.saveImageMore(multiPartBody, nameFile).processResponse { response ->
+                ImageResponse.toModel(response)
             }
-            model ?: throw response.errorBody().toCompleteErrorModel(response.code())
+        } ?: throw GenericException()
+    }
+
+    override suspend fun saveProductDBImages(request: ProductImageModel) = base.safeApiCall {
+        serviceApi.saveProductImages(ProductImageRequest.toModel(request)).processResponse {
+            ImageMoreResponse.toModel(it)
         }
     }
 
-    override suspend fun loadProductCategory(category : String): List<ProductModel> {
-        return base.executeWithConnection {
-            var model: List<ProductModel>? = null
-            val response = serviceApi.loadProductCategory(category)
-            if (response.validateData()) {
-                model =  ProductResponse.toList(response.validateBody() )
-            }
-            model ?: throw response.errorBody().toCompleteErrorModel(response.code())
-
-        }
-    }
-
-    override suspend fun deleteProduct(idProduct: String): ProductModel {
-        return base.executeWithConnection {
-            var model: ProductModel? = null
-            val response = serviceApi.deleteProduct(idProduct)
-            if (response.validateData()) {
-                model =  ProductResponse.toModel(response.validateBody() )
-            }
-            model ?: throw response.errorBody().toCompleteErrorModel(response.code())
-        }
-    }
-
-    override suspend fun deleteProductImage(idProduct: String): ImageMoreModel {
-        return base.executeWithConnection {
-            var model: ImageMoreModel? = null
-            val response = serviceApi.deleteProductImage(idProduct)
-            if (response.validateData()) {
-                model = ImageMoreResponse.toModel(response.validateBody())
-            }
-            model ?: throw response.errorBody().toCompleteErrorModel(response.code())
-        }
-    }
-
-    override suspend fun updateProduct(product: ProductModel): ProductModel {
-        return base.executeWithConnection {
-            var model: ProductModel? = null
-            val response = serviceApi.updateProduct(ProductResponse.toModelRequest(product))
-            if (response.validateData()) {
-                model =  ProductResponse.toModel(response.validateBody() )
-            }
-            model ?: throw response.errorBody().toCompleteErrorModel(response.code())
-
-        }
-    }
-
-    override suspend fun saveImage(file: File?,nameFile: String): ImageModel {
-        return base.executeWithConnection {
-            file?.let {
-                val image = it.asRequestBody("image/*".toMediaType())
-                val multiPartBody = MultipartBody.Part.createFormData("archivo", it.name, image)
-                val response = serviceApi.saveImage(multiPartBody,nameFile)
-                var model: ImageModel? = null
-                if (response.isSuccessful && response.body() != null) {
-                    model = ImageResponse.toModel(response.validateBody())
-                }
-                model ?: throw response.errorBody().toCompleteErrorModel(response.code())
-            } ?: throw GenericException()
-
-        }
-    }
-
-    override suspend fun saveImageMore(file: File?, nameFile: String): ImageModel {
-        return base.executeWithConnection {
-            file?.let {
-                val image = it.asRequestBody("image/*".toMediaType())
-                val multiPartBody = MultipartBody.Part.createFormData("archivo", it.name, image)
-                val response = serviceApi.saveImageMore(multiPartBody, nameFile)
-                var model: ImageModel? = null
-                if (response.isSuccessful && response.body() != null) {
-                    model = ImageResponse.toModel(response.validateBody())
-                }
-                model ?: throw response.errorBody().toCompleteErrorModel(response.code())
-            } ?: throw GenericException()
-
-        }
-    }
-
-    override suspend fun saveProductDBImages(request: ProductImageModel): ImageMoreModel {
-        return base.executeWithConnection {
-            var model: ImageMoreModel? = null
-            val response = serviceApi.saveProductImages(
-                ProductImageRequest.toModel(request))
-            if (response.validateData()) {
-                model = ImageMoreResponse.toModel(response.validateBody())
-            }
-            model ?: throw response.errorBody().toCompleteErrorModel(response.code())
-
-        }
-    }
-
-    override suspend fun loadProductImage(idProduct: String): List<ImageMoreModel> {
-        return base.executeWithConnection {
-            var model: List<ImageMoreModel>? = null
-            val response = serviceApi.loadProductImage(idProduct)
-            if (response.validateData()) {
-                model = ImageMoreResponse.toList(response.validateBody())
-            }
-            model ?: throw response.errorBody().toCompleteErrorModel(response.code())
-        }
+    override suspend fun loadProductImage(idProduct: String) = base.safeApiCall {
+        serviceApi.loadProductImage(idProduct).processResponse { ImageMoreResponse.toList(it) }
     }
 }

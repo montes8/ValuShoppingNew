@@ -26,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val configUseCase: ConfigUseCase,
-    private val appUseCase: AppUseCase,
+    val appUseCase: AppUseCase,
     private val application: Application,
     private val appDataVale: AppDataVale,
     private val globalUiStateManager: GlobalUiStateManager
@@ -54,7 +54,7 @@ class AppViewModel @Inject constructor(
             textColor = appDataVale.getColorPrincipal().first,
             showLogo = appDataVale.paramData.bgService
         )
-        updateUiState { currentState ->
+        globalUiStateManager.updateUiState { currentState ->
             currentState.copy(statusBarColor = appDataVale.getColorPrincipal().second)
         }
     }

@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.tayler.entity.exception.UiTayApiException
 import com.tayler.repository.R
 import com.tayler.repository.network.ServiceApi
 import com.tayler.repository.preferences.manager.PreferencesManager
-import com.tayler.repository.utils.AUTHORIZATION
 import com.tayler.repository.utils.MY_CONTENT_TYPE
 import com.tayler.repository.utils.MY_TIME_ON
 import com.tayler.repository.utils.PLATFORM
@@ -30,6 +28,8 @@ import java.util.concurrent.TimeUnit
 import com.tayler.repository.BuildConfig
 import okhttp3.CertificatePinner
 import java.net.URL
+import com.tayler.repository.network.interceptor.ApiInterceptor
+import com.tayler.repository.network.interceptor.ConnectivityInterceptor
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -43,7 +43,6 @@ class SharedPreferencesModule {
             createEncryptedSharedPreferences(context, fileName)
         } catch (e: Exception) {
             e.printStackTrace()
-            // Si hay un error de corrupción (como el que estás viendo), borramos el archivo y reintentamos
             context.deleteSharedPreferences(fileName)
             createEncryptedSharedPreferences(context, fileName)
         }
@@ -99,6 +98,7 @@ object NetworkModule {
     fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         apiInterceptor: Interceptor,
+        connectivityInterceptor: ConnectivityInterceptor,
         certificatePinning: CertificatePinner
     ): OkHttpClient {
         return OkHttpClient.Builder()
@@ -108,6 +108,7 @@ object NetworkModule {
             .readTimeout(MY_TIME_ON, TimeUnit.SECONDS)
             .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(apiInterceptor)
+            .addInterceptor(connectivityInterceptor)
             .certificatePinner(certificatePinning)
             .build()
     }
@@ -131,20 +132,5 @@ object NetworkModule {
     @Provides
     fun providerHeaderInterceptor(preferencesManager: PreferencesManager): Interceptor {
         return ApiInterceptor(preferencesManager)
-    }
-}
-
-class ApiInterceptor @Inject constructor(private val preferencesManager: PreferencesManager) :
-    Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        var request = chain.request()
-        val builder = request.newBuilder()
-            .addHeader("Content-Type", MY_CONTENT_TYPE)
-            .header("x-os", PLATFORM)
-        if (preferencesManager.getString(PREFERENCE_TOKEN).isNotEmpty()) {
-            builder.addHeader(AUTHORIZATION, preferencesManager.getString(PREFERENCE_TOKEN))
-        }
-        request = builder.build()
-        return chain.proceed(request)
     }
 }

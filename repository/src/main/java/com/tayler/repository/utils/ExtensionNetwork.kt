@@ -49,6 +49,18 @@ fun ResponseBody?.toCompleteErrorModel(code: Int): Exception {
     } ?: GenericException()
 }
 
+fun <T, R> Response<T>.processResponse(transform: (T) -> R): R {
+    if (this.isSuccessful) {
+        this.body()?.let {
+            return transform(it)
+        } ?: throw NullPointerException("Empty response body")
+    } else {
+        throw this.errorBody().toCompleteErrorModel(this.code())
+    }
+}
+
+fun <T> Response<T>.processResponse(): T = processResponse { it }
+
 fun Throwable.toAppException(): Exception {
     return when (this) {
         is CancellationException -> throw this

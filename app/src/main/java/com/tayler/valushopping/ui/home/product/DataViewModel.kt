@@ -24,13 +24,19 @@ class DataViewModel @Inject constructor(
     private val _successLoadProductClientState = MutableStateFlow(
         Triple(
             List(5) { ProductModel(name = UI_EMPTY, url = UI_EMPTY) },
-            List(1) { ProductModel(name = UI_EMPTY, urlBanner = UI_EMPTY) },false
+            List(1) { ProductModel(name = UI_EMPTY, urlBanner = UI_EMPTY) }, false
         )
     )
-    val successLoadProductClientState: StateFlow<Triple<List<ProductModel>, List<ProductModel>, Boolean>> = _successLoadProductClientState.asStateFlow()
+    val successLoadProductClientState: StateFlow<Triple<List<ProductModel>, List<ProductModel>, Boolean>> =
+        _successLoadProductClientState.asStateFlow()
 
 
-    fun loadProductClient(all: Boolean = false, admin: String = UI_EMPTY, location: Boolean = false, country: String) {
+    fun loadProductClient(
+        all: Boolean = false,
+        admin: String = UI_EMPTY,
+        location: Boolean = false,
+        country: String
+    ) {
         val currentProducts = _successLoadProductClientState.value.first
         val isAlreadyLoaded = currentProducts.firstOrNull()?.uid?.isNotEmpty() == true
         if (isAlreadyLoaded) return
@@ -46,7 +52,8 @@ class DataViewModel @Inject constructor(
                 }
             }
 
-             _successLoadProductClientState.value = Triple(if (location) listFilter.shuffled() else response.shuffled(), listBanner,true)
+            _successLoadProductClientState.value =
+                Triple(if (location) listFilter.shuffled() else response.shuffled(), listBanner, true)
         }
     }
 

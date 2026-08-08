@@ -1,0 +1,5 @@
+- [x] Refactor `AppUseCase.kt`: remove 'i' prefix and improve `validateBlocking`
+- [x] Refactor `ConfigUseCase.kt`: remove 'i' prefix
+- [x] Refactor `DataUseCase.kt`: remove 'i' prefix
+- [x] Review and clean up `UserUseCase.kt`
+- [x] Verify build and functionality

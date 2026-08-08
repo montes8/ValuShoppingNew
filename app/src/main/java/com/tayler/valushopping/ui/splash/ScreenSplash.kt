@@ -32,15 +32,12 @@ import com.tayler.entity.exception.UiTayApiException
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.entity.LocalAppDataVale
-import com.tayler.valushopping.ui.base.BaseViewModel
+import com.tayler.valushopping.ui.base.LocalGlobalUiStateManager
 import com.tayler.valushopping.utils.validateHourApp
-import com.valu.uitaycompose.swipe.UiTayGif
 import com.valu.uitaycompose.swipe.UiTayUrlImage
 import com.valu.uitaycompose.utils.textPenny25
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
-
-import com.tayler.valushopping.ui.base.LocalGlobalUiStateManager
 
 @Composable
 fun ScreenSplash(onNavigateToMain: () -> Unit) {
@@ -64,13 +61,27 @@ fun ScreenSplash(onNavigateToMain: () -> Unit) {
 
     LaunchedEffect(paramResponse) {
         paramResponse?.let { param ->
+            val iconActual = if (appDataVale.paramData.idIconOld == "0" || appDataVale.paramData.idIconOld.isEmpty()) "Principal" else appDataVale.paramData.idIconOld
+            val iconNew = param.idIcon.ifEmpty { "Principal" }
+
             appDataVale.paramData = param
+
+            if (iconActual != iconNew) {
+                val updatedData = param.copy(idIconOld = iconNew)
+                viewModel.execute(loading = false) {
+                    viewModel.appUseCase.saveParam(updatedData)
+                }
+            }
+
             if (appDataVale.paramData.validateHourApp()) {
                 delay(2.seconds)
                 onNavigateToMain()
             } else {
                 viewModel.updateUiState { currentState ->
-                    currentState.copy(error = true, errorType = UiTayApiException(messageApi = appDataVale.mapperDialogText()))
+                    currentState.copy(
+                        error = true,
+                        errorType = UiTayApiException(messageApi = appDataVale.mapperDialogText())
+                    )
                 }
             }
         }
@@ -113,14 +124,12 @@ private fun CenterContent(modifier: Modifier = Modifier,splashState : SplashUiSt
         verticalArrangement = Arrangement.Center,
         modifier = modifier.padding(horizontal = 30.dp)
     ) {
-        UiTayGif(
-            resId = com.valu.uitaycompose.R.drawable.gif_splash,
-            width = 250.dp,
-            height = 250.dp
+        Image(
+            painter = painterResource(R.drawable.ic_bag),
+            modifier = Modifier.size(200.dp),
+            contentDescription = null
         )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
+        Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = splashState.welcomeText,
             color = splashState.textColor,
