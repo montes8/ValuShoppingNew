@@ -162,7 +162,9 @@ fun Context.sharedImageViewFromBitmap(bitmap: Bitmap) {
 
 fun Context.uiCreatePictureFile(nameFile: String = "imgSave"): File {
     val storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    val newPath = File("$storageDir$nameFile")
+        ?: throw IllegalStateException("External storage is not available")
+
+    val newPath = File(storageDir, nameFile)
     if (!newPath.exists()) {
         newPath.mkdirs()
     }

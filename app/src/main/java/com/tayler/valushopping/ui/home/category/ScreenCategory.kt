@@ -93,10 +93,7 @@ fun ScreenCategory() {
                         CategoryRowItem(
                             category = category,
                             isLoading = isLoading,isDelay,
-                            appDataVale = appDataVale,
-                            onClick = {
-                                // ListProductCategoryActivity.newInstance(context, category)
-                            }
+                            appDataVale = appDataVale
                         )
                     }
                 }
@@ -111,7 +108,7 @@ fun CategoryRowItem(
     isLoading: Boolean = false,
     isDelay: Boolean,
     appDataVale: AppDataVale,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier

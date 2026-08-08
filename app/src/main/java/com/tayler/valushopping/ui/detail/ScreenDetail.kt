@@ -77,6 +77,7 @@ import com.valu.uitaycompose.utils.textSe12
 import com.valu.uitaycompose.utils.textSe14
 import com.valu.uitaycompose.utils.textSe16
 import com.valu.uitaycompose.utils.textSeB18
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -101,7 +102,7 @@ fun ScreenDetail(
     var showZoomDialog by remember { mutableStateOf<String?>(null) }
 
     showZoomDialog?.let { imageUrl ->
-        UiTayDialogZoomDetail(imageUrl = imageUrl,enableAdvancedZoom = false) {
+        UiTayDialogZoomDetail(imageUrl = imageUrl, enableAdvancedZoom = false) {
             showZoomDialog = null
         }
     }
@@ -114,9 +115,8 @@ fun ScreenDetail(
                     .backgroundColor(colorStyle.third)
                     .textColor(colorStyle.first)
                     .bgService(appDataVale.paramData.bgService)
-                    .urlBgService(
-                        appDataVale.getUrlBgToolbar(context)
-                    ).iconColor(colorStyle.first)
+                    .urlBgService(appDataVale.getUrlBgToolbar(context))
+                    .iconColor(colorStyle.first)
             ) { _ ->
                 onBackClick.invoke()
             }
@@ -168,64 +168,85 @@ fun ScreenDetail(
                     }
                 }
 
-                DescriptionSection(product = product,colorStyle.first)
-
+                DescriptionSection(product = product, colorStyle.first)
                 DeliverySection(product = product)
             }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .background(Color.White)
-                    .padding(16.dp)
-            ) {
-                UiTayButton(uiTayText= stringResource(R.string.btn_consult),
-                    uiTayStyleBtn  = UTStyleCButton.UI_TAY_SECONDARY,
-                    uiTayStyleIcon = UTStyleIcon.START,
-                    uiTayBtnModifier = UiTayButtonModel()
-                        .textColorSecondary(colorStyle.first)
-                        .strokeSecondaryColor(colorStyle.first)
-                        .strokeSecondarySelectedColor(colorStyle.first)
-                        .iconStart(R.drawable.ic_social)
-                ){
-                    if (product.state) {
-                        aViewModel.saveHistory(TYPE_CONSULT)
-                        context.openWhatsApp(
-                            phone= product.phone,
-                            text=product.mapperNextProduct(),
-                            code = product.countryCode.mapperCodeSocial()
-                        )
-                    } else {
-                        context.uiTayShowToast(R.string.toast_not_product)
+            Box(modifier = Modifier.align(Alignment.BottomCenter)) {
+                ProductActionButtons(
+                    product = product,
+                    aViewModel = aViewModel,
+                    colorStyle = colorStyle,
+                    coroutineScope = coroutineScope,
+                    graphicsLayer = graphicsLayer,
+                    context = context
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProductActionButtons(
+    product: ProductModel,
+    aViewModel: AppViewModel,
+    colorStyle: Triple<Color,Color,Color>,
+    coroutineScope: CoroutineScope,
+    graphicsLayer: androidx.compose.ui.graphics.layer.GraphicsLayer,
+    context: android.content.Context
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(16.dp)
+    ) {
+        UiTayButton(
+            uiTayText = stringResource(R.string.btn_consult),
+            uiTayStyleBtn = UTStyleCButton.UI_TAY_SECONDARY,
+            uiTayStyleIcon = UTStyleIcon.START,
+            uiTayBtnModifier = UiTayButtonModel()
+                .textColorSecondary(colorStyle.first)
+                .strokeSecondaryColor(colorStyle.first)
+                .strokeSecondarySelectedColor(colorStyle.first)
+                .iconStart(R.drawable.ic_social)
+        ) {
+            if (product.state) {
+                aViewModel.saveHistory(TYPE_CONSULT)
+                context.openWhatsApp(
+                    phone = product.phone,
+                    text = product.mapperNextProduct(),
+                    code = product.countryCode.mapperCodeSocial()
+                )
+            } else {
+                context.uiTayShowToast(R.string.toast_not_product)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        UiTayButton(
+            uiTayText = stringResource(R.string.btn_shared),
+            uiTayStyleIcon = UTStyleIcon.START,
+            uiTayBtnModifier = UiTayButtonModel()
+                .bgColor(colorStyle.first)
+                .bgSelectedColor(colorStyle.first)
+                .strokeColor(colorStyle.first)
+                .strokeSelectedColor(colorStyle.first)
+                .iconStart(R.drawable.ic_shared)
+        ) {
+            if (product.state) {
+                coroutineScope.launch {
+                    try {
+                        val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+                        context.sharedImageViewFromBitmap(bitmap)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        context.uiTayShowToast(R.string.error_image)
                     }
                 }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                UiTayButton(uiTayText= stringResource(R.string.btn_shared),
-                    uiTayStyleIcon = UTStyleIcon.START,
-                    uiTayBtnModifier = UiTayButtonModel()
-                        .bgColor(colorStyle.first)
-                        .bgSelectedColor(colorStyle.first)
-                        .strokeColor(colorStyle.first)
-                        .strokeSelectedColor(colorStyle.first)
-                        .iconStart(R.drawable.ic_shared)
-
-                ){
-                    if (product.state) {
-                        coroutineScope.launch {
-                            try {
-                                val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
-                                context.sharedImageViewFromBitmap(bitmap)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                context.uiTayShowToast(R.string.error_image)
-                            }
-                        }
-                    } else {
-                        context.uiTayShowToast(R.string.toast_not_product)                   }
-                }
+            } else {
+                context.uiTayShowToast(R.string.toast_not_product)
             }
         }
     }
