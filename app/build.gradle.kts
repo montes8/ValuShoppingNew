@@ -105,7 +105,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.60.1")
     ksp("com.google.dagger:hilt-compiler:2.60.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation(project(":uitaycompose"))
+   // implementation(project(":uitaycompose"))
     implementation(project(":entity"))
     implementation(project(":usecases"))
 
@@ -113,6 +113,8 @@ dependencies {
 
     implementation("androidx.media3:media3-exoplayer:1.5.0")
     implementation("androidx.media3:media3-ui:1.5.0")
+
+    implementation("com.github.montes8:TayComposeLibrary:1.0.1")
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

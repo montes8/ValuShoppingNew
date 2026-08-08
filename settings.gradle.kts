@@ -3,6 +3,9 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url = uri("https://jitpack.io")
+        }
     }
 }
 plugins {
@@ -13,6 +16,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://jitpack.io")
+        }
     }
 }
 
@@ -21,5 +27,3 @@ include(":app")
 include(":entity")
 include(":repository")
 include(":usecases")
-include(":uitaycompose")
-project(":uitaycompose").projectDir = File(settingsDir, "../TayComposeLibrary/uitaycompose")
