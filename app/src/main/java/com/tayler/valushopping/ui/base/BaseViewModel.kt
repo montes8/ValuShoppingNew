@@ -1,5 +1,6 @@
 package com.tayler.valushopping.ui.base
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CancellationException
@@ -72,8 +73,7 @@ open class BaseViewModel(private val ioDispatcher: CoroutineDispatcher = Dispatc
         }
     }
 
-    @Suppress("S6313")
-    protected suspend fun <T> io(block: suspend () -> T): T = withContext(ioDispatcher) {//not code
+    protected suspend fun <T> io(block: suspend () -> T): T = withContext(ioDispatcher) {// NOSONAR
         block()
     }
 }
