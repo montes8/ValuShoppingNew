@@ -17,7 +17,7 @@ fun HomeBottomBar(
 ) {
     val appDataVale = LocalAppDataVale.current
     val colorStyle = appDataVale.getColorPrincipal()
-    val itemsListNavBar = itemsNavBar.toMutableList()
+    val itemsListNavBar = itemsNavBar
 
     UiTayBottomBar(
         itemsListNavBar,

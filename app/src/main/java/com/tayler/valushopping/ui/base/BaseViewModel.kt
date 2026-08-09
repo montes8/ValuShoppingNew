@@ -72,7 +72,7 @@ open class BaseViewModel(private val ioDispatcher: CoroutineDispatcher = Dispatc
         }
     }
 
-    suspend fun <T> io(block: suspend () -> T): T = withContext(ioDispatcher) {
+    protected suspend fun <T> io(block: suspend () -> T): T = withContext(ioDispatcher) {
         block()
     }
 }

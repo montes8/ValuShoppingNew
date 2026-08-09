@@ -79,21 +79,17 @@ fun ScreenProfile(
     var profileBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
     LaunchedEffect(user) {
-        user?.let {
-            userModel = it
-            nameText = it.names
-            lastNameText = it.lastName
-            documentText = it.document
-            emailText = it.email
-            phoneText = it.phone
-            addressText = it.address
-            withContext(Dispatchers.IO) {
-                if (it.imgBanner.isNotEmpty()) {
-                    bannerBitmap = BitmapFactory.decodeFile(it.imgBanner).asImageBitmap()
-                }
-                if (it.img.isNotEmpty()) {
-                    profileBitmap = BitmapFactory.decodeFile(it.img).uiTayConverterCircle().asImageBitmap()
-                }
+        user?.let { loadedUser ->
+            userModel = loadedUser
+            nameText = loadedUser.names
+            lastNameText = loadedUser.lastName
+            documentText = loadedUser.document
+            emailText = loadedUser.email
+            phoneText = loadedUser.phone
+            addressText = loadedUser.address
+            loadUserBitmaps(loadedUser) { banner, profile ->
+                bannerBitmap = banner
+                profileBitmap = profile
             }
         }
     }
@@ -105,7 +101,9 @@ fun ScreenProfile(
     val cameraManager = rememberUiTayCameraManager(
         uiTayNameFilePath = "user",
         listener = object : UiTayCameraManagerCompose.CameraControllerListener {
-            override fun onCameraPermissionDenied() {}
+            override fun onCameraPermissionDenied() {
+                //not code
+            }
 
             override fun onGetImageCameraCompleted(path: String, img: Bitmap) {
                 userModel = if (typeBanner) {
@@ -120,16 +118,9 @@ fun ScreenProfile(
         }
     )
 
-    val isButtonEnabled = remember(nameText, lastNameText, documentText, emailText, phoneText, addressText) {
-        var flagEnable = 0
-        flagEnable += if (nameText.isNotEmpty()) 0 else 1
-        flagEnable += if (lastNameText.isNotEmpty()) 0 else 1
-        flagEnable += if (documentText.length == 8) 0 else 1
-        flagEnable += if (emailText.uiTayValidateEmail()) 0 else 1
-        flagEnable += if (phoneText.uiTayValidatePhoneFormat()) 0 else 1
-        flagEnable += if (addressText.isNotEmpty()) 0 else 1
-        flagEnable == 0
-    }
+    val isButtonEnabled = rememberProfileValidation(
+        nameText, lastNameText, documentText, emailText, phoneText, addressText
+    )
 
     Scaffold(topBar = {}) { paddingValues ->
         Box(
@@ -162,37 +153,226 @@ fun ScreenProfile(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 ProfileFormSection(
-                    isEditing = isEditing,
-                    isButtonEnabled = isButtonEnabled,
-                    nameText = nameText,
-                    lastNameText = lastNameText,
-                    documentText = documentText,
-                    emailText = emailText,
-                    phoneText = phoneText,
-                    addressText = addressText,
-                    primaryColor = appDataVale.getColorPrincipal().first,
-                    onEditToggle = { isEditing = !isEditing },
-                    onNameChange = { nameText = it },
-                    onLastNameChange = { lastNameText = it },
-                    onDocumentChange = { documentText = it },
-                    onEmailChange = { emailText = it },
-                    onPhoneChange = { phoneText = it },
-                    onAddressChange = { addressText = it },
-                    onSaveClick = {
-                        userModel = userModel.copy(
-                            names = nameText,
-                            lastName = lastNameText,
-                            document = documentText,
-                            email = emailText,
-                            phone = phoneText,
-                            address = addressText
-                        )
-                        viewModel.saveUser(userModel)
-                        isEditing = false
-                    }
+                    state = ProfileUiState(
+                        isEditing = isEditing,
+                        isButtonEnabled = isButtonEnabled,
+                        nameText = nameText,
+                        lastNameText = lastNameText,
+                        documentText = documentText,
+                        emailText = emailText,
+                        phoneText = phoneText,
+                        addressText = addressText,
+                        primaryColor = appDataVale.getColorPrincipal().first
+                    ),
+                    actions = ProfileUiActions(
+                        onEditToggle = { isEditing = !isEditing },
+                        onNameChange = { nameText = it },
+                        onLastNameChange = { lastNameText = it },
+                        onDocumentChange = { documentText = it },
+                        onEmailChange = { emailText = it },
+                        onPhoneChange = { phoneText = it },
+                        onAddressChange = { addressText = it },
+                        onSaveClick = {
+                            userModel = userModel.copy(
+                                names = nameText,
+                                lastName = lastNameText,
+                                document = documentText,
+                                email = emailText,
+                                phone = phoneText,
+                                address = addressText
+                            )
+                            viewModel.saveUser(userModel)
+                            isEditing = false
+                        }
+                    )
                 )
             }
         }
+    }
+}
+
+private suspend fun loadUserBitmaps(
+    user: UserModel,
+    onBitmapsLoaded: (ImageBitmap?, ImageBitmap?) -> Unit
+) {
+    withContext(Dispatchers.IO) {
+        val banner = if (user.imgBanner.isNotEmpty()) {
+            BitmapFactory.decodeFile(user.imgBanner)?.asImageBitmap()
+        } else null
+
+        val profile = if (user.img.isNotEmpty()) {
+            BitmapFactory.decodeFile(user.img)?.uiTayConverterCircle()?.asImageBitmap()
+        } else null
+
+        onBitmapsLoaded(banner, profile)
+    }
+}
+
+@Composable
+private fun rememberProfileValidation(
+    name: String,
+    lastName: String,
+    document: String,
+    email: String,
+    phone: String,
+    address: String
+): Boolean {
+    return remember(name, lastName, document, email, phone, address) {
+        val isValidName = name.isNotEmpty()
+        val isValidLastName = lastName.isNotEmpty()
+        val isValidDoc = document.length == 8
+        val isValidEmail = email.uiTayValidateEmail()
+        val isValidPhone = phone.uiTayValidatePhoneFormat()
+        val isValidAddress = address.isNotEmpty()
+
+        isValidName && isValidLastName && isValidDoc && isValidEmail && isValidPhone && isValidAddress
+    }
+}
+
+data class ProfileUiState(
+    val isEditing: Boolean = false,
+    val isButtonEnabled: Boolean = false,
+    val nameText: String = "",
+    val lastNameText: String = "",
+    val documentText: String = "",
+    val emailText: String = "",
+    val phoneText: String = "",
+    val addressText: String = "",
+    val primaryColor: Color = Color.Unspecified
+)
+
+data class ProfileUiActions(
+    val onEditToggle: () -> Unit = {},
+    val onNameChange: (String) -> Unit = {},
+    val onLastNameChange: (String) -> Unit = {},
+    val onDocumentChange: (String) -> Unit = {},
+    val onEmailChange: (String) -> Unit = {},
+    val onPhoneChange: (String) -> Unit = {},
+    val onAddressChange: (String) -> Unit = {},
+    val onSaveClick: () -> Unit = {}
+)
+
+@Composable
+private fun ProfileFormSection(
+    state: ProfileUiState,
+    actions: ProfileUiActions
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                modifier = Modifier
+                    .clickable { actions.onEditToggle() }
+                    .wrapContentWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.title_data),
+                    style = textGabbiB20,
+                    color = state.primaryColor
+                )
+
+                Spacer(modifier = Modifier.width(6.dp))
+
+                if (!state.isEditing) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_edit),
+                        contentDescription = "Editar",
+                        modifier = Modifier.size(33.dp)
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        UiTayEditLayout(
+            value = state.nameText,
+            onValueChange = actions.onNameChange,
+            hint = stringResource(R.string.hint_names),
+            enabled = state.isEditing,
+            imeAction = ImeAction.Next,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        UiTayEditLayout(
+            value = state.lastNameText,
+            onValueChange = actions.onLastNameChange,
+            hint = stringResource(R.string.hint_lastname),
+            enabled = state.isEditing,
+            imeAction = ImeAction.Next,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        UiTayEditLayout(
+            value = state.documentText,
+            onValueChange = actions.onDocumentChange,
+            hint = stringResource(R.string.hint_doc),
+            enabled = state.isEditing,
+            maxLength = 8,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        UiTayEditLayout(
+            value = state.emailText,
+            onValueChange = actions.onEmailChange,
+            hint = stringResource(R.string.hint_email),
+            enabled = state.isEditing,
+            imeAction = ImeAction.Next,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        UiTayEditLayout(
+            value = state.phoneText,
+            onValueChange = actions.onPhoneChange,
+            hint = stringResource(R.string.hint_phone),
+            enabled = state.isEditing,
+            maxLength = 9,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        UiTayEditLayout(
+            value = state.addressText,
+            onValueChange = actions.onAddressChange,
+            hint = stringResource(R.string.hint_address),
+            enabled = state.isEditing,
+            imeAction = ImeAction.Done,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        if (state.isEditing) {
+            Spacer(modifier = Modifier.height(40.dp))
+
+            UiTayButton(
+                uiTayText = stringResource(R.string.btn_save),
+                uiTayEnable = state.isButtonEnabled,
+                uiTayClick = actions.onSaveClick
+            )
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
@@ -269,144 +449,5 @@ private fun ProfileHeaderSection(
                 modifier = profileModifier
             )
         }
-    }
-}
-
-@Composable
-private fun ProfileFormSection(
-    isEditing: Boolean,
-    isButtonEnabled: Boolean,
-    nameText: String,
-    lastNameText: String,
-    documentText: String,
-    emailText: String,
-    phoneText: String,
-    addressText: String,
-    primaryColor: Color,
-    onEditToggle: () -> Unit,
-    onNameChange: (String) -> Unit,
-    onLastNameChange: (String) -> Unit,
-    onDocumentChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit,
-    onPhoneChange: (String) -> Unit,
-    onAddressChange: (String) -> Unit,
-    onSaveClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                modifier = Modifier
-                    .clickable { onEditToggle() }
-                    .wrapContentWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.title_data),
-                    style = textGabbiB20,
-                    color = primaryColor
-                )
-
-                Spacer(modifier = Modifier.width(6.dp))
-
-                if (!isEditing) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_edit),
-                        contentDescription = "Editar",
-                        modifier = Modifier.size(33.dp)
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        UiTayEditLayout(
-            value = nameText,
-            onValueChange = onNameChange,
-            hint = stringResource(R.string.hint_names),
-            enabled = isEditing,
-            imeAction = ImeAction.Next,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        UiTayEditLayout(
-            value = lastNameText,
-            onValueChange = onLastNameChange,
-            hint = stringResource(R.string.hint_lastname),
-            enabled = isEditing,
-            imeAction = ImeAction.Next,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        UiTayEditLayout(
-            value = documentText,
-            onValueChange = onDocumentChange,
-            hint = stringResource(R.string.hint_doc),
-            enabled = isEditing,
-            maxLength = 8,
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Next,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        UiTayEditLayout(
-            value = emailText,
-            onValueChange = onEmailChange,
-            hint = stringResource(R.string.hint_email),
-            enabled = isEditing,
-            imeAction = ImeAction.Next,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        UiTayEditLayout(
-            value = phoneText,
-            onValueChange = onPhoneChange,
-            hint = stringResource(R.string.hint_phone),
-            enabled = isEditing,
-            maxLength = 9,
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Next,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        UiTayEditLayout(
-            value = addressText,
-            onValueChange = onAddressChange,
-            hint = stringResource(R.string.hint_address),
-            enabled = isEditing,
-            imeAction = ImeAction.Done,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        if (isEditing) {
-            Spacer(modifier = Modifier.height(40.dp))
-
-            UiTayButton(
-                uiTayText = stringResource(R.string.btn_save),
-                uiTayEnable = isButtonEnabled,
-                uiTayClick = onSaveClick
-            )
-        }
-
-        Spacer(modifier = Modifier.height(32.dp))
     }
 }

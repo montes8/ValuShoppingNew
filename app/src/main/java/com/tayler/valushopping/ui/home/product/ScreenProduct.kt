@@ -71,7 +71,6 @@ import com.valu.uitaycompose.utils.textSeB14
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
@@ -87,6 +86,7 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
     val products = productData.first
     val banners = productData.second
     val empty = productData.third
+
     LaunchedEffect(Unit) {
         isDelay = true
         viewModel.loadProductClient(country = "PE")
@@ -108,59 +108,105 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
         },
         modifier = Modifier.fillMaxSize()
     ) {
+        ProductMainContent(
+            empty = empty,
+            products = products,
+            banners = banners,
+            isShimmer = isShimmer,
+            isDelay = isDelay,
+            appDataVale = appDataVale,
+            context = context,
+            onNavigateToMain = onNavigateToMain
+        )
+    }
+}
 
-        if(empty && products.isEmpty()){
-            EmptyProductState()
-        }else{
+@Composable
+private fun ProductMainContent(
+    empty: Boolean,
+    products: List<ProductModel>,
+    banners: List<ProductModel>,
+    isShimmer: Boolean,
+    isDelay: Boolean,
+    appDataVale: AppDataVale,
+    context: android.content.Context,
+    onNavigateToMain: (ProductModel) -> Unit
+) {
+    if (empty && products.isEmpty()) {
+        EmptyProductState()
+    } else {
+        ProductListContent(
+            products = products,
+            banners = banners,
+            isShimmer = isShimmer,
+            isDelay = isDelay,
+            appDataVale = appDataVale,
+            context = context,
+            onNavigateToMain = onNavigateToMain
+        )
+    }
+}
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(if (isDelay) Color.White else Color.Transparent),
-                contentPadding = PaddingValues(bottom = 16.dp)
-            ) {
-                if (banners.isNotEmpty()) {
-                    item {
-                        BannerSection(
-                            banners = banners, isShimmer, isDelay,
-                            appDataVale = appDataVale,
-                            onClickBanner = { banner ->
-                                if (banner.click){
-                                    if (banner.linkBanner.isNotEmpty()){
-                                        context.uiTayOpenUrl(banner.linkBanner)
-                                    }else{
-                                        onNavigateToMain.invoke(banner)
-                                    }
-                                }
-                            }
-                        )
+@Composable
+private fun ProductListContent(
+    products: List<ProductModel>,
+    banners: List<ProductModel>,
+    isShimmer: Boolean,
+    isDelay: Boolean,
+    appDataVale: AppDataVale,
+    context: android.content.Context,
+    onNavigateToMain: (ProductModel) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(if (isDelay) Color.White else Color.Transparent),
+        contentPadding = PaddingValues(bottom = 16.dp)
+    ) {
+        if (banners.isNotEmpty()) {
+            item {
+                BannerSection(
+                    banners = banners,
+                    isShimmer = isShimmer,
+                    isDelay = isDelay,
+                    appDataVale = appDataVale,
+                    onClickBanner = { banner ->
+                        handleItemClick(banner, context, onNavigateToMain)
                     }
-                }
-
-                item {
-                    HeaderSection(products, isShimmer, isDelay, appDataVale = appDataVale)
-                }
-
-                items(products) { product ->
-                    ProductItem(
-                        product = product,
-                        isShimmer, isDelay,
-                        appDataVale = appDataVale,
-                        onClickItem = {
-                            if (product.click){
-                                if (product.linkBanner.isNotEmpty()){
-                                    context.uiTayOpenUrl(product.linkBanner)
-                                }else{
-                                    onNavigateToMain.invoke(product)
-                                }
-                            }
-                        },
-                        onClickImage = {}
-                    )
-                }
+                )
             }
+        }
 
-       }
+        item {
+            HeaderSection(products, isShimmer, isDelay, appDataVale = appDataVale)
+        }
+
+        items(products) { product ->
+            ProductItem(
+                product = product,
+                isShimmer = isShimmer,
+                isDelay = isDelay,
+                appDataVale = appDataVale,
+                onClickItem = {
+                    handleItemClick(product, context, onNavigateToMain)
+                },
+                onClickImage = {}
+            )
+        }
+    }
+}
+
+private fun handleItemClick(
+    model: ProductModel,
+    context: android.content.Context,
+    onNavigateToMain: (ProductModel) -> Unit
+) {
+    if (model.click) {
+        if (model.linkBanner.isNotEmpty()) {
+            context.uiTayOpenUrl(model.linkBanner)
+        } else {
+            onNavigateToMain.invoke(model)
+        }
     }
 }
 
@@ -242,7 +288,6 @@ fun HeaderSection(products: List<ProductModel>, isShimmer: Boolean, isDelay: Boo
             .background(if (isDelay) Color.White else Color.Transparent)
             .uiTayShimmer(isLoading = isShimmer, cornerRadius = 24.dp),
     ) {
-
         Text(
             text = stringResource(R.string.text_choose_product),
             modifier = Modifier.uiTayShimmer(isLoading = isShimmer, cornerRadius = 24.dp),
@@ -258,7 +303,6 @@ fun HeaderSection(products: List<ProductModel>, isShimmer: Boolean, isDelay: Boo
                 textAlign = TextAlign.End
             )
         }
-
     }
 }
 
@@ -337,32 +381,16 @@ fun ProductItem(
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "C/U:",
-                            style = textGabbi8,
-                            color = Color.Black
-                        )
+                        Text(text = "C/U:", style = textGabbi8, color = Color.Black)
                         Spacer(modifier = Modifier.width(2.dp))
-                        Text(
-                            text = product.getPriceUnit(),
-                            style = textS12,
-                            color = Color.Black
-                        )
+                        Text(text = product.getPriceUnit(), style = textS12, color = Color.Black)
                     }
 
                     if (product.visiblePriceDoc()) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = "DOC/:",
-                                style = textGabbi8,
-                                color = Color.Black
-                            )
+                            Text(text = "DOC/:", style = textGabbi8, color = Color.Black)
                             Spacer(modifier = Modifier.width(2.dp))
-                            Text(
-                                text = product.getPriceDoc(),
-                                style = textS12,
-                                color = Color.Black
-                            )
+                            Text(text = product.getPriceDoc(), style = textS12, color = Color.Black)
                         }
                     }
                 }
@@ -388,11 +416,7 @@ fun ProductItem(
 
                 Spacer(modifier = Modifier.height(2.dp))
 
-                Text(
-                    text = product.getSeller(),
-                    style = textSe10,
-                    color = Color.DarkGray
-                )
+                Text(text = product.getSeller(), style = textSe10, color = Color.DarkGray)
 
                 Text(
                     text = product.getMapperTypeAndGender(appDataVale.categories),
