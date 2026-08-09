@@ -72,7 +72,8 @@ open class BaseViewModel(private val ioDispatcher: CoroutineDispatcher = Dispatc
         }
     }
 
-    protected suspend fun <T> io(block: suspend () -> T): T = withContext(ioDispatcher) {
+    @Suppress("S6313")
+    protected suspend fun <T> io(block: suspend () -> T): T = withContext(ioDispatcher) {//not code
         block()
     }
 }

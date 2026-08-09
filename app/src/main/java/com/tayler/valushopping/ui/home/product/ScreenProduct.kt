@@ -109,39 +109,47 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
         modifier = Modifier.fillMaxSize()
     ) {
         ProductMainContent(
-            empty = empty,
-            products = products,
-            banners = banners,
-            isShimmer = isShimmer,
-            isDelay = isDelay,
-            appDataVale = appDataVale,
-            context = context,
-            onNavigateToMain = onNavigateToMain
+            state = ProductMainUiState(
+                empty = empty,
+                products = products,
+                banners = banners,
+                isShimmer = isShimmer,
+                isDelay = isDelay,
+                appDataVale = appDataVale,
+                context = context
+            ),
+            onNavigateToMain = { product ->
+                onNavigateToMain(product)
+            }
         )
     }
 }
 
+data class ProductMainUiState(
+    val empty: Boolean,
+    val products: List<ProductModel>,
+    val banners: List<ProductModel>,
+    val isShimmer: Boolean,
+    val isDelay: Boolean,
+    val appDataVale: AppDataVale,
+    val context: android.content.Context
+)
+
 @Composable
 private fun ProductMainContent(
-    empty: Boolean,
-    products: List<ProductModel>,
-    banners: List<ProductModel>,
-    isShimmer: Boolean,
-    isDelay: Boolean,
-    appDataVale: AppDataVale,
-    context: android.content.Context,
+    state: ProductMainUiState,
     onNavigateToMain: (ProductModel) -> Unit
 ) {
-    if (empty && products.isEmpty()) {
+    if (state.empty && state.products.isEmpty()) {
         EmptyProductState()
     } else {
         ProductListContent(
-            products = products,
-            banners = banners,
-            isShimmer = isShimmer,
-            isDelay = isDelay,
-            appDataVale = appDataVale,
-            context = context,
+            products = state.products,
+            banners = state.banners,
+            isShimmer = state.isShimmer,
+            isDelay = state.isDelay,
+            appDataVale = state.appDataVale,
+            context = state.context,
             onNavigateToMain = onNavigateToMain
         )
     }

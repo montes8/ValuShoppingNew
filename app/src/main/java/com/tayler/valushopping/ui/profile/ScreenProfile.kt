@@ -55,6 +55,7 @@ import com.valu.uitaycompose.utils.extension.uiTayValidatePhoneFormat
 import com.valu.uitaycompose.utils.permission.UiTayCameraManagerCompose
 import com.valu.uitaycompose.utils.permission.rememberUiTayCameraManager
 import com.valu.uitaycompose.utils.textGabbiB20
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -193,9 +194,10 @@ fun ScreenProfile(
 
 private suspend fun loadUserBitmaps(
     user: UserModel,
+    ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     onBitmapsLoaded: (ImageBitmap?, ImageBitmap?) -> Unit
 ) {
-    withContext(Dispatchers.IO) {
+    withContext(ioDispatcher) {
         val banner = if (user.imgBanner.isNotEmpty()) {
             BitmapFactory.decodeFile(user.imgBanner)?.asImageBitmap()
         } else null

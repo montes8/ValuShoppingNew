@@ -161,8 +161,13 @@ fun Context.sharedImageViewFromBitmap(bitmap: Bitmap) {
 }
 
 fun Context.uiCreatePictureFile(nameFile: String = "imgSave"): File {
+    val storageState = Environment.getExternalStorageState()
+    if (storageState != Environment.MEDIA_MOUNTED) {
+        throw IllegalStateException("External storage is not mounted or available (State: $storageState)")
+    }
+
     val storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        ?: throw IllegalStateException("External storage is not available")
+        ?: throw IllegalStateException("External storage directory is null")
 
     val newPath = File(storageDir, nameFile)
     if (!newPath.exists()) {
