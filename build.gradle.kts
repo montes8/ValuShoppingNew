@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.composeCompiler) apply false
@@ -10,8 +12,16 @@ plugins {
 }
 
 tasks.register<Delete>("clean") {
+    group = "build"
     description = "optimize"
     delete(layout.buildDirectory)
+}
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { load(it) }
+    }
 }
 
 sonarqube {
@@ -19,13 +29,13 @@ sonarqube {
         property("sonar.projectName", "ValuShooping")
         property("sonar.projectKey", "valuShooping")
         property("sonar.host.url", "http://localhost:9000/")
-        property("sonar.tests", listOf("src/test/java"))
-        property("sonar.test.inclusions", "**/*Test*/**")
+        property("sonar.token", localProperties.getProperty("sonar.token") ?: "")
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.sources", "src/main/java")
-        property("sonar.token", "squ_8d97c3694c3f874004f9c2d50c535cbd662dbdef")
+        property("sonar.test.inclusions", "**/*Test*/**")
         property("sonar.exclusions", "**/*Test*/**,*.json,**/*test*/**,**/.gradle/**,**/R.class")
     }
 }
-
+//cuando se agrega nueva libreria
+//./gradlew --write-verification-metadata=sha256 help o
+//./gradlew --write-verification-metadata=sha256 assembleDebug
 //./gradlew sonarqube

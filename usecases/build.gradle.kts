@@ -26,8 +26,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     // Dagger Hilt con KSP
-    implementation("com.google.dagger:hilt-android:2.60.1")
-    ksp("com.google.dagger:hilt-compiler:2.60.1")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
     implementation(project(":repository"))
     implementation(project(":entity"))
     implementation(libs.material)
