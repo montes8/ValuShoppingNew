@@ -80,7 +80,7 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
     val viewModel: DataViewModel = hiltViewModel()
 
     val productData by viewModel.successLoadProductClientState.collectAsStateWithLifecycle()
-    var isRefreshing by remember { mutableStateOf(false) }
+    var isRefreshing by remember { mutableStateOf(value = false) }
     val uiState by viewModel.uiStateBase.collectAsStateWithLifecycle()
     val isShimmer = uiState.shimmer
     var isDelay by remember { mutableStateOf(true) }
@@ -107,7 +107,7 @@ fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
             isRefreshing = true
             viewModel.loadProductClient(country = "PE")
         },
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         ProductMainContent(
             state = ProductMainUiState(
@@ -257,7 +257,7 @@ fun BannerSection(
                 ) {
                     UiTayUrlImage(
                         url = banner.urlBanner,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
             }
@@ -351,13 +351,16 @@ fun ProductItem(
             ) {
                 UiTayUrlImage(
                     url = product.url,
-                    modifier = Modifier.fillMaxSize().clickable{
-                        showZoom = true
-                    }.uiTayDialogZoom(
-                        showDialog = showZoom,
-                        imageUrl = product.url,
-                        onShowDialogChange = { newState -> showZoom = newState },
-                    )
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable {
+                            showZoom = true
+                        }
+                        .uiTayDialogZoom(
+                            showDialog = showZoom,
+                            imageUrl = product.url,
+                            onShowDialogChange = { newState -> showZoom = newState },
+                        ),
                 )
 
                 Text(

@@ -7,20 +7,15 @@ import androidx.security.crypto.MasterKey
 import com.tayler.repository.R
 import com.tayler.repository.network.ServiceApi
 import com.tayler.repository.preferences.manager.PreferencesManager
-import com.tayler.repository.utils.MY_CONTENT_TYPE
 import com.tayler.repository.utils.MY_TIME_ON
-import com.tayler.repository.utils.PLATFORM
-import com.tayler.repository.utils.PREFERENCE_TOKEN
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import jakarta.inject.Inject
 import jakarta.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -57,7 +52,7 @@ class SharedPreferencesModule {
             fileName,
             masterKey,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
         )
     }
 }
@@ -102,7 +97,7 @@ object NetworkModule {
         certificatePinning: CertificatePinner
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .retryOnConnectionFailure(true)
+            .retryOnConnectionFailure(retryOnConnectionFailure = true)
             .connectTimeout(MY_TIME_ON, TimeUnit.SECONDS)
             .writeTimeout(MY_TIME_ON, TimeUnit.SECONDS)
             .readTimeout(MY_TIME_ON, TimeUnit.SECONDS)

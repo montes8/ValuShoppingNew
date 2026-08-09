@@ -23,7 +23,7 @@ class AppUseCase @Inject constructor(
         val response = userNetwork.loadParam(code)
         val responseSecurity = configNetwork.loadBlocking()
         val updatedResponse = response.copy(
-            blocking = validateBlocking(responseSecurity, imei)
+            blocking = validateBlocking(responseSecurity, imei),
         )
         appPreferences.saveParaDb(updatedResponse)
         return updatedResponse

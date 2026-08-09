@@ -9,6 +9,72 @@ plugins {
     id("com.google.devtools.ksp") version "2.0.21-1.0.27" apply false
     id("com.google.dagger.hilt.android") version "2.60.1" apply false
     id("org.sonarqube") version "7.4.0.8496"
+    id("jacoco")
+}
+
+val fileFilter = listOf(
+    "**/R.class",
+    "**/R$*.class",
+    "**/BuildConfig.*",
+    "**/Manifest*.*",
+    "**/*Test*.*",
+    "android/**/*.*",
+    "**/*\$ViewInjector*.*",
+    "**/*\$Lambda$*.*",
+    "**/*Companion*.*",
+    "**/*Module*.*",
+    "**/*_Factory*.*",
+    "**/*_MembersInjector*.*",
+    "**/*_HiltModules*.*",
+    "**/*Hilt*.*"
+)
+
+subprojects {
+    apply(plugin = "jacoco")
+
+    tasks.register<JacocoReport>("testCoverageReport") {
+        val isAndroid = project.plugins.hasPlugin("com.android.application") || project.plugins.hasPlugin("com.android.library")
+        val testTaskName = if (isAndroid) "testDebugUnitTest" else "test"
+        
+        dependsOn(testTaskName)
+        
+        group = "Reporting"
+        description = "Generate Jacoco coverage reports"
+
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
+
+        val mainSrc = "${project.projectDir}/src/main/java"
+        val kotlinSrc = "${project.projectDir}/src/main/kotlin"
+        
+        sourceDirectories.setFrom(files(mainSrc, kotlinSrc))
+        
+        val classDirs = if (isAndroid) {
+            listOf(
+                fileTree("${project.layout.buildDirectory.get()}/tmp/kotlin-classes/debug") { exclude(fileFilter) },
+                fileTree("${project.layout.buildDirectory.get()}/intermediates/javac/debug/classes") { exclude(fileFilter) }
+            )
+        } else {
+            listOf(
+                fileTree("${project.layout.buildDirectory.get()}/classes/kotlin/main") { exclude(fileFilter) },
+                fileTree("${project.layout.buildDirectory.get()}/classes/java/main") { exclude(fileFilter) }
+            )
+        }
+        classDirectories.setFrom(classDirs)
+
+        val execData = if (isAndroid) {
+            fileTree("${project.layout.buildDirectory.get()}") {
+                include("jacoco/testDebugUnitTest.exec", "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+            }
+        } else {
+            fileTree("${project.layout.buildDirectory.get()}") {
+                include("jacoco/test.exec")
+            }
+        }
+        executionData.setFrom(execData)
+    }
 }
 
 tasks.register<Delete>("clean") {
@@ -32,9 +98,16 @@ sonarqube {
         property("sonar.token", localProperties.getProperty("sonar.token") ?: "")
         property("sonar.sourceEncoding", "UTF-8")
         property("sonar.test.inclusions", "**/*Test*/**")
-        property("sonar.exclusions", "**/*Test*/**,*.json,**/*test*/**,**/.gradle/**,**/R.class")
+        property("sonar.exclusions", "*.json,**/.gradle/**,**/R.class")
+        
+        // Rutas de reportes para multi-modulo
+        property("sonar.junit.reportPaths", "**/build/test-results/testDebugUnitTest/*.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/jacoco/testCoverageReport/testCoverageReport.xml")
     }
 }
+
+//para test y proyecto recomendado
+//./gradlew testCoverageReport sonarqube
 //cuando se agrega nueva libreria
 //./gradlew --write-verification-metadata=sha256 help o
 //./gradlew --write-verification-metadata=sha256 assembleDebug

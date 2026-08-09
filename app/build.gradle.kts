@@ -60,6 +60,7 @@ configure<ApplicationExtension> {
                 "proguard-rules.pro"
             )
             isDebuggable = true
+            enableUnitTestCoverage = true
         }
     }
 

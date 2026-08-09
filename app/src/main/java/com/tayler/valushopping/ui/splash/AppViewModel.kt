@@ -33,7 +33,7 @@ class AppViewModel @Inject constructor(
     private val application: Application,
     private val appDataVale: AppDataVale,
     private val globalUiStateManager: GlobalUiStateManager,
-    @IoDispatcher ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel(ioDispatcher) {
 
     private val _successParamState = MutableStateFlow<ParamModel?>(null)

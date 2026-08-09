@@ -34,7 +34,7 @@ android {
             buildConfigField("String", pinning, config("pinning.encryption"))
             buildConfigField("String", pinningRoot, config("pinning.root"))
             resValue("string", "encryption_key", config("preferences.encryption"))
-
+            enableUnitTestCoverage = true
         }
     }
     compileOptions {
