@@ -12,6 +12,7 @@ import com.valu.uitaycompose.utils.extension.uiTayCountryNetwork
 import com.valu.uitaycompose.utils.extension.uiTayDateToString
 import com.valu.uitaycompose.utils.extension.uiTayGetMobilIPAddress
 import com.valu.uitaycompose.utils.extension.uiTayGetAndroidId
+import com.tayler.valushopping.di.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -20,6 +21,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.valu.uitaycompose.utils.UI_EMPTY
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import java.util.Date
 import javax.inject.Inject
 
@@ -29,8 +32,9 @@ class AppViewModel @Inject constructor(
     val appUseCase: AppUseCase,
     private val application: Application,
     private val appDataVale: AppDataVale,
-    private val globalUiStateManager: GlobalUiStateManager
-) : BaseViewModel() {
+    private val globalUiStateManager: GlobalUiStateManager,
+    @IoDispatcher ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : BaseViewModel(ioDispatcher) {
 
     private val _successParamState = MutableStateFlow<ParamModel?>(null)
     val successParamState: StateFlow<ParamModel?> = _successParamState.asStateFlow()

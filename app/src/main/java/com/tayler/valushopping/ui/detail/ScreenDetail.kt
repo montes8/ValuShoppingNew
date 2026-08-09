@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -132,7 +133,8 @@ fun ScreenDetail(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(bottom = 90.dp),
+                    .padding(bottom = 90.dp)
+                    .testTag("detail_scroll_content"),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Box(

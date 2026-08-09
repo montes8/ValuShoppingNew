@@ -32,30 +32,6 @@ class ConfigNetwork @Inject constructor(
         serviceApi.saveHistory(HistoryRequest.toModel(data)).isSuccessful
     }
 
-    override suspend fun listTask(): List<TaskModel> = base.safeApiCall {
-        try {
-            serviceApi.loadTaskValu().processResponse { TaskResponse.toList(it) }
-        } catch (_: Exception) {
-            listOf(
-                TaskModel(
-                    uid = EMPTY_VALE,
-                    course = "COMUNICACION",
-                    issue = "contaminacion ambiental de mi localidad (comas)",
-                    concept = EMPTY_VALE,
-                    titleOne = "Causas",
-                    conceptOne = "Basura Acumulada en las calles,\nQuema de basura en las calle,\n" +
-                            "Humo de los vehiculos y el ruido execesivo,\nPersonas que botan basura en la calle",
-                    titleTwo = "Efectos",
-                    conceptTwo = "Causa daño en la salud:\nPuede causar enfermendades respiratoria y hasta cancer\n" +
-                            "Ejemplo:puede causar asma o bronquitis cronica",
-                    titleThree = "Solucion",
-                    conceptThree = "Se puede aumentar mas camiones de basura,y tambien se puede hacer campañas para orientar" +
-                            "como no contaminar el medio ambiente"
-                )
-            )
-        }
-    }
-
     override suspend fun listCategories(): List<CategoryModel> = base.safeApiCall {
         serviceApi.loadCategories().processResponse { CategoryResponse.toList(it) }
     }

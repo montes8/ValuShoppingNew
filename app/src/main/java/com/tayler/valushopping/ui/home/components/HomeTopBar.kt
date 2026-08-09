@@ -2,7 +2,10 @@ package com.tayler.valushopping.ui.home.components
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.LocalAppDataVale
@@ -17,21 +20,23 @@ fun HomeTopBar(onOpenDrawer: () -> Unit) {
     val colorStyle = appDataVale.getColorPrincipal()
     val activity = LocalActivity.current as ComponentActivity
 
-    UiTayCToolBar(
-        uiTayText = stringResource(R.string.tb_principal),
-        uiTayModifier = UiToolBarModel()
-            .height(70)
-            .iconStart(setImageMenu(appDataVale))
-            .iconEnd(setImageLogout(appDataVale))
-            .backgroundColor(colorStyle.third)
-            .textColor(colorStyle.first)
-            .bgService(appDataVale.paramData.bgService)
-            .urlBgService(
-                appDataVale.getUrlBgToolbar(activity)
-            )
-            .showEndIcon(appDataVale.paramData.session)
-            .useOriginalTint(true)
-    ) {
-        onOpenDrawer()
+    Box(modifier = Modifier.testTag("home_top_bar")) {
+        UiTayCToolBar(
+            uiTayText = stringResource(R.string.tb_principal),
+            uiTayModifier = UiToolBarModel()
+                .height(70)
+                .iconStart(setImageMenu(appDataVale))
+                .iconEnd(setImageLogout(appDataVale))
+                .backgroundColor(colorStyle.third)
+                .textColor(colorStyle.first)
+                .bgService(appDataVale.paramData.bgService)
+                .urlBgService(
+                    appDataVale.getUrlBgToolbar(activity)
+                )
+                .showEndIcon(appDataVale.paramData.session)
+                .useOriginalTint(true)
+        ) {
+            onOpenDrawer()
+        }
     }
 }

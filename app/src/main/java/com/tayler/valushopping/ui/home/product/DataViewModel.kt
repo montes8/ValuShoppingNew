@@ -2,6 +2,7 @@ package com.tayler.valushopping.ui.home.product
 
 import com.tayler.entity.ProductModel
 import com.tayler.usecases.DataUseCase
+import com.tayler.valushopping.di.IoDispatcher
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
@@ -9,6 +10,8 @@ import com.tayler.valushopping.utils.TY_DEFAULT
 import com.tayler.valushopping.utils.distance
 import com.valu.uitaycompose.utils.UI_EMPTY
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,8 +21,9 @@ import javax.inject.Inject
 class DataViewModel @Inject constructor(
     private val dataUseCase: DataUseCase,
     private val appDataVale: AppDataVale,
-    private val globalUiStateManager: GlobalUiStateManager
-) : BaseViewModel() {
+    private val globalUiStateManager: GlobalUiStateManager,
+    @IoDispatcher ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : BaseViewModel(ioDispatcher) {
 
     private val _successLoadProductClientState = MutableStateFlow(
         Triple(

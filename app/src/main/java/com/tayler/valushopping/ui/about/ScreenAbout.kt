@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,7 @@ fun ScreenAbout(
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
+                .testTag("about_scroll_content")
         ) {
             AboutItem(
                 title = stringResource(R.string.title_parte_mode),

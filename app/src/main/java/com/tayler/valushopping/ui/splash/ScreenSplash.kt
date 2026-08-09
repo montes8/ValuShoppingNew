@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -118,7 +119,7 @@ private fun BackgroundImage(context: Context, appDataVale: AppDataVale) {
 }
 
 @Composable
-private fun CenterContent(modifier: Modifier = Modifier,splashState : SplashUiState) {
+private fun CenterContent(modifier: Modifier = Modifier, splashState: SplashUiState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -126,8 +127,10 @@ private fun CenterContent(modifier: Modifier = Modifier,splashState : SplashUiSt
     ) {
         Image(
             painter = painterResource(R.drawable.ic_bag),
-            modifier = Modifier.size(200.dp),
-            contentDescription = null
+            modifier = Modifier
+                .size(200.dp)
+                .testTag("splash_bag_image"),
+            contentDescription = "Logo de la bolsa"
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
