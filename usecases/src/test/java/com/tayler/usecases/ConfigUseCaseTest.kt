@@ -26,7 +26,6 @@ class ConfigUseCaseTest {
 
     @Test
     fun saveHistory_delegatesToRepositoryWithAllFields() = runTest {
-        // Preparación: Creamos un modelo de historia con datos completos
         val history = HistoryModel(
             type = "click",
             name = "Tayler",
@@ -42,24 +41,29 @@ class ConfigUseCaseTest {
         )
         coEvery { configNetwork.saveHistory(history) } returns true
 
-        // Acción: Ejecutamos el guardado de historia
         val result = configUseCase.saveHistory(history)
 
-        // Verificación: Comprobamos el éxito y la interacción con el repositorio
         assertTrue(result)
         coVerify { configNetwork.saveHistory(history) }
     }
 
     @Test
     fun listCategories_returnsListFromRepositoryCorrectlly() = runTest {
-        // Preparación: Definimos una lista de categorías de prueba
         val mockList = listOf(CategoryModel(uid = "1", name = "Cat"))
         coEvery { configNetwork.listCategories() } returns mockList
 
-        // Acción: Obtenemos las categorías
         val result = configUseCase.listCategories()
 
-        // Verificación: Comprobamos la integridad de los datos
+        assertEquals(mockList, result)
+    }
+
+    @Test
+    fun listCategoriesAll_returnsListFromRepositoryCorrectlly() = runTest {
+        val mockList = listOf(CategoryModel(uid = "1", name = "Cat All"))
+        coEvery { configNetwork.listCategoriesAll() } returns mockList
+
+        val result = configUseCase.listCategoriesAll()
+
         assertEquals(mockList, result)
     }
 }

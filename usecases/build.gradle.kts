@@ -2,13 +2,12 @@ plugins {
     alias(libs.plugins.androidLibrary)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.tayler.usecases"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 25
@@ -31,6 +30,8 @@ android {
 dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.tay.compose.library)
     // Dagger Hilt con KSP
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

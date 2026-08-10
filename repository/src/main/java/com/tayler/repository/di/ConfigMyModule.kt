@@ -43,6 +43,12 @@ abstract class ConfigMyModule {
         configNetwork: ConfigNetwork
     ): IConfigNetwork
 
+    @Singleton
+    @Binds
+    abstract fun provideQuantumNetwork(
+        quantumNetwork: com.tayler.repository.network.api.QuantumNetwork
+    ): com.tayler.repository.network.protocol.IQuantumNetwork
+
     fun test(){
         //not implement
     }

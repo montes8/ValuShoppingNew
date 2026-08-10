@@ -1,5 +1,6 @@
 package com.tayler.repository.network
 
+import com.tayler.entity.QuantumPublicKeyResponse
 import com.tayler.repository.network.model.request.HistoryRequest
 import com.tayler.repository.network.model.request.LoginRequest
 import com.tayler.repository.network.model.request.ProductImageRequest
@@ -9,7 +10,6 @@ import com.tayler.repository.network.model.response.ImageResponse
 import com.tayler.repository.network.model.response.LoginResponse
 import com.tayler.repository.network.model.response.ParamResponse
 import com.tayler.repository.network.model.response.ProductResponse
-import com.tayler.repository.network.model.response.TaskResponse
 import com.tayler.repository.network.model.response.UserBlockingResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -56,13 +56,11 @@ interface ServiceApi {
     @POST("product")
     suspend fun saveProduct(@Body productResponse: ProductResponse): Response<ProductResponse>
 
-
     @GET("product/{id}")
     suspend fun loadProduct(@Path("id") id: String): Response<List<ProductResponse>>
 
     @GET("product/category/{id}")
     suspend fun loadProductCategory(@Path("id") id: String): Response<List<ProductResponse>>
-
 
     @GET("product/all/{id}")
     suspend fun loadProducts(@Path("id") id: String): Response<List<ProductResponse>>
@@ -82,7 +80,6 @@ interface ServiceApi {
     @DELETE("product/img/{id}")
     suspend fun deleteProductImage(@Path("id") id: String): Response<ImageMoreResponse>
 
-
     @GET("config/blocking")
     suspend fun loadUserBlocking(): Response<List<UserBlockingResponse>>
 
@@ -95,7 +92,6 @@ interface ServiceApi {
     @GET("config/category/all")
     suspend fun loadCategoriesAll(): Response<List<CategoryResponse>>
 
-    @GET("config/taskValu")
-    suspend fun loadTaskValu(): Response<List<TaskResponse>>
-
+    @GET("config/public-key")
+    suspend fun getQuantumPublicKey(): Response<QuantumPublicKeyResponse>
 }

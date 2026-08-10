@@ -36,33 +36,23 @@ class UserViewModelTest {
 
     @Test
     fun loadUser_getsUserCorrectlly() = runTest(testDispatcher) {
-        // Preparación: Definimos un usuario de prueba
         val mockUser = UserModel(names = "Tayler")
         every { appUseCase.getUser() } returns mockUser
 
-        // Acción: Cargamos el usuario
         viewModel.loadUser()
         runCurrent()
 
-        // Verificación: El estado debe contener el usuario
-        viewModel.successUserState.test {
-            assertEquals(mockUser, awaitItem())
-        }
+        assertEquals(mockUser, viewModel.formState.value)
     }
 
     @Test
     fun saveUser_savesUserAndUpdateState() = runTest(testDispatcher) {
-        // Preparación: Definimos un usuario para guardar
         val userToSave = UserModel(names = "New Name")
         every { appUseCase.saveUser(userToSave) } returns userToSave
 
-        // Acción: Guardamos al usuario
         viewModel.saveUser(userToSave)
         runCurrent()
 
-        // Verificación: El estado debe actualizarse con el usuario guardado
-        viewModel.successUserState.test {
-            assertEquals(userToSave, awaitItem())
-        }
+        assertEquals(userToSave, viewModel.formState.value)
     }
 }

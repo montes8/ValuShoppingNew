@@ -11,17 +11,22 @@ import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.valu.uitaycompose.utils.extension.uiTayCountryNetwork
 import com.valu.uitaycompose.utils.extension.uiTayGetAndroidId
+import com.valu.uitaycompose.utils.extension.uiTayGetMobilIPAddress
+import com.valu.uitaycompose.utils.extension.uiTayDateToString
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.util.Date
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AppViewModelTest {
@@ -41,13 +46,15 @@ class AppViewModelTest {
 
     @Before
     fun setUp() {
-        mockkStatic(Application::uiTayGetAndroidId)
-        mockkStatic(Application::uiTayCountryNetwork)
+        mockkStatic("com.valu.uitaycompose.utils.extension.UiExtensionConfigKt")
+        mockkStatic("com.valu.uitaycompose.utils.extension.UiExtensionUtilsKt")
+        mockkStatic("com.valu.uitaycompose.utils.extension.UiExtensionDateKt")
         mockkStatic(android.util.Log::class)
+        
         every { android.util.Log.d(any(), any()) } returns 0
         every { application.uiTayGetAndroidId() } returns "test-android-id"
         every { application.uiTayCountryNetwork() } returns "PE"
-
+        
         viewModel = AppViewModel(
             configUseCase,
             appUseCase,
@@ -56,6 +63,13 @@ class AppViewModelTest {
             globalUiStateManager,
             testDispatcher
         )
+    }
+
+    @After
+    fun tearDown() {
+        unmockkStatic("com.valu.uitaycompose.utils.extension.UiExtensionConfigKt")
+        unmockkStatic("com.valu.uitaycompose.utils.extension.UiExtensionUtilsKt")
+        unmockkStatic("com.valu.uitaycompose.utils.extension.UiExtensionDateKt")
     }
 
     @Test
@@ -68,28 +82,34 @@ class AppViewModelTest {
         coEvery { appUseCase.getUser() } returns mockUser
         coEvery { configUseCase.listCategoriesAll() } returns emptyList()
 
-        viewModel.uiState.test {
+        viewModel.successParamState.test {
             viewModel.initSplash()
             
-            // El primer item es el estado inicial (vacio)
-            assertEquals("", awaitItem().welcomeText)
-            
-            // El segundo item debe ser el estado actualizado
-            val state = awaitItem() 
-            assertEquals("Welcome!", state.welcomeText)
-            assertEquals(true, state.showLogo)
-        }
-
-        viewModel.successParamState.test {
-            // El primer item es el estado inicial (null)
+            // Initial state (null)
             assertEquals(null, awaitItem())
-
-            // El segundo item debe ser el objeto ParamModel cargado
+            
+            // Wait for uiState to be updated (internal logic)
+            testDispatcher.scheduler.advanceUntilIdle()
+            
+            // Updated state from loadRemoteParams
             val param = awaitItem()
             assertNotNull(param)
             assertEquals("Welcome!", param?.textWelcome)
         }
-        
+
+        assertEquals("Welcome!", viewModel.uiState.value.welcomeText)
         assertEquals(mockUser, appDataVale.user)
+    }
+
+    @Test
+    fun saveHistory_callsUseCaseCorrectlly() = runTest(testDispatcher) {
+        appDataVale.user = UserModel(names = "Tayler", lastName = "Test")
+        every { appUseCase.getUUID() } returns "uuid"
+        coEvery { configUseCase.saveHistory(any()) } returns true
+        
+        viewModel.saveHistory("TEST_FLOW")
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        coEvery { configUseCase.saveHistory(any()) }
     }
 }

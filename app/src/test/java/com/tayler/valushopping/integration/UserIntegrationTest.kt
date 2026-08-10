@@ -1,6 +1,5 @@
 package com.tayler.valushopping.integration
 
-import app.cash.turbine.test
 import com.tayler.entity.UserModel
 import com.tayler.repository.network.protocol.IConfigNetwork
 import com.tayler.repository.network.protocol.IUserNetwork
@@ -71,9 +70,6 @@ class UserIntegrationTest {
         runCurrent()
 
         // 3. Verificacion: El ViewModel debe tener el dato leido desde las preferencias (mockeadas)
-        viewModel.successUserState.test {
-            val user = awaitItem()
-            assertEquals("Integration User", user?.names)
-        }
+        assertEquals("Integration User", viewModel.formState.value.names)
     }
 }

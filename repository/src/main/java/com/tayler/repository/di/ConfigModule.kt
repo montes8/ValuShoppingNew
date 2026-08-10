@@ -21,6 +21,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import com.tayler.repository.BuildConfig
+import com.tayler.repository.network.quantum.QuantumConverterFactory
+import com.tayler.repository.network.quantum.QuantumSecurityManager
 import okhttp3.CertificatePinner
 import java.net.URL
 import com.tayler.repository.network.interceptor.ApiInterceptor
@@ -77,7 +79,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideCertificatePinning(): CertificatePinner {
+    fun provideCertificatePinner(): CertificatePinner {
         if (BuildConfig.DEBUG) {
             return CertificatePinner.DEFAULT
         }
@@ -110,8 +112,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, baseUrl: String): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient, 
+        baseUrl: String,
+        quantumConverterFactory: QuantumConverterFactory
+    ): Retrofit {
         return Retrofit.Builder()
+            .addConverterFactory(quantumConverterFactory)
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(baseUrl)
             .client(okHttpClient)
@@ -125,7 +132,10 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providerHeaderInterceptor(preferencesManager: PreferencesManager): Interceptor {
-        return ApiInterceptor(preferencesManager)
+    fun providerHeaderInterceptor(
+        preferencesManager: PreferencesManager,
+        quantumSecurityManagerProvider: javax.inject.Provider<QuantumSecurityManager>
+    ): Interceptor {
+        return ApiInterceptor(preferencesManager, quantumSecurityManagerProvider)
     }
 }

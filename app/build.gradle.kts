@@ -107,7 +107,6 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-   // implementation(project(":uitaycompose"))
     implementation(project(":entity"))
     implementation(project(":usecases"))
 
@@ -117,6 +116,8 @@ dependencies {
     implementation(libs.androidx.media3.ui)
 
     implementation(libs.tay.compose.library)
+
+
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

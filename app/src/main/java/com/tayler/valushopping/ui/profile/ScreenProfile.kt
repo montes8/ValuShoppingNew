@@ -25,7 +25,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,15 +43,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.entity.UserModel
 import com.tayler.valushopping.R
 import com.tayler.valushopping.entity.LocalAppDataVale
 import com.valu.uitaycompose.button.UiTayButton
 import com.valu.uitaycompose.label.UiTayEditLayout
-import com.valu.uitaycompose.utils.UI_EMPTY
 import com.valu.uitaycompose.utils.extension.uiTayConverterCircle
-import com.valu.uitaycompose.utils.extension.uiTayValidateEmail
-import com.valu.uitaycompose.utils.extension.uiTayValidatePhoneFormat
 import com.valu.uitaycompose.utils.permission.UiTayCameraManagerCompose
 import com.valu.uitaycompose.utils.permission.rememberUiTayCameraManager
 import com.valu.uitaycompose.utils.textGabbiB20
@@ -66,33 +63,19 @@ fun ScreenProfile(
 ) {
     val appDataVale = LocalAppDataVale.current
     val viewModel: UserViewModel = hiltViewModel()
-    val user by viewModel.successUserState.collectAsState()
 
-    var userModel by remember { mutableStateOf(UserModel()) }
+    val formState by viewModel.formState.collectAsStateWithLifecycle()
+    val isButtonEnabled by viewModel.isFormValid.collectAsStateWithLifecycle()
+
     var isEditing by remember { mutableStateOf(false) }
     var typeBanner by remember { mutableStateOf(true) }
-    var nameText by remember { mutableStateOf(UI_EMPTY) }
-    var lastNameText by remember { mutableStateOf(UI_EMPTY) }
-    var documentText by remember { mutableStateOf(UI_EMPTY) }
-    var emailText by remember { mutableStateOf(UI_EMPTY) }
-    var phoneText by remember { mutableStateOf(UI_EMPTY) }
-    var addressText by remember { mutableStateOf(UI_EMPTY) }
     var bannerBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
     var profileBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
-    LaunchedEffect(user) {
-        user?.let { loadedUser ->
-            userModel = loadedUser
-            nameText = loadedUser.names
-            lastNameText = loadedUser.lastName
-            documentText = loadedUser.document
-            emailText = loadedUser.email
-            phoneText = loadedUser.phone
-            addressText = loadedUser.address
-            loadUserBitmaps(loadedUser) { banner, profile ->
-                bannerBitmap = banner
-                profileBitmap = profile
-            }
+    LaunchedEffect(formState.imgBanner, formState.img) {
+        loadUserBitmaps(formState) { banner, profile ->
+            bannerBitmap = banner
+            profileBitmap = profile
         }
     }
 
@@ -103,25 +86,18 @@ fun ScreenProfile(
     val cameraManager = rememberUiTayCameraManager(
         uiTayNameFilePath = "user",
         listener = object : UiTayCameraManagerCompose.CameraControllerListener {
-            override fun onCameraPermissionDenied() {
-                //not code
-            }
+            override fun onCameraPermissionDenied() {}
 
             override fun onGetImageCameraCompleted(path: String, img: Bitmap) {
-                userModel = if (typeBanner) {
+                if (typeBanner) {
                     bannerBitmap = img.asImageBitmap()
-                    userModel.copy(imgBanner = path)
+                    viewModel.saveUserImg(formState.copy(imgBanner = path))
                 } else {
                     profileBitmap = img.uiTayConverterCircle().asImageBitmap()
-                    userModel.copy(img = path)
+                    viewModel.saveUserImg(formState.copy(img = path))
                 }
-                viewModel.saveUserImg(userModel)
             }
         }
-    )
-
-    val isButtonEnabled = rememberProfileValidation(
-        nameText, lastNameText, documentText, emailText, phoneText, addressText
     )
 
     Scaffold(topBar = {}) { paddingValues ->
@@ -156,38 +132,13 @@ fun ScreenProfile(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 ProfileFormSection(
-                    state = ProfileUiState(
-                        isEditing = isEditing,
-                        isButtonEnabled = isButtonEnabled,
-                        nameText = nameText,
-                        lastNameText = lastNameText,
-                        documentText = documentText,
-                        emailText = emailText,
-                        phoneText = phoneText,
-                        addressText = addressText,
-                        primaryColor = appDataVale.getColorPrincipal().first
-                    ),
-                    actions = ProfileUiActions(
-                        onEditToggle = { isEditing = !isEditing },
-                        onNameChange = { nameText = it },
-                        onLastNameChange = { lastNameText = it },
-                        onDocumentChange = { documentText = it },
-                        onEmailChange = { emailText = it },
-                        onPhoneChange = { phoneText = it },
-                        onAddressChange = { addressText = it },
-                        onSaveClick = {
-                            userModel = userModel.copy(
-                                names = nameText,
-                                lastName = lastNameText,
-                                document = documentText,
-                                email = emailText,
-                                phone = phoneText,
-                                address = addressText
-                            )
-                            viewModel.saveUser(userModel)
-                            isEditing = false
-                        }
-                    )
+                    viewModel = viewModel,
+                    formState = formState,
+                    isButtonEnabled = isButtonEnabled,
+                    primaryColor = appDataVale.getColorPrincipal().first,
+                    isEditing = isEditing,
+                    onEditToggle = { isEditing = !isEditing },
+                    onSaveSuccess = { isEditing = false }
                 )
             }
         }
@@ -213,53 +164,14 @@ private suspend fun loadUserBitmaps(
 }
 
 @Composable
-private fun rememberProfileValidation(
-    name: String,
-    lastName: String,
-    document: String,
-    email: String,
-    phone: String,
-    address: String
-): Boolean {
-    return remember(name, lastName, document, email, phone, address) {
-        val isValidName = name.isNotEmpty()
-        val isValidLastName = lastName.isNotEmpty()
-        val isValidDoc = document.length == 8
-        val isValidEmail = email.uiTayValidateEmail()
-        val isValidPhone = phone.uiTayValidatePhoneFormat()
-        val isValidAddress = address.isNotEmpty()
-
-        isValidName && isValidLastName && isValidDoc && isValidEmail && isValidPhone && isValidAddress
-    }
-}
-
-data class ProfileUiState(
-    val isEditing: Boolean = false,
-    val isButtonEnabled: Boolean = false,
-    val nameText: String = "",
-    val lastNameText: String = "",
-    val documentText: String = "",
-    val emailText: String = "",
-    val phoneText: String = "",
-    val addressText: String = "",
-    val primaryColor: Color = Color.Unspecified
-)
-
-data class ProfileUiActions(
-    val onEditToggle: () -> Unit = {},
-    val onNameChange: (String) -> Unit = {},
-    val onLastNameChange: (String) -> Unit = {},
-    val onDocumentChange: (String) -> Unit = {},
-    val onEmailChange: (String) -> Unit = {},
-    val onPhoneChange: (String) -> Unit = {},
-    val onAddressChange: (String) -> Unit = {},
-    val onSaveClick: () -> Unit = {}
-)
-
-@Composable
 private fun ProfileFormSection(
-    state: ProfileUiState,
-    actions: ProfileUiActions
+    viewModel: UserViewModel,
+    formState: UserModel,
+    isButtonEnabled: Boolean,
+    primaryColor: Color,
+    isEditing: Boolean,
+    onEditToggle: () -> Unit,
+    onSaveSuccess: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -274,19 +186,19 @@ private fun ProfileFormSection(
         ) {
             Row(
                 modifier = Modifier
-                    .clickable { actions.onEditToggle() }
+                    .clickable { onEditToggle() }
                     .wrapContentWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = stringResource(R.string.title_data),
                     style = textGabbiB20,
-                    color = state.primaryColor
+                    color = primaryColor
                 )
 
                 Spacer(modifier = Modifier.width(6.dp))
 
-                if (!state.isEditing) {
+                if (!isEditing) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_edit),
                         contentDescription = "Editar",
@@ -299,10 +211,10 @@ private fun ProfileFormSection(
         Spacer(modifier = Modifier.height(12.dp))
 
         UiTayEditLayout(
-            value = state.nameText,
-            onValueChange = actions.onNameChange,
+            value = formState.names,
+            onValueChange = { viewModel.onNameChanged(it) },
             hint = stringResource(R.string.hint_names),
-            enabled = state.isEditing,
+            enabled = isEditing,
             imeAction = ImeAction.Next,
             modifier = Modifier.fillMaxWidth()
         )
@@ -310,10 +222,10 @@ private fun ProfileFormSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         UiTayEditLayout(
-            value = state.lastNameText,
-            onValueChange = actions.onLastNameChange,
+            value = formState.lastName,
+            onValueChange = { viewModel.onLastNameChanged(it) },
             hint = stringResource(R.string.hint_lastname),
-            enabled = state.isEditing,
+            enabled = isEditing,
             imeAction = ImeAction.Next,
             modifier = Modifier.fillMaxWidth()
         )
@@ -321,10 +233,10 @@ private fun ProfileFormSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         UiTayEditLayout(
-            value = state.documentText,
-            onValueChange = actions.onDocumentChange,
+            value = formState.document,
+            onValueChange = { viewModel.onDocumentChanged(it) },
             hint = stringResource(R.string.hint_doc),
-            enabled = state.isEditing,
+            enabled = isEditing,
             maxLength = 8,
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next,
@@ -334,10 +246,10 @@ private fun ProfileFormSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         UiTayEditLayout(
-            value = state.emailText,
-            onValueChange = actions.onEmailChange,
+            value = formState.email,
+            onValueChange = { viewModel.onEmailChanged(it) },
             hint = stringResource(R.string.hint_email),
-            enabled = state.isEditing,
+            enabled = isEditing,
             imeAction = ImeAction.Next,
             modifier = Modifier.fillMaxWidth()
         )
@@ -345,10 +257,10 @@ private fun ProfileFormSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         UiTayEditLayout(
-            value = state.phoneText,
-            onValueChange = actions.onPhoneChange,
+            value = formState.phone,
+            onValueChange = { viewModel.onPhoneChanged(it) },
             hint = stringResource(R.string.hint_phone),
-            enabled = state.isEditing,
+            enabled = isEditing,
             maxLength = 9,
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next,
@@ -358,21 +270,24 @@ private fun ProfileFormSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         UiTayEditLayout(
-            value = state.addressText,
-            onValueChange = actions.onAddressChange,
+            value = formState.address,
+            onValueChange = { viewModel.onAddressChanged(it) },
             hint = stringResource(R.string.hint_address),
-            enabled = state.isEditing,
+            enabled = isEditing,
             imeAction = ImeAction.Done,
             modifier = Modifier.fillMaxWidth()
         )
 
-        if (state.isEditing) {
+        if (isEditing) {
             Spacer(modifier = Modifier.height(40.dp))
 
             UiTayButton(
                 uiTayText = stringResource(R.string.btn_save),
-                uiTayEnable = state.isButtonEnabled,
-                uiTayClick = actions.onSaveClick
+                uiTayEnable = isButtonEnabled,
+                uiTayClick = {
+                    viewModel.saveUser(formState)
+                    onSaveSuccess()
+                }
             )
         }
 

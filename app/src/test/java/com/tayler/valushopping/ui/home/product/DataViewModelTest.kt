@@ -1,20 +1,23 @@
 package com.tayler.valushopping.ui.home.product
 
-import app.cash.turbine.test
+import com.tayler.entity.ParamModel
 import com.tayler.entity.ProductModel
 import com.tayler.usecases.DataUseCase
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.tayler.valushopping.utils.distance
+import io.mockk.coVerify
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -40,30 +43,63 @@ class DataViewModelTest {
         viewModel = DataViewModel(dataUseCase, appDataVale, globalUiStateManager, testDispatcher)
     }
 
-    @Test
-    fun loadProductClient_filtersByDistanceAndUpdateState() = runTest(testDispatcher) {
-        // Preparación: Definimos productos, uno dentro del rango y otro fuera
-        val productInRange = ProductModel(uid = "1", name = "Prod 1", latitude = "10.0", longitude = "10.0")
-        val productOut = ProductModel(uid = "2", name = "Prod 2", latitude = "50.0", longitude = "50.0")
-        
-        coEvery { dataUseCase.loadProduct(any(), any(), any()) } returns listOf(productInRange, productOut)
-        
-        // Mockeamos la extensión de distancia
-        every { productInRange.distance(any(), any()) } returns 2.0
-        every { productOut.distance(any(), any()) } returns 100.0
-        
-        appDataVale.paramData = appDataVale.paramData.copy(limitDistance = "10")
+    @After
+    fun tearDown() {
+        unmockkStatic("com.tayler.valushopping.utils.ExtensionUtilsKt")
+    }
 
-        // Acción: Cargamos productos con filtro de ubicación
+    @Test
+    fun `loadProductClient filters by distance and updates state`() = runTest(testDispatcher) {
+        val mockProducts = listOf(
+            ProductModel(uid = "p1", name = "Near", banner = false, latitude = "10.0"),
+            ProductModel(uid = "p2", name = "Far", banner = false, latitude = "10.0", limitDistance = "1")
+        )
+        appDataVale.paramData = ParamModel(limitDistance = "5")
+        
+        coEvery { dataUseCase.loadProduct(any(), any(), any()) } returns mockProducts
+        // Mock distance extension: p1 is close (2.0), p2 is far (10.0)
+        every { any<ProductModel>().distance("K", appDataVale) } returnsMany listOf(2.0, 10.0)
+
         viewModel.loadProductClient(location = true, country = "PE")
         runCurrent()
 
-        // Verificación: Solo el producto en rango debería estar en la lista filtrada
-        viewModel.successLoadProductClientState.test {
-            val state = awaitItem()
-            val filteredList = state.first
-            assertTrue(filteredList.any { it.uid == "1" })
-            assertEquals(1, filteredList.size)
-        }
+        val state = viewModel.successLoadProductClientState.value
+        // Should only contain p1 because p1 (2.0 < 5) and p2 (10.0 > 1)
+        assertEquals(1, state.first.size)
+        assertEquals("p1", state.first[0].uid)
+        assertTrue(state.third) // isLoaded = true
+    }
+
+    @Test
+    fun `loadProductClient does not reload if already loaded`() = runTest(testDispatcher) {
+        val initialProduct = ProductModel(uid = "exists")
+        // Manually set state to "loaded"
+        val successState = viewModel.javaClass.getDeclaredField("_successLoadProductClientState").apply {
+            isAccessible = true
+        }.get(viewModel) as kotlinx.coroutines.flow.MutableStateFlow<Triple<List<ProductModel>, List<ProductModel>, Boolean>>
+        
+        successState.value = Triple(listOf(initialProduct), emptyList(), true)
+
+        viewModel.loadProductClient(country = "PE")
+        runCurrent()
+
+        coVerify(exactly = 0) { dataUseCase.loadProduct(any(), any(), any()) }
+    }
+
+    @Test
+    fun `loadProductClient identifies banners correctly`() = runTest(testDispatcher) {
+        val mockProducts = listOf(
+            ProductModel(uid = "p1", banner = true),
+            ProductModel(uid = "p2", banner = false)
+        )
+        coEvery { dataUseCase.loadProduct(any(), any(), any()) } returns mockProducts
+        every { any<ProductModel>().distance(any(), any()) } returns 0.0
+
+        viewModel.loadProductClient(location = false, country = "PE")
+        runCurrent()
+
+        val state = viewModel.successLoadProductClientState.value
+        assertEquals(1, state.second.size)
+        assertEquals("p1", state.second[0].uid)
     }
 }

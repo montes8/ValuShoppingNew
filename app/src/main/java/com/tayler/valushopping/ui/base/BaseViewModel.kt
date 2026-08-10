@@ -1,6 +1,5 @@
 package com.tayler.valushopping.ui.base
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CancellationException

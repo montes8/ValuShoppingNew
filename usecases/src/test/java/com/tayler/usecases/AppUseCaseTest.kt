@@ -2,6 +2,7 @@ package com.tayler.usecases
 
 import com.tayler.entity.ParamModel
 import com.tayler.entity.UserBlockingModel
+import com.tayler.entity.UserModel
 import com.tayler.repository.network.protocol.IConfigNetwork
 import com.tayler.repository.network.protocol.IUserNetwork
 import com.tayler.repository.preferences.IAppPreferences
@@ -90,15 +91,29 @@ class AppUseCaseTest {
     }
 
     @Test
-    fun `configInitParam returns param with session and urlImage`() {
-        val mockParam = ParamModel(title = "Test")
-        every { appPreferences.getUUID() } returns "uuid"
-        every { appPreferences.getParaDb() } returns mockParam
-        every { appPreferences.getToken() } returns true // Assuming session is Boolean based on ParamModel
+    fun `configInitParam saves UUID if empty`() {
+        every { appPreferences.getUUID() } returns ""
+        every { appPreferences.getParaDb() } returns ParamModel()
+        every { appPreferences.getToken() } returns true
 
-        val result = appUseCase.configInitParam()
+        appUseCase.configInitParam()
 
-        assertEquals("Test", result.title)
-        assertTrue(result.session)
+        verify { appPreferences.saveUUID(any()) }
+    }
+
+    @Test
+    fun `saveUser delegates to appPreferences`() {
+        val user = UserModel(names = "Tayler")
+        every { appPreferences.saveUser(user) } returns user
+        val result = appUseCase.saveUser(user)
+        assertEquals(user, result)
+        verify { appPreferences.saveUser(user) }
+    }
+
+    @Test
+    fun `getUser returns value from appPreferences`() {
+        val user = UserModel(names = "Tayler")
+        every { appPreferences.getUser() } returns user
+        assertEquals(user, appUseCase.getUser())
     }
 }

@@ -31,7 +31,7 @@ media3 = "1.5.0"
 retrofit = "2.9.0"
 okhttp = "4.9.3"
 securityCrypto = "1.1.0-alpha03"
-tayComposeLibrary = "1.0.1"
+tayComposeLibrary = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -75,8 +75,7 @@ retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
-tay-compose-library = { group = "com.github.montes8", name = "TayComposeLibrary", version.ref = "tayComposeLibrary" }
-
+tay-compose-library = { group = "com.github.montes8", name = "UITayCompose", version.ref = "tayComposeLibrary" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
