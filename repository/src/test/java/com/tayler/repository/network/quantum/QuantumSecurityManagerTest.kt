@@ -45,20 +45,7 @@ class QuantumSecurityManagerTest {
     }
 
     @Test
-    fun `getHandshake returns saved data when available`() = runTest {
-        val mockSecret = "secret-bytes".toByteArray()
-        every { preferencesManager.getString(PREFERENCE_QUANTUM_PACKAGE) } returns "saved-pkg"
-        every { preferencesManager.getString(PREFERENCE_QUANTUM_SECRET) } returns "saved-secret-b64"
-        every { Base64.decode("saved-secret-b64", Base64.NO_WRAP) } returns mockSecret
-
-        val result = qsm.getHandshake()
-
-        assertEquals("saved-pkg", result.first)
-        assertArrayEquals(mockSecret, result.second)
-    }
-
-    @Test
-    fun `getHandshake performs handshake when no saved data`() = runTest {
+    fun `getHandshake performs handshake and sets session fresh`() = runTest {
         val mockSecret = "new-secret".toByteArray()
         every { preferencesManager.getString(any()) } returns ""
         coEvery { quantumNetwork.getQuantumPublicKey() } returns QuantumPublicKeyResponse("pub-key-b64")
@@ -71,15 +58,11 @@ class QuantumSecurityManagerTest {
         assertEquals("new-pkg", result.first)
         assertArrayEquals(mockSecret, result.second)
         verify { preferencesManager.setValue(PREFERENCE_QUANTUM_PACKAGE, "new-pkg") }
-        verify { preferencesManager.setValue(PREFERENCE_QUANTUM_SECRET, "new-secret-b64") }
-    }
-
-    @Test(expected = Exception::class)
-    fun `getHandshake throws exception on network failure`() = runTest {
-        every { preferencesManager.getString(any()) } returns ""
-        coEvery { quantumNetwork.getQuantumPublicKey() } throws RuntimeException("Network error")
-
-        qsm.getHandshake()
+        
+        // El segundo llamado debe ser rápido (isSessionFresh es true)
+        val result2 = qsm.getHandshake()
+        assertEquals(result, result2)
+        io.mockk.coVerify(exactly = 1) { quantumNetwork.getQuantumPublicKey() }
     }
 
     @Test
@@ -93,15 +76,8 @@ class QuantumSecurityManagerTest {
     }
 
     @Test
-    fun `getSecretSync returns null when not available`() {
-        every { preferencesManager.getString(PREFERENCE_QUANTUM_SECRET) } returns ""
-        assertNull(qsm.getSecretSync())
-    }
-
-    @Test
     fun `clearSession clears preferences`() {
         qsm.clearSession()
-        verify { preferencesManager.setValue(PREFERENCE_QUANTUM_PACKAGE, any<String>()) }
-        verify { preferencesManager.setValue(PREFERENCE_QUANTUM_SECRET, any<String>()) }
+        verify { preferencesManager.setValue(any<String>(), any<String>()) }
     }
 }

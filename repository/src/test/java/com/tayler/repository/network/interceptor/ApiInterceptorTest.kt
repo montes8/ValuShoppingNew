@@ -17,7 +17,7 @@ class ApiInterceptorTest {
 
     private lateinit var interceptor: ApiInterceptor
     private val preferencesManager: PreferencesManager = mockk()
-    private val qsm: QuantumSecurityManager = mockk()
+    private val qsm: QuantumSecurityManager = mockk(relaxed = true)
     private val qsmProvider: Provider<QuantumSecurityManager> = Provider { qsm }
     private val chain: Interceptor.Chain = mockk()
 
@@ -31,8 +31,9 @@ class ApiInterceptorTest {
     @Test
     fun `intercept adds standard headers`() {
         val request = Request.Builder().url("http://localhost/api").build()
+        val mockResponse = mockk<Response>(relaxed = true)
         every { chain.request() } returns request
-        every { chain.proceed(any()) } returns mockk()
+        every { chain.proceed(any()) } returns mockResponse
 
         interceptor.intercept(chain)
 
@@ -46,8 +47,9 @@ class ApiInterceptorTest {
 
     @Test
     fun `intercept adds Authorization header when token exists`() {
+        val mockResponse = mockk<Response>(relaxed = true)
         every { preferencesManager.getString(PREFERENCE_TOKEN) } returns "my-token"
-        every { chain.proceed(any()) } returns mockk()
+        every { chain.proceed(any()) } returns mockResponse
 
         interceptor.intercept(chain)
 
@@ -59,9 +61,10 @@ class ApiInterceptorTest {
     @Test
     fun `intercept performing quantum handshake for GET requests`() {
         val request = Request.Builder().url("http://localhost/api/data").get().build()
+        val mockResponse = mockk<Response>(relaxed = true)
         every { chain.request() } returns request
         coEvery { qsm.getHandshake() } returns Pair("quantum-pkg", "secret".toByteArray())
-        every { chain.proceed(any()) } returns mockk()
+        every { chain.proceed(any()) } returns mockResponse
 
         interceptor.intercept(chain)
 
@@ -71,13 +74,16 @@ class ApiInterceptorTest {
     }
 
     @Test
-    fun `intercept skips quantum for public-key url`() {
-        val request = Request.Builder().url("http://localhost/config/public-key").get().build()
+    fun `intercept clears session on 401 response`() {
+        val request = Request.Builder().url("http://localhost/api/data").get().build()
+        val mockResponse = mockk<Response>()
         every { chain.request() } returns request
-        every { chain.proceed(any()) } returns mockk()
+        coEvery { qsm.getHandshake() } returns Pair("pkg", "secret".toByteArray())
+        every { chain.proceed(any()) } returns mockResponse
+        every { mockResponse.code } returns 401
 
         interceptor.intercept(chain)
 
-        coVerify(exactly = 0) { qsm.getHandshake() }
+        verify { qsm.clearSession() }
     }
 }
