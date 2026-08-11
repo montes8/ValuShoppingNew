@@ -1,6 +1,7 @@
 package com.tayler.valushopping.ui.home.config
 
 import android.content.Context
+import com.tayler.valushopping.di.DefaultDispatcher
 import com.tayler.valushopping.di.IoDispatcher
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.entity.ItemModel
@@ -20,7 +21,8 @@ import kotlinx.coroutines.flow.asStateFlow
 open class ConfigViewModel @Inject constructor(
     private val appDataVale: AppDataVale,
     @IoDispatcher ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : BaseViewModel(ioDispatcher) {
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
+) : BaseViewModel(ioDispatcher, defaultDispatcher) {
 
     private val _itemsState = MutableStateFlow<List<ItemModel>>(emptyList())
     val itemsState: StateFlow<List<ItemModel>> = _itemsState.asStateFlow()
@@ -29,12 +31,14 @@ open class ConfigViewModel @Inject constructor(
         if (_itemsState.value.isNotEmpty()) return
         val jsonFile = if (appDataVale.paramData.session) JSON_ITEM_ADMIN else JSON_ITEM
 
-        try {
-            val loadedItems = loadJsonData(context, jsonFile)
-            _itemsState.value = loadedItems
-        } catch (e: Exception) {
-            e.printStackTrace()
-            _itemsState.value = emptyList()
+        execute(loading = false) {
+            try {
+                val loadedItems = default { loadJsonData(context, jsonFile) }
+                _itemsState.value = loadedItems
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _itemsState.value = emptyList()
+            }
         }
     }
 

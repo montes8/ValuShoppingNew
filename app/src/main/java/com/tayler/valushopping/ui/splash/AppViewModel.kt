@@ -1,28 +1,27 @@
 package com.tayler.valushopping.ui.splash
 
 import android.app.Application
-import android.util.Log
 import com.tayler.entity.HistoryModel
 import com.tayler.entity.ParamModel
 import com.tayler.usecases.AppUseCase
 import com.tayler.usecases.ConfigUseCase
+import com.tayler.valushopping.di.IoDispatcher
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.ui.base.BaseViewModel
+import com.tayler.valushopping.ui.base.GlobalUiStateManager
+import com.valu.uitaycompose.utils.UI_EMPTY
 import com.valu.uitaycompose.utils.extension.uiTayCountryNetwork
 import com.valu.uitaycompose.utils.extension.uiTayDateToString
-import com.valu.uitaycompose.utils.extension.uiTayGetMobilIPAddress
 import com.valu.uitaycompose.utils.extension.uiTayGetAndroidId
-import com.tayler.valushopping.di.IoDispatcher
+import com.valu.uitaycompose.utils.extension.uiTayGetMobilIPAddress
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import com.tayler.valushopping.ui.base.GlobalUiStateManager
-import com.valu.uitaycompose.utils.UI_EMPTY
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import java.util.Date
 import javax.inject.Inject
 
@@ -52,7 +51,6 @@ class AppViewModel @Inject constructor(
     private suspend fun setupInitialUiState() {
         val paramInit = io { appUseCase.configInitParam() }
         appDataVale.paramData = paramInit
-        Log.d("servicedata", appDataVale.paramData.toString())
         _uiState.value = SplashUiState(
             welcomeText = appDataVale.paramData.textWelcome,
             textColor = appDataVale.getColorPrincipal().first,
@@ -70,7 +68,6 @@ class AppViewModel @Inject constructor(
                     UI_EMPTY }
 
                 val country = try { application.uiTayCountryNetwork() } catch (_: Exception) { "PE" }
-
                 val paramDeferred = async {
                     appUseCase.paramInit(androidId, country)
                 }

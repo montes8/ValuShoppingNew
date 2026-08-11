@@ -12,7 +12,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-open class BaseViewModel(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : ViewModel() {
+open class BaseViewModel(
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
+) : ViewModel() {
 
     private val _uiStateBase = MutableStateFlow(BaseUiState())
     val uiStateBase: StateFlow<BaseUiState> = _uiStateBase.asStateFlow()
@@ -24,7 +27,7 @@ open class BaseViewModel(private val ioDispatcher: CoroutineDispatcher = Dispatc
     fun execute(
         loading: Boolean = true,
         globalUiStateManager: GlobalUiStateManager? = null,
-        func: suspend BaseViewModel.() -> Unit
+        func: suspend BaseViewModel.() -> Unit,
     ) {
         viewModelScope.launch {
             try {
@@ -36,7 +39,9 @@ open class BaseViewModel(private val ioDispatcher: CoroutineDispatcher = Dispatc
                 }
                 func()
             } catch (ex: Exception) {
-                if (ex is CancellationException) throw ex
+                if (ex is CancellationException) {
+                    throw ex
+                }
                 ex.printStackTrace()
                 updateUiState { currentState ->
                     currentState.copy(
@@ -73,6 +78,10 @@ open class BaseViewModel(private val ioDispatcher: CoroutineDispatcher = Dispatc
     }
 
     protected suspend fun <T> io(block: suspend () -> T): T = withContext(ioDispatcher) {// NOSONAR
+        block()
+    }
+
+    protected suspend fun <T> default(block: suspend () -> T): T = withContext(defaultDispatcher) {// NOSONAR
         block()
     }
 }

@@ -11,7 +11,6 @@ import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.valu.uitaycompose.utils.extension.uiTayCountryNetwork
 import com.valu.uitaycompose.utils.extension.uiTayGetAndroidId
-import com.valu.uitaycompose.utils.extension.uiTayGetMobilIPAddress
 import com.valu.uitaycompose.utils.extension.uiTayDateToString
 import io.mockk.coEvery
 import io.mockk.every
@@ -61,7 +60,7 @@ class AppViewModelTest {
             application,
             appDataVale,
             globalUiStateManager,
-            testDispatcher
+            testDispatcher,
         )
     }
 

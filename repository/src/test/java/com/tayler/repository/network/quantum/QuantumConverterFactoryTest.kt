@@ -32,10 +32,13 @@ class QuantumConverterFactoryTest {
     @Test
     fun `converter decrypts data correctly`() {
         val type: Type = String::class.java
+        val annotations = emptyArray<Annotation>()
         val delegate: Converter<ResponseBody, Any> = mockk()
+        
         every { retrofit.nextResponseBodyConverter<Any>(any(), type, any()) } returns delegate
         
-        val converter = factory.responseBodyConverter(type, emptyArray(), retrofit) as Converter<ResponseBody, Any>
+        @Suppress("UNCHECKED_CAST")
+        val converter = factory.responseBodyConverter(type, annotations, retrofit) as Converter<ResponseBody, Any>
         
         val encryptedJson = """{"encryptedResponse": {"ciphertext": "c", "iv": "i", "authTag": "t"}}"""
         val responseBody = encryptedJson.toResponseBody("application/json".toMediaType())
@@ -56,6 +59,7 @@ class QuantumConverterFactoryTest {
         val delegate: Converter<ResponseBody, Any> = mockk()
         every { retrofit.nextResponseBodyConverter<Any>(any(), type, any()) } returns delegate
         
+        @Suppress("UNCHECKED_CAST")
         val converter = factory.responseBodyConverter(type, emptyArray(), retrofit) as Converter<ResponseBody, Any>
         
         val encryptedJson = """{"encryptedResponse": {"ciphertext": "c", "iv": "i", "authTag": "t"}}"""
@@ -76,6 +80,7 @@ class QuantumConverterFactoryTest {
         val delegate: Converter<ResponseBody, Any> = mockk()
         every { retrofit.nextResponseBodyConverter<Any>(any(), type, any()) } returns delegate
         
+        @Suppress("UNCHECKED_CAST")
         val converter = factory.responseBodyConverter(type, emptyArray(), retrofit) as Converter<ResponseBody, Any>
         
         val plainJson = "not a json"

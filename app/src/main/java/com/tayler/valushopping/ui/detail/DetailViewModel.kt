@@ -25,7 +25,9 @@ class DetailViewModel @Inject constructor(
 
     fun loadMoreImageProduct(id: String) {
         execute(loading = false, globalUiStateManager = globalUiStateManager) {
-            val response = dataUseCase.loadProductImage(id)
+            val response = io {
+                dataUseCase.loadProductImage(id)
+            }
             _successProductImageState.value = response
         }
     }

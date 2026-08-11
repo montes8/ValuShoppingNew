@@ -45,7 +45,7 @@ class QuantumSecurityManager @Inject constructor(
             ciphertextB64 = data.ciphertext,
             ivB64 = data.iv,
             authTagB64 = data.authTag,
-            aesKeyBytes = secret
+            aesKeyBytes = secret,
         )
     }
 

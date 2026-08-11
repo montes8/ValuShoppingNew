@@ -103,7 +103,6 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.google.code.gson)
-    // Dagger Hilt con KSP
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
@@ -111,12 +110,9 @@ dependencies {
     implementation(project(":usecases"))
 
     implementation(libs.androidx.constraintlayout.compose)
-
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)
-
     implementation(libs.tay.compose.library)
-
 
     // Tests
     testImplementation(libs.junit)

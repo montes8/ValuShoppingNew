@@ -87,23 +87,22 @@ class UserViewModel @Inject constructor(
 
     fun loadUser() {
         execute(globalUiStateManager = globalUiStateManager) {
-            appPreferences.getUser().let { loadedUser ->
-                _formState.value = loadedUser
-            }
+            val loadedUser = io { appPreferences.getUser() }
+            _formState.value = loadedUser
         }
     }
 
     fun saveUser(user: UserModel) {
         execute(globalUiStateManager = globalUiStateManager) {
-            val response = appPreferences.saveUser(user)
-            response.let { _formState.value = it }
+            val response = io { appPreferences.saveUser(user) }
+            _formState.value = response
         }
     }
 
     fun saveUserImg(user: UserModel) {
         execute(globalUiStateManager = globalUiStateManager) {
-            val response = appPreferences.saveUser(user)
-            response.let { _formState.value = it }
+            val response = io { appPreferences.saveUser(user) }
+            _formState.value = response
         }
     }
 }

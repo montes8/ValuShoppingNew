@@ -154,7 +154,7 @@ fun Context.sharedImageViewFromBitmap(bitmap: Bitmap) {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        this.startActivity(Intent.createChooser(intent, TEXT_SHARED))
+        this.startActivity(Intent.createChooser(intent, this.getString(R.string.text_shared_product)))
     } catch (e: IOException) {
         e.printStackTrace()
     }

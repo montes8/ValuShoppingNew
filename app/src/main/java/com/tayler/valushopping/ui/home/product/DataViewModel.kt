@@ -47,7 +47,7 @@ class DataViewModel @Inject constructor(
 
         execute(loading = false, globalUiStateManager = globalUiStateManager) {
             val listFilter: ArrayList<ProductModel> = ArrayList()
-            val response = dataUseCase.loadProduct(all, admin, country)
+            val response = io { dataUseCase.loadProduct(all, admin, country) }
             val listBanner = response.filter { it.banner }
             response.forEach {
                 val distanceM = it.distance("K", appDataVale)

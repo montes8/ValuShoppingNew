@@ -27,6 +27,7 @@ import okhttp3.CertificatePinner
 import java.net.URL
 import com.tayler.repository.network.interceptor.ApiInterceptor
 import com.tayler.repository.network.interceptor.ConnectivityInterceptor
+import javax.inject.Provider
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -137,7 +138,7 @@ object NetworkModule {
     @Provides
     fun providerHeaderInterceptor(
         preferencesManager: PreferencesManager,
-        quantumSecurityManagerProvider: javax.inject.Provider<QuantumSecurityManager>
+        quantumSecurityManagerProvider: Provider<QuantumSecurityManager>
     ): Interceptor {
         return ApiInterceptor(preferencesManager, quantumSecurityManagerProvider)
     }

@@ -39,7 +39,7 @@ val fileFilter = listOf(
 )
 
 subprojects {
-    apply(plugin = "jacoco")
+    plugins.apply("jacoco")
 
     tasks.register<JacocoReport>("testCoverageReport") {
         val isAndroid = project.plugins.hasPlugin("com.android.application") || project.plugins.hasPlugin("com.android.library")

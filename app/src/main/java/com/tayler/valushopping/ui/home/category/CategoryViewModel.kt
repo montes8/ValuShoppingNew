@@ -34,8 +34,8 @@ class CategoryViewModel @Inject constructor(
         if (isAlreadyLoaded) return
 
         execute(loading = false, globalUiStateManager = globalUiStateManager) {
-            val response = configUseCase.listCategories()
-            val responseAll = configUseCase.listCategoriesAll()
+            val response = io { configUseCase.listCategories() }
+            val responseAll = io { configUseCase.listCategoriesAll() }
             appDataVale.categories = response
             appDataVale.categoriesAll = responseAll
             _successCategoriesState.value = response.shuffled()

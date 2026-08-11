@@ -120,5 +120,6 @@
 
     <string name="error_archive">Error al optener el archivo</string>
     <string name="error_not_install">No tiene la aplicacion instalada</string>
+    <string name="text_shared_product">Compartir producto</string>
 
 </resources>
