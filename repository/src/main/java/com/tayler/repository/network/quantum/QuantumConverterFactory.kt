@@ -1,6 +1,7 @@
 package com.tayler.repository.network.quantum
 
 import com.tayler.entity.QuantumEncryptedResponse
+import com.tayler.repository.utils.uiTayLog
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Converter
@@ -10,7 +11,6 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 /**
- * Esta es la solución de "Clase Mundial" (Senior).
  * Se encarga de interceptar la respuesta de Retrofit ANTES de que llegue al Repositorio.
  * Abre el sobre 'QuantumEncryptedResponse', descifra el JSON y lo mapea al objeto final.
  */
@@ -29,21 +29,34 @@ class QuantumConverterFactory @Inject constructor(
             val qsm = qsmProvider.get()
             val bodyString = value.string()
             
+            uiTayLog(bodyString, "QUANTUM_ENCRYPTED")
+            
             try {
+                // Si el body contiene 'errorCode', es un error del servidor, no lo tocamos
+                if (bodyString.contains("errorCode")) {
+                    return@Converter delegate.convert(bodyString.toResponseBody(value.contentType()))
+                }
+
                 val wrapper = qsm.json.decodeFromString<QuantumEncryptedResponse>(bodyString)
                 val data = wrapper.encryptedResponse
                 
                 if (data != null) {
                     val secret = qsm.getSecretSync() 
-                        ?: throw Exception("No hay sesión cuántica activa")
+                        ?: throw Exception("Seguridad: No hay sesión cuántica activa")
+                    
                     val decryptedJson = qsm.decrypt(data, secret)
-                    val responseBody = decryptedJson.toResponseBody(value.contentType())
-                    delegate.convert(responseBody)
+                    uiTayLog(decryptedJson, "QUANTUM_DECRYPTED")
+                    
+                    delegate.convert(decryptedJson.toResponseBody(value.contentType()))
                 } else {
                     delegate.convert(bodyString.toResponseBody(value.contentType()))
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                // Si falla el descifrado de algo que DEBERÍA estar cifrado, lanzamos el error
+                // para que no llegue basura al mapeador de Gson
+                if (bodyString.contains("encryptedResponse")) {
+                    throw Exception("Fallo crítico al descifrar respuesta: ${e.message}")
+                }
                 delegate.convert(bodyString.toResponseBody(value.contentType()))
             }
         }

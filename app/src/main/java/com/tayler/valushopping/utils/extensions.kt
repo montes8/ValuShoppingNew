@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Environment
+import android.util.Log
 import androidx.core.content.FileProvider
 import com.tayler.entity.ParamModel
 import com.tayler.entity.exception.UiTayApiException
@@ -191,4 +192,20 @@ fun Context.uiTaySaveImg(
         if (toast) this.uiTayShowToast(R.string.error_archive)
     }
     return myPath.absolutePath
+}
+
+fun uiTayLog(value: String, tag: String = "UI_TAY_TAG") {
+    if (BuildConfig.DEBUG) {
+        val maxLogSize = 4000
+        if (value.length > maxLogSize) {
+            var i = 0
+            while (i < value.length) {
+                val end = kotlin.math.min(i + maxLogSize, value.length)
+                Log.d(tag, value.substring(i, end))
+                i = end
+            }
+        } else {
+            Log.d(tag, value)
+        }
+    }
 }

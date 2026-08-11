@@ -32,8 +32,14 @@ fun Context?.isAirplaneModeActive(): Boolean {
 
 fun ResponseBody?.toCompleteErrorModel(code: Int): Exception {
     return this?.let {
-        return if (code == 407) throw UnAuthorizedException() else Gson().fromJson(
-            it.string(),
+        val bodyString = try { it.string() } catch (_: Exception) { "" }
+        if (code == 407) throw UnAuthorizedException()
+        
+        // Si el body no parece JSON, devolvemos genérico para evitar crash de Gson
+        if (!bodyString.trim().startsWith("{")) return GenericException()
+
+        return Gson().fromJson(
+            bodyString,
             CompleteErrorModel::class.java
         )?.getApiException() ?: GenericException()
     } ?: GenericException()

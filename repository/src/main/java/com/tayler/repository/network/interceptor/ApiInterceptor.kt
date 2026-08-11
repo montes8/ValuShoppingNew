@@ -37,12 +37,23 @@ class ApiInterceptor @Inject constructor(
             
             val (pkg, _) = try {
                 runBlocking { qsm.getHandshake() }
-            } catch (_: Exception) {
-                // Si falla el handshake, procedemos original (fluirá error de red)
+            } catch (ex: Exception) {
+                // Si el handshake falla, limpiamos para reintentar la próxima
+                qsm.clearSession()
+                android.util.Log.e("QuantumSecurity", "Handshake falló: ${ex.message}")
                 return chain.proceed(builder.build())
             }
             
             builder.header("x-quantum-package", pkg)
+            val response = chain.proceed(builder.build())
+            
+            // Si el servidor nos da un error de autorización (401 o 403), 
+            // asumimos que la sesión cuántica podría estar comprometida
+            if (response.code == 401 || response.code == 403) {
+                qsm.clearSession()
+            }
+            
+            return response
         }
         
         return chain.proceed(builder.build())
