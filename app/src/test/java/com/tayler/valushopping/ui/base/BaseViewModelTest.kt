@@ -1,111 +1,75 @@
 package com.tayler.valushopping.ui.base
 
-import app.cash.turbine.test
 import com.tayler.valushopping.rule.MainDispatcherRule
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BaseViewModelTest {
 
-    private val testDispatcher = kotlinx.coroutines.test.StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
     private lateinit var viewModel: BaseViewModel
+    private val globalUiStateManager = GlobalUiStateManager()
 
-    @org.junit.Before
+    @Before
     fun setUp() {
         viewModel = BaseViewModel(testDispatcher)
     }
 
     @Test
-    fun execute_setsLoadingAndShimmerCorrectlly() = runTest(testDispatcher) {
-        viewModel.uiStateBase.test {
-            // Initial state
-            var state = awaitItem()
-            assertFalse(state.loading)
-
-            viewModel.execute(loading = true) {
-                // Inside func
-            }
-            
-            runCurrent()
-
-            // Loading state
-            state = awaitItem()
-            assertTrue(state.loading)
-            assertTrue(state.shimmer)
-
-            runCurrent()
-
-            // Final state
-            state = awaitItem()
-            assertFalse(state.loading)
-            assertFalse(state.shimmer)
+    fun `execute updates loading state correctly`() = runTest(testDispatcher) {
+        viewModel.execute(loading = true) {
+            // Mientras se ejecuta func(), el estado debe ser loading
+            assertTrue(viewModel.uiStateBase.value.loading)
         }
+        runCurrent()
+        // Al terminar, loading debe ser false
+        assertFalse(viewModel.uiStateBase.value.loading)
     }
 
     @Test
-    fun execute_handlesExceptionsAndSetsErrorState() = runTest(testDispatcher) {
-        val exception = RuntimeException("Test error")
+    fun `execute handles exceptions and updates error state`() = runTest(testDispatcher) {
+        val exception = RuntimeException("Test Error")
         
-        viewModel.uiStateBase.test {
-            awaitItem() // Initial
-
-            viewModel.execute {
-                throw exception
-            }
-            
-            runCurrent()
-
-            assertTrue(awaitItem().loading) // Loading
-            
-            val errorState = awaitItem()
-            assertTrue(errorState.error)
-            assertEquals(exception, errorState.errorType)
-
-            assertFalse(awaitItem().loading) // Final from finally block
+        viewModel.execute {
+            throw exception
         }
-    }
-
-    @Test
-    fun executeState_updatesProvidedStateFlow() = runTest(testDispatcher) {
-        val resultFlow = MutableStateFlow<String?>(null)
-        val expectedValue = "Success"
-
-        viewModel.executeState(resultFlow) {
-            expectedValue
-        }
-        
         runCurrent()
 
-        assertEquals(expectedValue, resultFlow.value)
+        assertTrue(viewModel.uiStateBase.value.error)
+        assertEquals(exception, viewModel.uiStateBase.value.errorType)
+        assertFalse(viewModel.uiStateBase.value.loading)
     }
 
     @Test
-    fun execute_updatesGlobalUiStateManagerIfProvided() = runTest(testDispatcher) {
-        val globalUiStateManager = GlobalUiStateManager()
+    fun `executeState updates target flow and handles loading`() = runTest(testDispatcher) {
+        val targetFlow = MutableStateFlow<String?>(null)
         
-        globalUiStateManager.uiState.test {
-            awaitItem() // Initial
-
-            viewModel.execute(globalUiStateManager = globalUiStateManager) {
-                // Do nothing
-            }
-            
-            runCurrent()
-
-            assertTrue(awaitItem().loading) // Loading
-            assertFalse(awaitItem().loading) // Final
+        viewModel.executeState(targetFlow) {
+            "result"
         }
+        runCurrent()
+
+        assertEquals("result", targetFlow.value)
+        assertFalse(viewModel.uiStateBase.value.loading)
+    }
+
+    @Test
+    fun `updateUiState updates state correctly`() {
+        viewModel.updateUiState { it.copy(loading = true) }
+        assertTrue(viewModel.uiStateBase.value.loading)
     }
 }

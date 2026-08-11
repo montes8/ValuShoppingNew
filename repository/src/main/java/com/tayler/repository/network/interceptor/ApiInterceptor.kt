@@ -18,7 +18,7 @@ import javax.inject.Provider
  */
 class ApiInterceptor @Inject constructor(
     private val preferencesManager: PreferencesManager,
-    private val quantumSecurityManagerProvider: Provider<QuantumSecurityManager>
+    private val quantumSecurityManagerProvider: Provider<QuantumSecurityManager>,
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -31,12 +31,14 @@ class ApiInterceptor @Inject constructor(
             builder.addHeader(AUTHORIZATION, token)
         }
 
-        if (request.method == "GET" && !request.url.toString().contains("public-key")) {
+        // --- HANDSHAKE CUÁNTICO ---
+        if ((request.method == "GET") && (!request.url.toString().contains("public-key"))) {
             val qsm = quantumSecurityManagerProvider.get()
             
             val (pkg, _) = try {
                 runBlocking { qsm.getHandshake() }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
+                // Si falla el handshake, procedemos original (fluirá error de red)
                 return chain.proceed(builder.build())
             }
             

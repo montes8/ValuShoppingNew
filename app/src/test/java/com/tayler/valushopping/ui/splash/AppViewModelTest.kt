@@ -85,13 +85,9 @@ class AppViewModelTest {
         viewModel.successParamState.test {
             viewModel.initSplash()
             
-            // Initial state (null)
             assertEquals(null, awaitItem())
-            
-            // Wait for uiState to be updated (internal logic)
             testDispatcher.scheduler.advanceUntilIdle()
             
-            // Updated state from loadRemoteParams
             val param = awaitItem()
             assertNotNull(param)
             assertEquals("Welcome!", param?.textWelcome)
@@ -99,6 +95,25 @@ class AppViewModelTest {
 
         assertEquals("Welcome!", viewModel.uiState.value.welcomeText)
         assertEquals(mockUser, appDataVale.user)
+    }
+
+    @Test
+    fun `initSplash handles extension exceptions by using defaults`() = runTest(testDispatcher) {
+        // Simular fallo en las extensiones
+        every { application.uiTayGetAndroidId() } throws RuntimeException("ID error")
+        every { application.uiTayCountryNetwork() } throws RuntimeException("Country error")
+        
+        val mockParam = ParamModel(textWelcome = "Default")
+        every { appUseCase.configInitParam() } returns mockParam
+        coEvery { appUseCase.paramInit(any(), any()) } returns mockParam
+        coEvery { appUseCase.getUser() } returns UserModel()
+        coEvery { configUseCase.listCategoriesAll() } returns emptyList()
+
+        viewModel.initSplash()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // Si llegó aquí sin crash, los catch funcionaron
+        assertEquals(mockParam, viewModel.successParamState.value)
     }
 
     @Test

@@ -1,13 +1,11 @@
 package com.tayler.valushopping.ui.home.category
 
-import app.cash.turbine.test
 import com.tayler.entity.CategoryModel
 import com.tayler.usecases.ConfigUseCase
 import com.tayler.valushopping.entity.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -38,42 +36,34 @@ class CategoryViewModelTest {
     }
 
     @Test
-    fun loadCategories_loadsCategoriesAndUpdateAppDataVale() = runTest(testDispatcher) {
-        // Preparación: Definimos categorías de prueba
-        val mockCategories = listOf(CategoryModel(uid = "1", name = "Cat 1", url = "url1"))
-        coEvery { configUseCase.listCategories() } returns mockCategories
-        coEvery { configUseCase.listCategoriesAll() } returns mockCategories
+    fun `loadCategories loads categories and updates appDataVale`() = runTest(testDispatcher) {
+        val mockList = listOf(CategoryModel(uid = "c1", name = "Cat 1"))
+        val mockAllList = listOf(CategoryModel(uid = "ca1", name = "All Cat 1"))
+        
+        coEvery { configUseCase.listCategories() } returns mockList
+        coEvery { configUseCase.listCategoriesAll() } returns mockAllList
 
-        // Acción: Iniciamos la carga de categorías
         viewModel.loadCategories()
         runCurrent()
 
-        // Verificación: Comprobamos que el estado del ViewModel y AppDataVale se actualicen
-        viewModel.successCategoriesState.test {
-            val state = awaitItem()
-            assertEquals(1, state.size)
-            assertEquals("Cat 1", state[0].name)
-        }
-        assertEquals(mockCategories, appDataVale.categories)
-        assertEquals(mockCategories, appDataVale.categoriesAll)
+        assertEquals(mockList.size, viewModel.successCategoriesState.value.size)
+        assertEquals(mockList, appDataVale.categories)
+        assertEquals(mockAllList, appDataVale.categoriesAll)
     }
 
     @Test
-    fun loadCategories_doesNotReloadIfAlreadyLoaded() = runTest(testDispatcher) {
-        // Preparación: Simulamos que ya hay categorías cargadas en el estado
-        val mockCategories = listOf(CategoryModel(uid = "1", name = "Cat 1", url = "url1"))
-        coEvery { configUseCase.listCategories() } returns mockCategories
-        coEvery { configUseCase.listCategoriesAll() } returns mockCategories
-
-        // Primera carga
+    fun `loadCategories does not reload if already loaded`() = runTest(testDispatcher) {
+        // First load
+        coEvery { configUseCase.listCategories() } returns listOf(CategoryModel(uid = "c1"))
+        coEvery { configUseCase.listCategoriesAll() } returns emptyList()
+        
+        viewModel.loadCategories()
+        runCurrent()
+        
+        // Second load call should not trigger usecase
         viewModel.loadCategories()
         runCurrent()
 
-        // Intento de segunda carga
-        viewModel.loadCategories()
-        runCurrent()
-
-        // Verificación: Se debe haber llamado al UseCase solo una vez
-        coVerify(exactly = 1) { configUseCase.listCategories() }
+        io.mockk.coVerify(exactly = 1) { configUseCase.listCategories() }
     }
 }

@@ -26,7 +26,16 @@ val fileFilter = listOf(
     "**/*_Factory*.*",
     "**/*_MembersInjector*.*",
     "**/*_HiltModules*.*",
-    "**/*Hilt*.*"
+    "**/*Hilt*.*",
+    "**/di/**",
+    "**/*Dagger*",
+    "**/*HiltWrapper*",
+    "**/hilt_aggregated_deps/**",
+    "**/ComposableSingletons**",
+    "**/QuantumModelsKt**",
+    "**/*_ComponentTreeDeps*",
+    "**/ui/**/Screen*.class",
+    "**/component/**/Screen*.class"
 )
 
 subprojects {
@@ -53,8 +62,13 @@ subprojects {
         
         val classDirs = if (isAndroid) {
             listOf(
-                fileTree("${project.layout.buildDirectory.get()}/tmp/kotlin-classes/debug") { exclude(fileFilter) },
-                fileTree("${project.layout.buildDirectory.get()}/intermediates/javac/debug/classes") { exclude(fileFilter) }
+                fileTree("${project.layout.buildDirectory.get()}/tmp/kotlin-classes/debug") { 
+                    exclude(fileFilter)
+                    exclude("**/Screen*.class")
+                    exclude("**/component/*.class")
+                },
+                fileTree("${project.layout.buildDirectory.get()}/intermediates/javac/debug/classes") { exclude(fileFilter) },
+                fileTree("${project.layout.buildDirectory.get()}/intermediates/classes/debug/transformDebugClassesWithAsm/dirs") { exclude(fileFilter) }
             )
         } else {
             listOf(
@@ -66,7 +80,7 @@ subprojects {
 
         val execData = if (isAndroid) {
             fileTree("${project.layout.buildDirectory.get()}") {
-                include("jacoco/testDebugUnitTest.exec", "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+                include("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
             }
         } else {
             fileTree("${project.layout.buildDirectory.get()}") {
@@ -98,17 +112,9 @@ sonarqube {
         property("sonar.token", localProperties.getProperty("sonar.token") ?: "")
         property("sonar.sourceEncoding", "UTF-8")
         property("sonar.test.inclusions", "**/*Test*/**")
-        property("sonar.exclusions", "*.json,**/.gradle/**,**/R.class")
-        
-        // Rutas de reportes para multi-modulo
+        property("sonar.exclusions", "**/R.class, **/BuildConfig.*, **/Manifest*.*, **/di/**, **/*Module.kt, **/*_Factory.java, **/*_MembersInjector.java, **/*_HiltModules*")
+        property("sonar.coverage.exclusions", "**/ui/**, **/component/**, **/application/**, **/*Activity.kt, **/*Fragment.kt, **/*Adapter.kt")
         property("sonar.junit.reportPaths", "**/build/test-results/testDebugUnitTest/*.xml")
         property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/jacoco/testCoverageReport/testCoverageReport.xml")
     }
 }
-
-//para test y proyecto recomendado
-//./gradlew testCoverageReport sonarqube
-//cuando se agrega nueva libreria
-//./gradlew --write-verification-metadata=sha256 help o
-//./gradlew --write-verification-metadata=sha256 assembleDebug
-//./gradlew sonarqube

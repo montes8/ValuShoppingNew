@@ -56,7 +56,7 @@ class AppViewModel @Inject constructor(
         _uiState.value = SplashUiState(
             welcomeText = appDataVale.paramData.textWelcome,
             textColor = appDataVale.getColorPrincipal().first,
-            showLogo = appDataVale.paramData.bgService
+            showLogo = appDataVale.paramData.bgService,
         )
         globalUiStateManager.updateUiState { currentState ->
             currentState.copy(statusBarColor = appDataVale.getColorPrincipal().second)

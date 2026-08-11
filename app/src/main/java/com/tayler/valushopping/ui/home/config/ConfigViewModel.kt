@@ -17,9 +17,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
-class ConfigViewModel @Inject constructor(
+open class ConfigViewModel @Inject constructor(
     private val appDataVale: AppDataVale,
-    @IoDispatcher ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel(ioDispatcher) {
 
     private val _itemsState = MutableStateFlow<List<ItemModel>>(emptyList())
@@ -30,11 +30,19 @@ class ConfigViewModel @Inject constructor(
         val jsonFile = if (appDataVale.paramData.session) JSON_ITEM_ADMIN else JSON_ITEM
 
         try {
-            val loadedItems: List<ItemModel> = uiTayDataJson(context, jsonFile)
+            val loadedItems = loadJsonData(context, jsonFile)
             _itemsState.value = loadedItems
         } catch (e: Exception) {
             e.printStackTrace()
             _itemsState.value = emptyList()
         }
+    }
+
+    /**
+     * Método auxiliar para permitir el testeo unitario.
+     * Las funciones 'inline' no se pueden mockear directamente.
+     */
+    open fun loadJsonData(context: Context, fileName: String): List<ItemModel> {
+        return uiTayDataJson(context, fileName)
     }
 }

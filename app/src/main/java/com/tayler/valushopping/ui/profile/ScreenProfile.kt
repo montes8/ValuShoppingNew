@@ -86,7 +86,9 @@ fun ScreenProfile(
     val cameraManager = rememberUiTayCameraManager(
         uiTayNameFilePath = "user",
         listener = object : UiTayCameraManagerCompose.CameraControllerListener {
-            override fun onCameraPermissionDenied() {}
+            override fun onCameraPermissionDenied() {
+                android.util.Log.w("ScreenProfile", "Camera permission denied")
+            }
 
             override fun onGetImageCameraCompleted(path: String, img: Bitmap) {
                 if (typeBanner) {

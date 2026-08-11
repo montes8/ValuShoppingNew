@@ -15,7 +15,7 @@ import javax.inject.Provider
  * Abre el sobre 'QuantumEncryptedResponse', descifra el JSON y lo mapea al objeto final.
  */
 class QuantumConverterFactory @Inject constructor(
-    private val qsmProvider: Provider<QuantumSecurityManager>
+    private val qsmProvider: Provider<QuantumSecurityManager>,
 ) : Converter.Factory() {
 
     override fun responseBodyConverter(

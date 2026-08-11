@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @Singleton
 class QuantumSecurityManager @Inject constructor(
     private val quantumNetwork: IQuantumNetwork,
-    private val preferencesManager: PreferencesManager
+    private val preferencesManager: PreferencesManager,
 ) {
     val json = Json { ignoreUnknownKeys = true }
     private val handshakeMutex = Mutex()

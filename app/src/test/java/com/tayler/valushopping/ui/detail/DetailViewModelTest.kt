@@ -1,6 +1,5 @@
 package com.tayler.valushopping.ui.detail
 
-import app.cash.turbine.test
 import com.tayler.entity.ImageMoreModel
 import com.tayler.usecases.DataUseCase
 import com.tayler.valushopping.rule.MainDispatcherRule
@@ -34,27 +33,13 @@ class DetailViewModelTest {
     }
 
     @Test
-    fun loadMoreImageProduct_updatesStateWithImages() = runTest(testDispatcher) {
-        // Preparación: Definimos imágenes con todos los campos requeridos por el modelo
-        val mockImages = listOf(
-            ImageMoreModel(
-                uid = "1", 
-                name = "img1", 
-                idProduct = "prod1", 
-                idUser = "user1", 
-                url = "http://image.com/1", 
-                nameFile = "file1"
-            )
-        )
-        coEvery { dataUseCase.loadProductImage("prod1") } returns mockImages
+    fun `loadMoreImageProduct updates state with results`() = runTest(testDispatcher) {
+        val mockImages = listOf(ImageMoreModel(uid = "i1", name = "img1", idProduct = "p1", idUser = "u1", url = "url", nameFile = "file"))
+        coEvery { dataUseCase.loadProductImage("p1") } returns mockImages
 
-        // Acción: Cargamos más imágenes del producto
-        viewModel.loadMoreImageProduct("prod1")
+        viewModel.loadMoreImageProduct("p1")
         runCurrent()
 
-        // Verificación: Comprobamos que el StateFlow refleje las imágenes cargadas
-        viewModel.successProductImageState.test {
-            assertEquals(mockImages, awaitItem())
-        }
+        assertEquals(mockImages, viewModel.successProductImageState.value)
     }
 }
