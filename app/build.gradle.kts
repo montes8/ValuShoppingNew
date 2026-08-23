@@ -27,8 +27,8 @@ configure<ApplicationExtension> {
         applicationId = "com.tayler.valushopping"
         minSdk = 25
         targetSdk = 37
-        versionCode = 59
-        versionName = "1.5.8"
+        versionCode = 61
+        versionName = "1.6.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

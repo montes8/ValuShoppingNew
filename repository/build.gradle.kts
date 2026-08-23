@@ -3,7 +3,13 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 }
-fun config(k: String): String = "\"${project.properties[k]}\""
+fun config(k: String): String {
+    val value = project.findProperty(k)?.toString() ?: ""
+    if (value.isEmpty()) {
+        println("WARNING: Property $k is missing in gradle.properties")
+    }
+    return "\"$value\""
+}
 val baseUrl = "BASE_URL"
 val pinning = "PINNIG"
 val pinningRoot = "PINNIG_ROOT"

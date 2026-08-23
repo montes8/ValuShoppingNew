@@ -22,3 +22,4 @@ class GlobalUiStateManager @Inject constructor() {
         _uiState.update(update)
     }
 }
+
