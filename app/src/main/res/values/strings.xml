@@ -122,4 +122,8 @@
     <string name="error_not_install">No tiene la aplicacion instalada</string>
     <string name="text_shared_product">Compartir producto</string>
 
+
+    <string name="text_error_root">Seguridad del Dispositivo</string>
+    <string name="text_error_message_root">Se ha detectado que este dispositivo tiene acceso Root. Por razones de seguridad y para proteger tus datos financieros, ValuShopping no puede ejecutarse en este entorno.</string>
+
 </resources>

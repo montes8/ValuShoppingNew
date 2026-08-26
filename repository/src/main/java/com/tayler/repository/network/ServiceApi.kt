@@ -1,6 +1,7 @@
 package com.tayler.repository.network
 
 import com.tayler.entity.QuantumPublicKeyResponse
+import com.tayler.entity.SecurityAlertRequest
 import com.tayler.repository.network.model.request.HistoryRequest
 import com.tayler.repository.network.model.request.LoginRequest
 import com.tayler.repository.network.model.request.ProductImageRequest
@@ -94,4 +95,7 @@ interface ServiceApi {
 
     @GET("config/public-key")
     suspend fun getQuantumPublicKey(): Response<QuantumPublicKeyResponse>
+
+    @POST("security")
+    suspend fun sendSecurityAlert(@Body request: SecurityAlertRequest): Response<Unit>
 }

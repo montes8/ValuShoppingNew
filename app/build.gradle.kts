@@ -107,6 +107,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(project(":entity"))
+    implementation(project(":repository"))
     implementation(project(":usecases"))
 
     implementation(libs.androidx.constraintlayout.compose)

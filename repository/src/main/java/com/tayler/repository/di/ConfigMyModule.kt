@@ -2,6 +2,7 @@ package com.tayler.repository.di
 
 import com.tayler.repository.network.api.ConfigNetwork
 import com.tayler.repository.network.api.DataNetwork
+import com.tayler.repository.network.api.QuantumNetwork
 import com.tayler.repository.network.api.UserNetwork
 import com.tayler.repository.network.protocol.IConfigNetwork
 import com.tayler.repository.network.protocol.IDataNetwork
@@ -46,7 +47,7 @@ abstract class ConfigMyModule {
     @Singleton
     @Binds
     abstract fun provideQuantumNetwork(
-        quantumNetwork: com.tayler.repository.network.api.QuantumNetwork
+        quantumNetwork: QuantumNetwork
     ): com.tayler.repository.network.protocol.IQuantumNetwork
 
     fun test(){

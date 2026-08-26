@@ -13,6 +13,8 @@ fun config(k: String): String {
 val baseUrl = "BASE_URL"
 val pinning = "PINNIG"
 val pinningRoot = "PINNIG_ROOT"
+val hashOne = "HASH_ONE"
+val hashTwo = "HASH_TWO"
 
 android {
     namespace = "com.tayler.repository"
@@ -32,6 +34,8 @@ android {
             buildConfigField("String", baseUrl, config("production.server.url"))
             buildConfigField("String", pinning, config("pinning.encryption"))
             buildConfigField("String", pinningRoot, config("pinning.root"))
+            buildConfigField("String", hashOne, config("hash.one"))
+            buildConfigField("String", hashTwo, config("hash.two"))
             resValue("string", "encryption_key", config("preferences.encryption"))
 
         }
@@ -39,6 +43,8 @@ android {
             buildConfigField("String", baseUrl, config("qa.server.url"))
             buildConfigField("String", pinning, config("pinning.encryption"))
             buildConfigField("String", pinningRoot, config("pinning.root"))
+            buildConfigField("String", hashOne, config("hash.one"))
+            buildConfigField("String", hashTwo, config("hash.two"))
             resValue("string", "encryption_key", config("preferences.encryption"))
             enableUnitTestCoverage = true
         }

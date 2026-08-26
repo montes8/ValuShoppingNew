@@ -5,9 +5,12 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.tayler.repository.utils.SecurityUtils
+import com.tayler.valushopping.R
 import com.tayler.valushopping.component.ValeNavigationInit
 import com.tayler.valushopping.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class InitActivity : BaseActivity() {
@@ -25,7 +28,17 @@ class InitActivity : BaseActivity() {
 
     @Composable
     override fun SetScreenConfig() {
-        ValeNavigationInit()
+        if (SecurityUtils.isRootDetected) {
+            RenderGenericDialog(
+                image =R.drawable.ic_info_error,
+                title = getString(R.string.text_error_root),
+                subTitle = getString(R.string.text_error_message_root)
+            ) {
+                exitProcess(0)
+            }
+        } else {
+            ValeNavigationInit()
+        }
     }
 
     private fun validateVersionUpdate() {

@@ -42,6 +42,25 @@ abstract class BaseActivity : ComponentActivity() {
     lateinit var appDataVale: AppDataVale
 
     @Composable
+    fun RenderGenericDialog(
+        image: Int,
+        title: String,
+        subTitle: String,
+        onResult: (Boolean) -> Unit
+    ) {
+        UiTayDialog(
+            model = UiTayDialogModel(
+                image = image,
+                title = title,
+                subTitle = subTitle,
+                isCancel = false
+            )
+        ) { result ->
+            onResult(result)
+        }
+    }
+
+    @Composable
     abstract fun SetScreenConfig()
     abstract fun setDataGlobal()
     open fun allowRecentsScreenshot(): Boolean = false
@@ -92,13 +111,11 @@ abstract class BaseActivity : ComponentActivity() {
                         }
 
                         if (uiState.error) {
-                            UiTayDialog(
-                                model = UiTayDialogModel(
-                                    image = uiState.errorType.mapperError(this@BaseActivity, appDataVale).first,
-                                    title = uiState.errorType.mapperError(this@BaseActivity, appDataVale).second,
-                                    subTitle = uiState.errorType.mapperError(this@BaseActivity, appDataVale).third,
-                                    isCancel = false
-                                )
+                            val errorInfo = uiState.errorType.mapperError(this@BaseActivity, appDataVale)
+                            RenderGenericDialog(
+                                image = errorInfo.first,
+                                title = errorInfo.second,
+                                subTitle = errorInfo.third
                             ) { dialogResult ->
                                 globalUiStateManager.updateUiState { current ->
                                     current.copy(

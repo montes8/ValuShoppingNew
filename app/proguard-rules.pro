@@ -35,3 +35,10 @@
 -dontwarn sun.misc.**
 -dontwarn javax.annotation.**
 -dontwarn com.google.errorprone.annotations.**
+
+# 7. ANTI-TAMPERING & SEGURIDAD
+# Forzamos la ofuscación de la lógica de seguridad
+# No añadimos -keep para SecurityUtils para que R8 cambie los nombres de métodos
+-keepclassmembers class com.tayler.repository.utils.SecurityUtils {
+    # Solo mantenemos si fuera estrictamente necesario, pero preferimos que se ofusque
+}

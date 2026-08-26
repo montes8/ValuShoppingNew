@@ -48,9 +48,11 @@ fun Throwable.mapperError(context: Context, appDataVale: AppDataVale): Triple<In
             appDataVale.mapperDialogText()
         )
 
-        else -> Triple(R.drawable.ic_info_error,
-            context.getString(R.string.error_text_generic) ,
-            context.getString(R.string.error_message_generic) )
+        else -> Triple(
+            R.drawable.ic_info_error,
+            context.getString(R.string.error_text_generic),
+            context.getString(R.string.error_message_generic)
+        )
     }
 }
 
