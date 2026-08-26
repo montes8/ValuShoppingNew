@@ -8,6 +8,7 @@ import com.tayler.usecases.AppUseCase
 import com.tayler.repository.utils.SecurityUtils
 import com.tayler.valushopping.BuildConfig
 import com.valu.uitaycompose.utils.extension.changeIcon
+import com.valu.uitaycompose.utils.extension.uiTayGetAndroidId
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +26,14 @@ class ApplicationVale : Application(), DefaultLifecycleObserver {
 
     override fun onCreate() {
         super<Application>.onCreate()
-        SecurityUtils.verifyIntegrity(this, BuildConfig.DEBUG,
-            BuildConfig.VERSION_NAME,android.os.Build.MODEL )
+        SecurityUtils.verifyIntegrity(
+            context = this,
+            isDebug = BuildConfig.DEBUG,
+            versionName = BuildConfig.VERSION_NAME,
+            model = android.os.Build.MODEL,
+            uuid = appUseCase.getUUID(),
+            identifier = this.uiTayGetAndroidId(),
+        )
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }

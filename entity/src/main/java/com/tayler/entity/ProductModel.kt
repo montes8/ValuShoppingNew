@@ -35,6 +35,13 @@ data class ProductModel(
     val sellerClient: String = ""
 ) {
 
+    fun mapperNextProduct():String{
+        return "Hola me gustaria adquirir el producto ${this.name}\n" +
+                "c/u:${this.getPriceUnit()}\n" +
+                "image:${this.url}\naun esta disponible :"
+    }
+
+
     fun getPriceUnit() = "${getSymbolPrice()} $price"
 
     private fun getSymbolPrice(): String = if (countryCode == "AR") "$" else "S/"

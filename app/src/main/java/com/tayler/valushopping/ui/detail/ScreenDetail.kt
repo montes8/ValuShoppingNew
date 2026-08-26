@@ -51,7 +51,6 @@ import com.tayler.valushopping.entity.LocalAppDataVale
 import com.tayler.valushopping.ui.splash.AppViewModel
 import com.tayler.valushopping.utils.mapperCodeSocial
 import com.tayler.valushopping.utils.mapperHeight
-import com.tayler.valushopping.utils.mapperNextProduct
 import com.tayler.valushopping.utils.openWhatsApp
 import com.tayler.valushopping.utils.sharedImageViewFromBitmap
 import com.valu.uitaycompose.button.UiTayButton

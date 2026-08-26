@@ -28,11 +28,23 @@ class InitActivity : BaseActivity() {
 
     @Composable
     override fun SetScreenConfig() {
-        if (SecurityUtils.isRootDetected) {
+        val warning = SecurityUtils.securityWarning
+
+        if (warning != SecurityUtils.SecurityWarningType.NONE) {
+            val (titleRes, subTitleRes) = when (warning) {
+                SecurityUtils.SecurityWarningType.ROOT -> 
+                    R.string.text_error_root to R.string.text_error_message_root
+                SecurityUtils.SecurityWarningType.DEVELOPER_MODE -> 
+                    R.string.text_error_developer to R.string.text_error_message_developer
+                SecurityUtils.SecurityWarningType.EMULATOR -> 
+                    R.string.text_error_emulator to R.string.text_error_message_emulator
+                else -> R.string.text_error_root to R.string.text_error_message_root
+            }
+
             RenderGenericDialog(
-                image =R.drawable.ic_info_error,
-                title = getString(R.string.text_error_root),
-                subTitle = getString(R.string.text_error_message_root)
+                image = R.drawable.ic_info_error,
+                title = getString(titleRes),
+                subTitle = getString(subTitleRes)
             ) {
                 exitProcess(0)
             }

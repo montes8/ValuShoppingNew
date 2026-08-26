@@ -196,18 +196,18 @@ fun Context.uiTaySaveImg(
     return myPath.absolutePath
 }
 
-fun uiTayLog(value: String, tag: String = "UI_TAY_TAG") {
+fun String.uiTayLog( tag: String = "UI_TAY_TAG") {
     if (BuildConfig.DEBUG) {
         val maxLogSize = 4000
-        if (value.length > maxLogSize) {
+        if (this.length > maxLogSize) {
             var i = 0
-            while (i < value.length) {
-                val end = kotlin.math.min(i + maxLogSize, value.length)
-                Log.d(tag, value.substring(i, end))
+            while (i < this.length) {
+                val end = kotlin.math.min(i + maxLogSize, this.length)
+                Log.d(tag, this.substring(i, end))
                 i = end
             }
         } else {
-            Log.d(tag, value)
+            Log.d(tag, this)
         }
     }
 }

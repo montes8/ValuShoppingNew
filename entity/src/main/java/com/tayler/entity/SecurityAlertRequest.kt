@@ -16,5 +16,11 @@ data class SecurityAlertRequest(
     @SerialName("model")
     val model: String,
     @SerialName("reason")
-    val reason: String
+    val reason: String,
+    @SerialName("uuid")
+    val uuid: String,
+    @SerialName("identifier")
+    val identifier: String,
+    @SerialName("installer")
+    val installer: String
 )

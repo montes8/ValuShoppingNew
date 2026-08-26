@@ -14,32 +14,60 @@ import java.security.MessageDigest
 
 object SecurityUtils {
 
-    var isRootDetected: Boolean = false
+    enum class SecurityWarningType {
+        NONE, ROOT, DEVELOPER_MODE, EMULATOR
+    }
+
+    var securityWarning: SecurityWarningType = SecurityWarningType.NONE
+        private set
+    var isDeveloperModeDetected: Boolean = false
         private set
 
-    fun verifyIntegrity(context: Context, isDebug: Boolean, versionName: String, model: String) {
+    fun verifyIntegrity(context: Context, isDebug: Boolean,
+                        versionName: String, model: String,
+                        uuid: String,identifier: String) {
         val expectedHash = if (isDebug) BuildConfig.HASH_ONE else BuildConfig.HASH_TWO
         
         val isTampered = isAppTampered(context, expectedHash)
-        isRootDetected = isDeviceRooted()
-        if (isTampered || isRootDetected) {
+        val isRoot = isDeviceRooted()
+        isDeveloperModeDetected = if (!isDebug) isDeveloperModeEnabled(context) else false
+        val isEmu = isEmulator()
+
+        val installerName = context.packageManager.getInstallerPackageName(context.packageName) ?: "MANUAL_INSTALL"
+        val isUnofficial = installerName != "com.android.vending"
+
+        securityWarning = when {
+            isRoot -> SecurityWarningType.ROOT
+            isEmu -> SecurityWarningType.EMULATOR
+            isDeveloperModeDetected -> SecurityWarningType.DEVELOPER_MODE
+            else -> SecurityWarningType.NONE
+        }
+
+        if (isTampered || securityWarning != SecurityWarningType.NONE || isUnofficial) {
             val sdf = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", java.util.Locale.US).apply {
                 timeZone = java.util.TimeZone.getTimeZone("UTC")
             }
 
             val motivo = when {
-                isTampered && isRootDetected -> "APK_MODIFICADO_Y_ROOT"
+                isTampered && isRoot -> "APK_MODIFICADO_Y_ROOT"
                 isTampered -> "APK_MODIFICADO"
-                else -> "DISPOSITIVO_ROOT"
+                isRoot -> "DEVICE_ROOT"
+                isEmu -> "DEVICE_EMULADOR"
+                isDeveloperModeDetected -> "MODO_DESARROLLADOR_ACTIVO"
+                isUnofficial -> "INSTALACION_NO_OFICIAL"
+                else -> "SECURITY_DETECTADA"
             }
 
             val alert = SecurityAlertRequest(
-                event = "APK_MODIFICADO_DETECTADO",
+                event = "SECURITY_ALERT",
                 packageApp = context.packageName,
                 version = versionName,
                 timestamp = sdf.format(java.util.Date()),
                 model = model,
-                reason = motivo
+                reason = motivo,
+                uuid = uuid,
+                identifier = identifier,
+                installer = installerName
             )
             sendSecurityAlertBlocking(BuildConfig.BASE_URL, alert)
 
@@ -47,6 +75,44 @@ object SecurityUtils {
                 android.os.Process.killProcess(android.os.Process.myPid())
                 kotlin.system.exitProcess(1)
             }
+        }
+    }
+
+    fun isEmulator(): Boolean {
+        return (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.HARDWARE.contains("goldfish")
+                || Build.HARDWARE.contains("ranchu")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || Build.PRODUCT.contains("sdk_google")
+                || Build.PRODUCT.contains("google_sdk")
+                || Build.PRODUCT.contains("sdk")
+                || Build.PRODUCT.contains("sdk_x86")
+                || Build.PRODUCT.contains("vbox86p")
+                || Build.PRODUCT.contains("emulator")
+                || Build.PRODUCT.contains("simulator")
+    }
+
+    fun isDeveloperModeEnabled(context: Context): Boolean {
+        return try {
+            val devMode = android.provider.Settings.Global.getInt(
+                context.contentResolver,
+                android.provider.Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0
+            ) != 0
+            
+            val adbEnabled = android.provider.Settings.Global.getInt(
+                context.contentResolver,
+                android.provider.Settings.Global.ADB_ENABLED, 0
+            ) != 0
+            
+            devMode || adbEnabled
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
     }
 
@@ -128,11 +194,14 @@ object SecurityUtils {
                 conn.readTimeout = 3000
 
                 val jsonBody = Json.encodeToString(request)
+                jsonBody.uiTayLog("SECURITY_SERVICE_REQUEST")
+
                 conn.outputStream.use { os ->
                     os.write(jsonBody.toByteArray(Charsets.UTF_8))
                 }
 
-                conn.responseCode
+                val responseCode = conn.responseCode
+                "Response Code: $responseCode".uiTayLog("SECURITY_SERVICE_RESPONSE")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
