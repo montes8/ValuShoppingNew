@@ -1,6 +1,6 @@
 package com.tayler.valushopping.di
 
-import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.ui.AppDataVale
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -6,7 +6,7 @@ import com.tayler.entity.ParamModel
 import com.tayler.entity.UserModel
 import com.tayler.usecases.AppUseCase
 import com.tayler.usecases.ConfigUseCase
-import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.valu.uitaycompose.utils.extension.uiTayCountryNetwork

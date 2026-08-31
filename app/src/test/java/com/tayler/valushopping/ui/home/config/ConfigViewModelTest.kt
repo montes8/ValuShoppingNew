@@ -2,11 +2,11 @@ package com.tayler.valushopping.ui.home.config
 
 import android.content.Context
 import com.tayler.entity.ParamModel
-import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.entity.ItemModel
 import com.tayler.valushopping.rule.MainDispatcherRule
-import com.tayler.valushopping.utils.JSON_ITEM
-import com.tayler.valushopping.utils.JSON_ITEM_ADMIN
+import com.tayler.ui.JSON_ITEM
+import com.tayler.ui.JSON_ITEM_ADMIN
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk

@@ -2,7 +2,7 @@ package com.tayler.valushopping.ui.home.category
 
 import com.tayler.entity.CategoryModel
 import com.tayler.usecases.ConfigUseCase
-import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import io.mockk.coEvery

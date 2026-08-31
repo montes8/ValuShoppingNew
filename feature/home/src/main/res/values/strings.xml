@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Home Flow Strings -->
+    <string name="text_title_support">Soporte tecnico</string>
+    <string name="sub_text_title_support">Te contactaremos con un asesor si tienes algun problema tecnico en el proceso de uso de nuestra aplicación</string>
+    <string name="text_support">Hola tengo un problema en la app valu</string>
+    <string name="text_title_join">Unete a nosotros</string>
+    <string name="sub_text_title_join">Te contactaremos con un encargado que te ayudara a saber el proceso para que tus productos aparescan en nuestra aplicacion, asegurate de haber leido la seccion de SOBRE NOSOTROS para saber un poco mas de nosotros.</string>
+    <string name="text_body_join">Me gustaria ser parte de ustedes y que mis productos esten en su aplicacion, me indica los pasos a seguir</string>
+    <string name="name_face">Facebook</string>
+    <string name="name_you">Youtube</string>
+    <string name="name_tik">Tiktok</string>
+    <string name="name_insta">Instagram</string>
+    <string name="text_choose_product"> Elige ahora un producto</string>
+    <string name="text_more_all">Ver todos</string>
+    <string name="text_empty_list">No hay productos disponibles</string>
+    <string name="text_see_more_product">Ver los productos por categoria</string>
+    <string name="text_title_delivery_points">Recomedaciones de puntos de entrega</string>
+    <string name="text_message_delivery_points">- Estaciones del tren electrico de lima\n- Estaciones del metropolitano\n- Centros comerciales (Plaza norte, mega plaza,etc), Huaral</string>
+    <string name="text_info_delivery_points">Los puntos de entrega se coordinan con el vendedor del producto que desea adquirir.</string>
+    <string name="text_message_delivery_points_ar">- Los puntos de entrega puede varias en argentina, es de acuerdo a la provincia en donde se vende el producto</string>
+    <string name="text_item_init">Inicio</string>
+    <string name="text_item_product">Productos</string>
+    <string name="text_item_categories">Categorias</string>
+    <string name="text_item_config">Config</string>
+    <string name="text_item_profile">Perfil</string>
+
+    <string name="text_item_about">Sobre nostros</string>
+    <string name="text_item_part">Se parte de nosotros</string>
+    <string name="text_item_delivery">Puntos de entrega</string>
+    <string name="text_item_support">soporte tecnico</string>
+    <string name="text_item_social">Facebook</string>
+    <string name="text_country_pe">Peru - Lima metropolitana</string>
+    <string name="text_country_ar">Argentina - Provincias</string>
+</resources>

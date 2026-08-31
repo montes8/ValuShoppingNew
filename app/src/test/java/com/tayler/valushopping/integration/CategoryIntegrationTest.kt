@@ -6,7 +6,7 @@ import com.tayler.repository.network.api.ConfigNetwork
 import com.tayler.repository.network.base.BaseNetwork
 import com.tayler.repository.network.model.response.CategoryResponse
 import com.tayler.usecases.ConfigUseCase
-import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.tayler.valushopping.ui.home.category.CategoryViewModel

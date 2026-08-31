@@ -29,7 +29,7 @@ class QuantumConverterFactory @Inject constructor(
             val qsm = qsmProvider.get()
             val bodyString = value.string()
             
-            uiTayLog(bodyString, "QUANTUM_ENCRYPTED")
+            bodyString.uiTayLog("QUANTUM_ENCRYPTED")
             
             try {
                 // Si el body contiene 'errorCode', es un error del servidor, no lo tocamos
@@ -45,7 +45,7 @@ class QuantumConverterFactory @Inject constructor(
                         ?: throw Exception("Seguridad: No hay sesión cuántica activa")
                     
                     val decryptedJson = qsm.decrypt(data, secret)
-                    uiTayLog(decryptedJson, "QUANTUM_DECRYPTED")
+                    decryptedJson.uiTayLog("QUANTUM_DECRYPTED")
                     
                     delegate.convert(decryptedJson.toResponseBody(value.contentType()))
                 } else {

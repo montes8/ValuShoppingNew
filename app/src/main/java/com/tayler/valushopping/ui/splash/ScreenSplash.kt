@@ -30,11 +30,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tayler.entity.exception.UiTayApiException
-import com.tayler.valushopping.R
-import com.tayler.valushopping.entity.AppDataVale
-import com.tayler.valushopping.entity.LocalAppDataVale
-import com.tayler.valushopping.ui.base.LocalGlobalUiStateManager
-import com.tayler.valushopping.utils.validateHourApp
+import com.tayler.ui.R
+import com.tayler.ui.AppDataVale
+import com.tayler.ui.LocalAppDataVale
+import com.tayler.ui.ui.base.LocalGlobalUiStateManager
+import com.tayler.ui.validateHourApp
 import com.valu.uitaycompose.swipe.UiTayUrlImage
 import com.valu.uitaycompose.utils.textPenny25
 import kotlinx.coroutines.delay

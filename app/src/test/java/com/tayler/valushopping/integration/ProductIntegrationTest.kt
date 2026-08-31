@@ -7,7 +7,7 @@ import com.tayler.repository.network.api.DataNetwork
 import com.tayler.repository.network.base.BaseNetwork
 import com.tayler.repository.network.model.response.ProductResponse
 import com.tayler.usecases.DataUseCase
-import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.tayler.valushopping.ui.home.product.DataViewModel

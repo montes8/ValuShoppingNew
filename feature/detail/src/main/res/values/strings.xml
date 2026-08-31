@@ -1,0 +1,12 @@
+<resources>
+    <string name="btn_consult">Consultar</string>
+    <string name="btn_shared">Compartir</string>
+    <string name="toast_not_product">Producto no disponible</string>
+    <string name="error_image">Error al generar la imagen</string>
+    <string name="error_consult_v">Consulte con el vendedor para mas detalle.</string>
+    <string name="text_description_product">Descripción del producto</string>
+    <string name="text_delivery_location">Puntos de entrega</string>
+    <string name="text_city">Ciudad</string>
+    <string name="text_delivery_location_other">Otros puntos de entrega</string>
+    <string name="text_delivery_location_other_value">Otros puntos de entrega se coordina con el vendedor del producto y es un costo adicional</string>
+</resources>

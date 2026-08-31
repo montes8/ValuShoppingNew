@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.ValuShoppingNew" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Opcional: puedes definir el color de fondo de ventana aquí si deseas evitar parpadeos blancos -->
-        <item name="android:windowBackground">@android:color/white</item> <!-- O el color de tu app -->
-    </style>
-</resources>

@@ -5,10 +5,10 @@ import com.tayler.entity.HistoryModel
 import com.tayler.entity.ParamModel
 import com.tayler.usecases.AppUseCase
 import com.tayler.usecases.ConfigUseCase
-import com.tayler.valushopping.di.IoDispatcher
-import com.tayler.valushopping.entity.AppDataVale
-import com.tayler.valushopping.ui.base.BaseViewModel
-import com.tayler.valushopping.ui.base.GlobalUiStateManager
+import com.tayler.ui.di.IoDispatcher
+import com.tayler.ui.AppDataVale
+import com.tayler.ui.ui.base.BaseViewModel
+import com.tayler.ui.ui.base.GlobalUiStateManager
 import com.valu.uitaycompose.utils.UI_EMPTY
 import com.valu.uitaycompose.utils.extension.uiTayCountryNetwork
 import com.valu.uitaycompose.utils.extension.uiTayDateToString

@@ -3,10 +3,10 @@ package com.tayler.valushopping.ui.home.product
 import com.tayler.entity.ParamModel
 import com.tayler.entity.ProductModel
 import com.tayler.usecases.DataUseCase
-import com.tayler.valushopping.entity.AppDataVale
+import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
-import com.tayler.valushopping.utils.distance
+import com.tayler.ui.distance
 import io.mockk.coVerify
 import io.mockk.coEvery
 import io.mockk.every
@@ -39,13 +39,13 @@ class DataViewModelTest {
 
     @Before
     fun setUp() {
-        mockkStatic("com.tayler.valushopping.utils.ExtensionUtilsKt")
+        mockkStatic("com.tayler.ui.ExtensionUtilsKt")
         viewModel = DataViewModel(dataUseCase, appDataVale, globalUiStateManager, testDispatcher)
     }
 
     @After
     fun tearDown() {
-        unmockkStatic("com.tayler.valushopping.utils.ExtensionUtilsKt")
+        unmockkStatic("com.tayler.ui.ExtensionUtilsKt")
     }
 
     @Test

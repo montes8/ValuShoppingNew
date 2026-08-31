@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Valu</string>
+
+    <string name="text_title_logout">Deseas cerrar sesión</string>
+    <string name="sub_text_title_logout">Estas seguro que deseas cerrar sesión</string>
+    <string name="text_empty_type_product">No hay producto de este tipo disponible</string>
+    <string name="btn_link_see_all"><u>Ver Todos</u></string>
+    <string name="text_description_detail">Descripción del producto</string>
+    <string name="text_title_city">Ciudad</string>
+    <string name="text_title_delivery">Puntos de entrega</string>
+    <string name="text_title_other">Otros puntos de entrega</string>
+    <string name="text_value_other">Otros puntos de entrega se coordina con el vendedor del producto y es un costo adicional</string>
+    <string name="text_country_pe">Peru - Lima metropolitana</string>
+    <string name="text_country_ar">Argentina - Provincias</string>
+    <string name="text_register"><u>Si aun no tienes cuenta, Conctatos</u></string>
+    <string name="hint_description">Agrega descripcion minuno de caranteres 10</string>
+
+    <!-- sub text title views-->
+
+    <string name="text_info_user">Si usted no se encuentra loageado, sus datos personales solo de guardaran de forma local</string>
+    <string name="text_info_product">Consulte con el vendedor para mas detalle.</string>
+
+    <string name="error_text_generic">¡Ups ocurrió un error!</string>
+    <string name="error_text_expire">¡Sesión expirada</string>
+    <string name="error_text_connection">¡Error de conexión de red!</string>
+    <string name="error_message_generic">Se ha producido un error inesperado en el sistema o esta fuera del horario de atencion, intentalo de nuevo mas tarde y en el horario respectivo.</string>
+    <string name="error_message_connection">El sistema no pudo conectarse a la red, le recomendamos revisar su conexión de internet.</string>
+    <string name="error_message_expire">Tu tiempo de conexión ha expirado. Por tu seguridad debes ingresar sesión nuevamente.</string>
+    <string name="error_text_hour">Fuera de horario de atención</string>
+
+    <string name="error_archive">Error al optener el archivo</string>
+    <string name="error_not_install">No tiene la aplicacion instalada</string>
+    <string name="text_shared_product">Compartir producto</string>
+
+
+    <string name="text_error_root">Seguridad del Dispositivo</string>
+    <string name="text_error_message_root">Se ha detectado que este dispositivo tiene acceso Root. Por razones de seguridad y para proteger tus datos financieros, ValuShopping no puede ejecutarse en este entorno.</string>
+
+    <string name="text_error_developer">Opciones de Desarrollador</string>
+    <string name="text_error_message_developer">Se ha detectado que las Opciones de Desarrollador están activadas. Por razones de seguridad, debes desactivarlas para usar ValuShopping.</string>
+
+    <string name="text_error_emulator">Dispositivo no Soportado</string>
+    <string name="text_error_message_emulator">Se ha detectado que la aplicación se está ejecutando en un emulador o entorno virtual. Por razones de seguridad, ValuShopping solo puede ejecutarse en dispositivos físicos oficiales.</string>
+
+    <string name="tb_principal">VALU SHOOPING</string>
+    <string name="text_new">Nuevo</string>
+    <string name="text_semi_new">Semi nuevo</string>
+
+</resources>

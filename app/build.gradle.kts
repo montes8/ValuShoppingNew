@@ -27,8 +27,8 @@ configure<ApplicationExtension> {
         applicationId = "com.tayler.valushopping"
         minSdk = 25
         targetSdk = 37
-        versionCode = 61
-        versionName = "1.6.0"
+        versionCode = 62
+        versionName = "1.6.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -109,6 +109,14 @@ dependencies {
     implementation(project(":entity"))
     implementation(project(":repository"))
     implementation(project(":usecases"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core:ui"))
+    implementation(project(":feature:informative"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:detail"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:auth"))
+    implementation(project(":feature:configProduct"))
 
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.media3.exoplayer)

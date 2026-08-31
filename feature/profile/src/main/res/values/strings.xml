@@ -1,0 +1,10 @@
+<resources>
+    <string name="title_data">Datos Personales</string>
+    <string name="hint_names">Nombres</string>
+    <string name="hint_lastname">Apellidos</string>
+    <string name="hint_doc">Numero de documento</string>
+    <string name="hint_email">Correo electronico</string>
+    <string name="hint_phone">Telefono</string>
+    <string name="hint_address">Dirección</string>
+    <string name="btn_save">Guardar</string>
+</resources>
