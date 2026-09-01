@@ -5,7 +5,10 @@ import android.content.Intent
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.tayler.entity.ProductModel
+import com.tayler.core.model.ProductModel
+import com.tayler.core.common.utils.URL_WHATS_APP_CUSTOM
+import com.tayler.core.common.utils.PACKAGE_APP_WHATS_APP
+import com.tayler.core.common.utils.PACKAGE_APP_WHATS_APP_BUSINESS
 import com.valu.uitaycompose.utils.COUNTRY_CODE_PE
 import com.valu.uitaycompose.utils.SIZE_BIG
 import com.valu.uitaycompose.utils.SIZE_MEDIUM

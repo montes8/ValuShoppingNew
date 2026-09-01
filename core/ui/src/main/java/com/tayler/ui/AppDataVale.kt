@@ -1,10 +1,11 @@
 package com.tayler.ui
 
+import com.tayler.core.common.utils.TY_DEFAULT
 import android.content.Context
 import androidx.compose.ui.graphics.Color
-import com.tayler.entity.CategoryModel
-import com.tayler.entity.ParamModel
-import com.tayler.entity.UserModel
+import com.tayler.core.model.CategoryModel
+import com.tayler.core.model.ParamModel
+import com.tayler.core.model.UserModel
 import com.valu.uitaycompose.utils.UI_EMPTY
 import com.valu.uitaycompose.utils.extension.getNameBackgroundCustom
 import com.valu.uitaycompose.utils.extension.getNameSplashCustom

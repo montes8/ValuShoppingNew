@@ -1,7 +1,7 @@
 package com.tayler.home.ui.category
 
-import com.tayler.entity.CategoryModel
-import com.tayler.usecases.ConfigUseCase
+import com.tayler.core.model.CategoryModel
+import com.tayler.home.domain.usecase.GetCategoriesUseCase
 import com.tayler.ui.di.IoDispatcher
 import com.tayler.ui.AppDataVale
 import com.tayler.ui.ui.base.BaseViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val configUseCase: ConfigUseCase,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
     private val appDataVale: AppDataVale,
     private val globalUiStateManager: GlobalUiStateManager,
     @IoDispatcher ioDispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -34,8 +34,8 @@ class CategoryViewModel @Inject constructor(
         if (isAlreadyLoaded) return
 
         execute(loading = false, globalUiStateManager = globalUiStateManager) {
-            val response = io { configUseCase.listCategories() }
-            val responseAll = io { configUseCase.listCategoriesAll() }
+            val response = io { getCategoriesUseCase.getCategories() }
+            val responseAll = io { getCategoriesUseCase.getCategoriesAll() }
             appDataVale.categories = response
             appDataVale.categoriesAll = responseAll
             _successCategoriesState.value = response.shuffled()

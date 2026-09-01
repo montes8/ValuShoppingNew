@@ -6,13 +6,13 @@ import com.tayler.ui.di.IoDispatcher
 import com.tayler.ui.AppDataVale
 import com.tayler.home.entity.ItemModel
 import com.tayler.ui.ui.base.BaseViewModel
-import com.tayler.ui.JSON_ITEM
-import com.tayler.ui.JSON_ITEM_ADMIN
+import com.tayler.core.common.utils.JSON_ITEM
+import com.tayler.core.common.utils.JSON_ITEM_ADMIN
 import com.valu.uitaycompose.utils.extension.uiTayDataJson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

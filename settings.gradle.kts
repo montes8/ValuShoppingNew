@@ -24,9 +24,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "ValuShoppingNew"
 include(":app")
-include(":entity")
-include(":repository")
-include(":usecases")
+include(":core:model")
+include(":core:network")
+include(":core:database")
+include(":core:common")
+include(":core:domain")
 include(":core:navigation")
 include(":feature:informative")
 include(":core:ui")

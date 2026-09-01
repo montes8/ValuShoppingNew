@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.tayler.entity.ProductModel
+import com.tayler.core.model.ProductModel
 import com.tayler.navigation.ScreenInitNav
 import com.tayler.informative.InformativeFlow
 import com.tayler.home.HomeFlow

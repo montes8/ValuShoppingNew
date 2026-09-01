@@ -1,7 +1,7 @@
 package com.tayler.valushopping.ui.detail
 
-import com.tayler.entity.ImageMoreModel
-import com.tayler.usecases.DataUseCase
+import com.tayler.core.model.ImageMoreModel
+import com.tayler.core.domain.usecase.DataUseCase
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import io.mockk.coEvery

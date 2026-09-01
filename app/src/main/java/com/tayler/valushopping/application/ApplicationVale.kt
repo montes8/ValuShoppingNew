@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.tayler.usecases.AppUseCase
-import com.tayler.repository.utils.SecurityUtils
+import com.tayler.core.domain.usecase.AppUseCase
+import com.tayler.core.network.utils.SecurityUtils
 import com.tayler.valushopping.BuildConfig
 import com.valu.uitaycompose.utils.extension.changeIcon
 import com.valu.uitaycompose.utils.extension.uiTayGetAndroidId

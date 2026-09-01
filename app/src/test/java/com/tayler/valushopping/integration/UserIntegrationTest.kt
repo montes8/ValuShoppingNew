@@ -1,12 +1,12 @@
 package com.tayler.valushopping.integration
 
-import com.tayler.entity.UserModel
+import com.tayler.core.model.UserModel
 import com.tayler.repository.network.protocol.IConfigNetwork
 import com.tayler.repository.network.protocol.IUserNetwork
-import com.tayler.repository.preferences.api.AppPreferences
-import com.tayler.repository.preferences.manager.PreferencesManager
+import com.tayler.core.database.preferences.api.AppPreferences
+import com.tayler.core.database.preferences.manager.PreferencesManager
 import com.tayler.repository.utils.toJson
-import com.tayler.usecases.AppUseCase
+import com.tayler.core.domain.usecase.AppUseCase
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import com.tayler.valushopping.ui.profile.UserViewModel

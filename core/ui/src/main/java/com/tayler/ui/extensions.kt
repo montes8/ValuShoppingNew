@@ -7,11 +7,12 @@ import android.graphics.Bitmap
 import android.os.Environment
 import android.util.Log
 import androidx.core.content.FileProvider
-import com.tayler.entity.ParamModel
-import com.tayler.entity.exception.UiTayApiException
-import com.tayler.entity.exception.MyNetworkException
-import com.tayler.entity.exception.OutOfHour
-import com.tayler.entity.exception.UnAuthorizedException
+import com.tayler.core.model.ParamModel
+import com.tayler.core.model.exception.UiTayApiException
+import com.tayler.core.model.exception.MyNetworkException
+import com.tayler.core.model.exception.OutOfHour
+import com.tayler.core.model.exception.UnAuthorizedException
+import com.tayler.core.common.utils.PATH_IMAGE_SHARED
 import com.valu.uitaycompose.utils.HOUR_END_DEFAULT
 import com.valu.uitaycompose.utils.HOUR_START_DEFAULT
 import com.valu.uitaycompose.utils.UI_EMPTY
@@ -22,9 +23,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
-
-// Note: BuildConfig and R will need to be imported correctly or used via FQN if they are in different modules.
-// For now, I'll use com.tayler.ui.R and assume BuildConfig is handled or not needed for these specific logic if moved.
 
 fun Throwable.mapperError(context: Context, appDataVale: AppDataVale): Triple<Int, String, String> {
     return when (this) {

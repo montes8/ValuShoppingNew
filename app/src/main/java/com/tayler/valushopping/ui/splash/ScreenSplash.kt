@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tayler.entity.exception.UiTayApiException
+import com.tayler.core.model.exception.UiTayApiException
 import com.tayler.ui.R
 import com.tayler.ui.AppDataVale
 import com.tayler.ui.LocalAppDataVale

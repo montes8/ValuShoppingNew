@@ -44,7 +44,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tayler.entity.UserModel
+import com.tayler.core.model.UserModel
 import com.tayler.ui.R as UiR
 import com.tayler.ui.LocalAppDataVale
 import com.valu.uitaycompose.button.UiTayButton

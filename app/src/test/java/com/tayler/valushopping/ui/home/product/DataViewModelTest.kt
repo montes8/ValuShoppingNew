@@ -1,8 +1,8 @@
 package com.tayler.valushopping.ui.home.product
 
-import com.tayler.entity.ParamModel
-import com.tayler.entity.ProductModel
-import com.tayler.usecases.DataUseCase
+import com.tayler.core.model.ParamModel
+import com.tayler.core.model.ProductModel
+import com.tayler.core.domain.usecase.DataUseCase
 import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager

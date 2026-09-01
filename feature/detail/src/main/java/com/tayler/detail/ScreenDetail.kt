@@ -44,7 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tayler.entity.ProductModel
+import com.tayler.core.model.ProductModel
 import com.tayler.ui.ValuScreen
 import com.tayler.ui.R as UiR
 import com.tayler.ui.AppDataVale

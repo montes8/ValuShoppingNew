@@ -2,10 +2,10 @@ package com.tayler.valushopping.ui.splash
 
 import android.app.Application
 import app.cash.turbine.test
-import com.tayler.entity.ParamModel
-import com.tayler.entity.UserModel
-import com.tayler.usecases.AppUseCase
-import com.tayler.usecases.ConfigUseCase
+import com.tayler.core.model.ParamModel
+import com.tayler.core.model.UserModel
+import com.tayler.core.domain.usecase.AppUseCase
+import com.tayler.core.domain.usecase.ConfigUseCase
 import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager

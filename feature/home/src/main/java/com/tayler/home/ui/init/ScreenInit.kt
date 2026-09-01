@@ -31,7 +31,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.tayler.entity.ParamModel
+import com.tayler.core.model.ParamModel
 import com.tayler.home.R
 import com.tayler.ui.R as UiR
 import com.tayler.home.ui.components.VideoPlayerCompose

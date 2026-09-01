@@ -1,8 +1,8 @@
 package com.tayler.valushopping.ui.profile
 
 import app.cash.turbine.test
-import com.tayler.entity.UserModel
-import com.tayler.usecases.AppUseCase
+import com.tayler.core.model.UserModel
+import com.tayler.core.domain.usecase.AppUseCase
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
 import io.mockk.every

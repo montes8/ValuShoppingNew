@@ -1,8 +1,8 @@
 package com.tayler.valushopping.application
 
 import androidx.lifecycle.LifecycleOwner
-import com.tayler.entity.ParamModel
-import com.tayler.usecases.AppUseCase
+import com.tayler.core.model.ParamModel
+import com.tayler.core.domain.usecase.AppUseCase
 import com.valu.uitaycompose.utils.extension.changeIcon
 import io.mockk.coEvery
 import io.mockk.every

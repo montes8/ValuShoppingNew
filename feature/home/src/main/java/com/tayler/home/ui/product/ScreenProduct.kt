@@ -49,7 +49,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tayler.entity.ProductModel
+import com.tayler.core.model.ProductModel
 import com.tayler.home.R
 import com.tayler.ui.R as UiR
 import com.tayler.ui.AppDataVale
@@ -78,7 +78,7 @@ import kotlin.time.Duration.Companion.milliseconds
 fun ScreenProduct(onNavigateToMain: (ProductModel) -> Unit) {
     val appDataVale = LocalAppDataVale.current
     val context = LocalContext.current
-    val viewModel: DataViewModel = hiltViewModel()
+    val viewModel: ProductViewModel = hiltViewModel()
 
     val productData by viewModel.successLoadProductClientState.collectAsStateWithLifecycle()
     var isRefreshing by remember { mutableStateOf(value = false) }

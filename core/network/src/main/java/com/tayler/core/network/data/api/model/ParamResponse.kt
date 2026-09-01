@@ -1,0 +1,100 @@
+package com.tayler.core.network.data.api.model
+
+import com.google.gson.annotations.SerializedName
+import com.tayler.core.model.ParamModel
+import com.tayler.core.common.utils.COUNTRY_DEFAULT
+import com.tayler.core.common.utils.DEFAULT_COUNT_PRODUCT
+import com.tayler.core.common.utils.DEFAULT_NUMBER
+import com.tayler.core.common.utils.DEFAULT_TEXT_WELCOME
+import com.tayler.core.common.utils.EMPTY_VALE
+import com.tayler.core.common.utils.HOUR_END_DEFAULT
+import com.tayler.core.common.utils.HOUR_START_DEFAULT
+import com.tayler.core.common.utils.ID_MOVIE_DEFAULT
+
+data class ParamResponse(
+    @SerializedName("uid")
+    var uid: String? = EMPTY_VALE,
+    @SerializedName("title")
+    var title: String? = DEFAULT_TEXT_WELCOME,
+    @SerializedName("description")
+    var description: String? = EMPTY_VALE,
+    @SerializedName("idMovie")
+    var idMovie: String? = ID_MOVIE_DEFAULT,
+    @SerializedName("enableCategory")
+    var enableCategory: Boolean? = false,
+    @SerializedName("phone")
+    var phone: String? = DEFAULT_NUMBER,
+    @SerializedName("textWelcome")
+    var textWelcome: String? = DEFAULT_TEXT_WELCOME,
+    @SerializedName("hourStart")
+    var hourStart: String? = HOUR_START_DEFAULT,
+    @SerializedName("hourEnd")
+    var hourEnd: String? = HOUR_END_DEFAULT,
+    @SerializedName("limitDistance")
+    var limitDistance: String? = "5",
+    @SerializedName("countProduct")
+    var countProduct: String? = DEFAULT_COUNT_PRODUCT,
+    @SerializedName("styleValu")
+    var styleValu: String? = "0",
+    @SerializedName("bgService")
+    var bgService: Boolean? = false,
+    @SerializedName("bgToolbar")
+    var bgToolbar: Boolean? = false,
+    @SerializedName("countryCode")
+    var countryCode: String? = COUNTRY_DEFAULT,
+    @SerializedName("blocking")
+    var blocking: Boolean? = null,
+    @SerializedName("idIcon")
+    var idIcon: String? = "Icon",
+    @SerializedName("idFacebook")
+    var idFacebook: String? = "61590557890653",
+    @SerializedName("idYoutube")
+    var idYoutube: String? = "xH6qsMpA7NM"
+) {
+
+    companion object{
+        fun toModel(data : ParamResponse) = ParamModel(
+             uid = data.uid?:EMPTY_VALE,
+             title = data.title?:DEFAULT_TEXT_WELCOME,
+             description = data.description?:EMPTY_VALE,
+             idMovie = data.idMovie?:ID_MOVIE_DEFAULT,
+             enableCategory = data.enableCategory?:false,
+             phone = data.phone?:DEFAULT_NUMBER,
+             textWelcome = data.textWelcome?:DEFAULT_TEXT_WELCOME,
+             hourStart = data.hourStart?:HOUR_START_DEFAULT,
+             hourEnd = data.hourEnd?:HOUR_END_DEFAULT,
+             limitDistance = data.limitDistance?:"5",
+             countProduct = data.countProduct?:DEFAULT_COUNT_PRODUCT,
+             styleValu = data.styleValu?:"0",
+             bgService = data.bgService?:false,
+             bgToolbar = data.bgToolbar?:false,
+             countryCode = data.countryCode?:COUNTRY_DEFAULT,
+             blocking = data.blocking,
+             idIcon = data.idIcon?:"Principal",
+             idFacebook = data.idFacebook?:"61590557890653",
+             idYoutube = data.idYoutube?:"xH6qsMpA7NM"
+        )
+
+        fun toModelRequest(data : ParamModel) = ParamResponse(
+            uid = data.uid?:EMPTY_VALE,
+            title = data.title,
+            description = data.description,
+            idMovie = data.idMovie,
+            enableCategory = data.enableCategory,
+            phone = data.phone,
+            textWelcome = data.textWelcome,
+            hourStart = data.hourStart?:HOUR_START_DEFAULT,
+            hourEnd = data.hourEnd?:HOUR_END_DEFAULT,
+            limitDistance = data.limitDistance?:"5",
+            countProduct = data.countProduct?:DEFAULT_COUNT_PRODUCT,
+            styleValu = data.styleValu,
+            bgService = data.bgService,
+            bgToolbar = data.bgToolbar?:false,
+            countryCode = data.countryCode?:COUNTRY_DEFAULT,
+            blocking = data.blocking,
+            idIcon = data.idIcon,
+            idFacebook = data.idFacebook,
+            idYoutube = data.idYoutube?:"xH6qsMpA7NM"
+        )
+    }
+}

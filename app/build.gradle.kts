@@ -27,8 +27,8 @@ configure<ApplicationExtension> {
         applicationId = "com.tayler.valushopping"
         minSdk = 25
         targetSdk = 37
-        versionCode = 62
-        versionName = "1.6.1"
+        versionCode = 63
+        versionName = "1.6.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -106,9 +106,11 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(project(":entity"))
-    implementation(project(":repository"))
-    implementation(project(":usecases"))
+    implementation(project(":core:model"))
+    implementation(project(":core:network"))
+    implementation(project(":core:database"))
+    implementation(project(":core:common"))
+    implementation(project(":core:domain"))
     implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
     implementation(project(":feature:informative"))
@@ -128,7 +130,7 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
-    testImplementation(project(":repository"))
+    testImplementation(project(":core:network"))
     testImplementation(libs.retrofit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

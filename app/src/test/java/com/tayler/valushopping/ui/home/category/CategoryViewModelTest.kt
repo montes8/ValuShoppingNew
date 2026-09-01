@@ -1,7 +1,7 @@
 package com.tayler.valushopping.ui.home.category
 
-import com.tayler.entity.CategoryModel
-import com.tayler.usecases.ConfigUseCase
+import com.tayler.core.model.CategoryModel
+import com.tayler.core.domain.usecase.ConfigUseCase
 import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager

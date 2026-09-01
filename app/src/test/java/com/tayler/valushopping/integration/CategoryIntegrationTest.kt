@@ -4,8 +4,8 @@ import app.cash.turbine.test
 import com.tayler.repository.network.ServiceApi
 import com.tayler.repository.network.api.ConfigNetwork
 import com.tayler.repository.network.base.BaseNetwork
-import com.tayler.repository.network.model.response.CategoryResponse
-import com.tayler.usecases.ConfigUseCase
+import com.tayler.core.network.data.api.model.CategoryResponse
+import com.tayler.core.domain.usecase.ConfigUseCase
 import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager

@@ -7,8 +7,8 @@ import com.tayler.repository.network.api.ConfigNetwork
 import com.tayler.repository.network.api.UserNetwork
 import com.tayler.repository.network.base.BaseNetwork
 import com.tayler.repository.network.model.response.ParamResponse
-import com.tayler.usecases.AppUseCase
-import com.tayler.usecases.ConfigUseCase
+import com.tayler.core.domain.usecase.AppUseCase
+import com.tayler.core.domain.usecase.ConfigUseCase
 import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager
@@ -69,7 +69,7 @@ class SplashIntegrationTest {
         configNetwork = ConfigNetwork(serviceApi, baseNetwork)
         
         // Mockeamos AppPreferences ya que es la persistencia local, pero usamos UseCase real
-        val appPreferences = mockk<com.tayler.repository.preferences.IAppPreferences>(relaxed = true)
+        val appPreferences = mockk<com.tayler.core.database.preferences.IAppPreferences>(relaxed = true)
         every { appPreferences.getUUID() } returns "uuid"
         
         appUseCase = AppUseCase(appPreferences, userNetwork, configNetwork)

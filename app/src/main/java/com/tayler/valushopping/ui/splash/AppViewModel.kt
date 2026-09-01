@@ -1,10 +1,10 @@
 package com.tayler.valushopping.ui.splash
 
 import android.app.Application
-import com.tayler.entity.HistoryModel
-import com.tayler.entity.ParamModel
-import com.tayler.usecases.AppUseCase
-import com.tayler.usecases.ConfigUseCase
+import com.tayler.core.model.HistoryModel
+import com.tayler.core.model.ParamModel
+import com.tayler.core.domain.usecase.AppUseCase
+import com.tayler.core.domain.usecase.ConfigUseCase
 import com.tayler.ui.di.IoDispatcher
 import com.tayler.ui.AppDataVale
 import com.tayler.ui.ui.base.BaseViewModel

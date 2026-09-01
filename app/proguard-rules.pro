@@ -1,6 +1,6 @@
 # 1. PROTECCIÓN DE MODELOS DE DATOS (Vital para Gson y Serialization)
 # Estos no se pueden ofuscar porque se usan para convertir JSON
--keep class com.tayler.entity.** { *; }
+-keep class com.tayler.core.model.** { *; }
 -keep class com.tayler.valushopping.entity.** { *; }
 -keep class com.tayler.repository.network.model.** { *; }
 -keep class com.valu.uitaycompose.model.entity.** { *; }

@@ -1,0 +1,24 @@
+<resources>
+    <string name="tb_principal">VALU SHOOPING</string>
+    <string name="title_parte_mode">Modo de uso</string>
+    <string name="text_about_use">* En esta app podras ver en la sección de principal los productos disponibles, para poder adquirilos.\n* Luego para poder ver mas detall del producto darle click al producto para poder ver el detalle, tambien podras ver ma imagen mas grande dandole click a la imagen del prodcuto
+    \n* En la pantalla del detalle del producto podras ver toda la información completa del produto podra contactarte con el vendedor via redirección al whatsApp y tambien podras compartir el producto con alguna otra persona dandole click a la opcion de compartir y decidiras porquemedio hacerlo.
+    \n* El ultimo paso lo de la coordinación para adquirir el producto lo realizaran internamente el comprador con el vendedor.
+    </string>
+    <string name="title_parte_blocking">Faltas motivo de bloqueo</string>
+    <string name="text_about_blocking">* Trate de no fallar en coordinaciones de las ventas, si tiene algun reporte por algunas parte sea vendedor o comprador seran bloqueado de esta aplicacion y no podra usarlo.
+    \n* Aclarar que todos lo que anuncien sus productos sera validados internamente para la confiabilidad y evitar inconvenientes.
+    </string>
+    <string name="title_parte_recommendation">Recomendaciones</string>
+    <string name="text_about_recommended">* Esta app recomienda que todo pago se realize cuando tenga el producto entregado.
+    \n* Revisar el producto que cumpla con las caracteristicas de la descripción del producto.
+        \n* Toda entrega se recomienda que sean en punto publicos y seguros y/o en el local fisico en caso lo tenga.
+        \n* Si eres un anunciante se recomienda poner datos claro al momento de agregar producto y las imagenes sea cuadradas.
+    </string>
+    <string name="title_parte_profile">Uso del perfil</string>
+    <string name="text_about_profile">* En la patanlla de perfil los datos que ingrese solo sera guardado localmente.
+        * Para empezar darle clic al icono de lapiz para poder ingrsar los datos.
+    \n* Las imagenes de perfil y banner traten que sean en la dimensiones similares a los ejemplos presentados.
+        \n* Asegurese de colocar todos los datos correctamente para que el boton de guardado se active.
+    </string>
+</resources>

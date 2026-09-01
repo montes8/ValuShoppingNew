@@ -1,12 +1,12 @@
 package com.tayler.valushopping.integration
 
 import app.cash.turbine.test
-import com.tayler.entity.ProductModel
+import com.tayler.core.model.ProductModel
 import com.tayler.repository.network.ServiceApi
 import com.tayler.repository.network.api.DataNetwork
 import com.tayler.repository.network.base.BaseNetwork
 import com.tayler.repository.network.model.response.ProductResponse
-import com.tayler.usecases.DataUseCase
+import com.tayler.core.domain.usecase.DataUseCase
 import com.tayler.ui.AppDataVale
 import com.tayler.valushopping.rule.MainDispatcherRule
 import com.tayler.valushopping.ui.base.GlobalUiStateManager

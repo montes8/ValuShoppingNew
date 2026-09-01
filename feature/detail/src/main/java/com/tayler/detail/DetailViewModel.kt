@@ -1,7 +1,7 @@
 package com.tayler.detail
 
-import com.tayler.entity.ImageMoreModel
-import com.tayler.usecases.DataUseCase
+import com.tayler.core.model.ImageMoreModel
+import com.tayler.detail.domain.usecase.GetProductDetailUseCase
 import com.tayler.ui.di.IoDispatcher
 import com.tayler.ui.ui.base.BaseViewModel
 import com.tayler.ui.ui.base.GlobalUiStateManager
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val dataUseCase: DataUseCase,
+    private val getProductDetailUseCase: GetProductDetailUseCase,
     private val globalUiStateManager: GlobalUiStateManager,
     @IoDispatcher ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BaseViewModel(ioDispatcher) {
@@ -26,7 +26,7 @@ class DetailViewModel @Inject constructor(
     fun loadMoreImageProduct(id: String) {
         execute(loading = false, globalUiStateManager = globalUiStateManager) {
             val response = io {
-                dataUseCase.loadProductImage(id)
+                getProductDetailUseCase(id)
             }
             _successProductImageState.value = response
         }

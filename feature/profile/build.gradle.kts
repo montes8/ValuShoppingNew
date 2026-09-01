@@ -27,8 +27,9 @@ android {
 dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
-    implementation(project(":entity"))
-    implementation(project(":usecases"))
+    implementation(project(":core:model"))
+    implementation(project(":core:database"))
+    implementation(project(":core:common"))
     
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

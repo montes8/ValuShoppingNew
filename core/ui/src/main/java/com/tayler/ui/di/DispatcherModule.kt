@@ -1,5 +1,7 @@
 package com.tayler.ui.di
 
+import com.tayler.core.common.utils.*
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
