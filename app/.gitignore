@@ -1,9 +1,9 @@
 # --- Credenciales y Firmas ---
-gradle.properties
 local.properties
 keystore.properties
 *.jks
 *.keystore
+keystore/
 *.iml
 
 # --- Android / Gradle ---

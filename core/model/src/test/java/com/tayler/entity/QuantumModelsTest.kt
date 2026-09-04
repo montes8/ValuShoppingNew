@@ -1,5 +1,8 @@
-package com.tayler.core.model
+package com.tayler.entity
 
+import com.tayler.core.model.QuantumCipherData
+import com.tayler.core.model.QuantumEncryptedResponse
+import com.tayler.core.model.QuantumPublicKeyResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull

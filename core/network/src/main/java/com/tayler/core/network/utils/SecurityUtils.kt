@@ -40,7 +40,7 @@ object SecurityUtils {
         securityWarning = when {
             isRoot -> SecurityWarningType.ROOT
             isEmu -> SecurityWarningType.EMULATOR
-           // isDeveloperModeDetected -> SecurityWarningType.DEVELOPER_MODE
+            isDeveloperModeDetected -> SecurityWarningType.DEVELOPER_MODE
             else -> SecurityWarningType.NONE
         }
 
@@ -71,11 +71,6 @@ object SecurityUtils {
                 installer = installerName
             )
             sendSecurityAlertBlocking(BuildConfig.BASE_URL, alert)
-
-            if (isTampered) {
-                android.os.Process.killProcess(android.os.Process.myPid())
-                kotlin.system.exitProcess(1)
-            }
         }
     }
 
@@ -179,7 +174,7 @@ object SecurityUtils {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return true
+        return false
     }
 
     fun sendSecurityAlertBlocking(baseUrl: String, request: SecurityAlertRequest) {
@@ -208,10 +203,5 @@ object SecurityUtils {
             }
         }
         thread.start()
-        try {
-            thread.join(2000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
     }
 }

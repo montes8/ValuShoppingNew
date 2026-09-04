@@ -1,5 +1,12 @@
-package com.tayler.core.model
+package com.tayler.entity
 
+import com.tayler.core.model.CategoryModel
+import com.tayler.core.model.HistoryModel
+import com.tayler.core.model.ImageModel
+import com.tayler.core.model.ImageMoreModel
+import com.tayler.core.model.ProductImageModel
+import com.tayler.core.model.TaskModel
+import com.tayler.core.model.UserBlockingModel
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -39,7 +46,14 @@ class EntityModelsTest {
 
     @Test
     fun `ImageMoreModel holds correct values`() {
-        val model = ImageMoreModel(uid = "1", name = "img", idProduct = "p1", idUser = "u1", url = "url", nameFile = "file")
+        val model = ImageMoreModel(
+            uid = "1",
+            name = "img",
+            idProduct = "p1",
+            idUser = "u1",
+            url = "url",
+            nameFile = "file"
+        )
         assertEquals("1", model.uid)
         assertEquals("img", model.name)
     }

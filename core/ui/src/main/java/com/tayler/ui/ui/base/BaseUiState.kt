@@ -1,7 +1,5 @@
 package com.tayler.ui.ui.base
 
-import com.tayler.core.common.utils.*
-
 import androidx.compose.ui.graphics.Color
 import com.valu.uitaycompose.utils.tay_pink_100
 

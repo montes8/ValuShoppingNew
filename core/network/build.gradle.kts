@@ -1,13 +1,23 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidLibrary)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 }
 
+val keystoreProps = Properties().apply {
+    val keystoreFile = rootProject.file("keystore.properties")
+    if (keystoreFile.exists()) {
+        load(FileInputStream(keystoreFile))
+    }
+}
+
 fun config(k: String): String {
-    val value = project.findProperty(k)?.toString() ?: ""
+    val value = keystoreProps.getProperty(k) ?: project.findProperty(k)?.toString() ?: ""
     if (value.isEmpty()) {
-        println("WARNING: Property $k is missing in gradle.properties")
+        println("WARNING: Property $k is missing in keystore.properties or gradle.properties")
     }
     return "\"$value\""
 }

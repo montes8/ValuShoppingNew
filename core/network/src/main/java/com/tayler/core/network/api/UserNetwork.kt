@@ -1,11 +1,8 @@
 package com.tayler.core.network.api
 
-import com.tayler.core.model.ParamModel
-import com.tayler.core.network.api.ServiceApi
 import com.tayler.core.network.base.BaseNetwork
 import com.tayler.core.network.data.api.model.ParamResponse
 import com.tayler.core.network.protocol.IUserNetwork
-import com.tayler.core.common.utils.EMPTY_VALE
 import com.tayler.core.network.utils.processResponse
 import javax.inject.Inject
 

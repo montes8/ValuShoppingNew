@@ -15,10 +15,10 @@
 local.properties
 
 # --- Credenciales y Firmas ---
-gradle.properties
 keystore.properties
 *.jks
 *.keystore
+keystore/
 
 # --- Android / Gradle ---
 /build/

@@ -1,5 +1,7 @@
-package com.tayler.core.model
+package com.tayler.entity
 
+import com.tayler.core.model.DataLogin
+import com.tayler.core.model.UserModel
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

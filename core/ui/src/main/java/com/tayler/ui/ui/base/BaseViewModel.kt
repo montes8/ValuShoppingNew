@@ -1,7 +1,5 @@
 package com.tayler.ui.ui.base
 
-import com.tayler.core.common.utils.*
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CancellationException
@@ -65,17 +63,6 @@ open class BaseViewModel(
                     currentState.copy(loading = false, shimmer = false)
                 }
             }
-        }
-    }
-
-    fun <T> executeState(
-        stateFlow: MutableStateFlow<T?>,
-        globalUiStateManager: GlobalUiStateManager? = null,
-        func: suspend () -> T
-    ) {
-        execute(loading = false, globalUiStateManager = globalUiStateManager) {
-            val result = io { func() }
-            stateFlow.value = result
         }
     }
 
